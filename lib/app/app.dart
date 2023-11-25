@@ -1,7 +1,7 @@
+import 'global_imports.dart';
+
 import 'package:donation/presentation/on_boarding/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../presentation/_resources/routes_manager.dart';
 import '../presentation/_resources/theme_manager.dart';
@@ -27,9 +27,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => OnBoardingVM()),
+        BlocProvider(create: (_) => OnBoardingVM()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

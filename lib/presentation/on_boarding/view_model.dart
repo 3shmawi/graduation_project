@@ -1,10 +1,8 @@
-import 'package:donation/presentation/_resources/assets_manager.dart';
-import 'package:flutter/material.dart';
-
+import '../../app/global_imports.dart';
 import '../../domain/model/models.dart';
-import '../_resources/strings_manager.dart';
 
-class OnBoardingVM extends ChangeNotifier {
+class OnBoardingVM extends Cubit<AppCubitStates> {
+  OnBoardingVM() : super(OnBoardInitState());
 
   List<SliderObject> get slidersData => _getSliderData;
 
@@ -12,8 +10,7 @@ class OnBoardingVM extends ChangeNotifier {
 
   void changeOnBoardPageIndex(int index) {
     currentIndex = index;
-    print('index');
-    notifyListeners();
+    emit(ChangeOnBoardPageIndexState());
   }
 
   final List<SliderObject> _getSliderData = [

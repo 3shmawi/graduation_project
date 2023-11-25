@@ -5,22 +5,11 @@ import 'font_manager.dart';
 
 // regular style
 
-TextStyle getRobotoRegularStyle({
+TextStyle getRegularStyle({
   double fontSize = FontSize.s12,
   required Color color,
 }) {
-  return GoogleFonts.roboto(
-    fontWeight: FontWeightManager.regular,
-    color: color,
-    fontSize: fontSize,
-  );
-}
-
-TextStyle getSansitaRegularStyle({
-  required Color color,
-  double fontSize = FontSize.s12,
-}) {
-  return GoogleFonts.sansitaSwashed(
+  return GoogleFonts.amiri(
     fontWeight: FontWeightManager.regular,
     color: color,
     fontSize: fontSize,
@@ -29,18 +18,9 @@ TextStyle getSansitaRegularStyle({
 
 // medium style
 
-TextStyle getRobotoMediumStyle(
+TextStyle getMediumStyle(
     {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.roboto(
-    fontWeight: FontWeightManager.medium,
-    color: color,
-    fontSize: fontSize,
-  );
-}
-
-TextStyle getSansitaMediumStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.sansitaSwashed(
+  return GoogleFonts.amiri(
     fontWeight: FontWeightManager.medium,
     color: color,
     fontSize: fontSize,
@@ -49,18 +29,9 @@ TextStyle getSansitaMediumStyle(
 
 // medium style
 
-TextStyle getRobotoLightStyle(
+TextStyle getLightStyle(
     {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.roboto(
-    fontWeight: FontWeightManager.light,
-    color: color,
-    fontSize: fontSize,
-  );
-}
-
-TextStyle getSansitoLightStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.sansitaSwashed(
+  return GoogleFonts.amiri(
     fontWeight: FontWeightManager.light,
     color: color,
     fontSize: fontSize,
@@ -69,18 +40,8 @@ TextStyle getSansitoLightStyle(
 
 // bold style
 
-TextStyle getRobotoBoldStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.roboto(
-    fontWeight: FontWeightManager.bold,
-    color: color,
-    fontSize: fontSize,
-  );
-}
-
-TextStyle getSansitoBoldStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.sansitaSwashed(
+TextStyle getBoldStyle({double fontSize = FontSize.s12, required Color color}) {
+  return GoogleFonts.amiri(
     fontWeight: FontWeightManager.bold,
     color: color,
     fontSize: fontSize,
@@ -89,18 +50,9 @@ TextStyle getSansitoBoldStyle(
 
 // semi bold style
 
-TextStyle getSansitoSemiBoldStyle(
+TextStyle getSemiBoldStyle(
     {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.sansitaSwashed(
-    fontWeight: FontWeightManager.semiBold,
-    color: color,
-    fontSize: fontSize,
-  );
-}
-
-TextStyle getRobotoSemiBoldStyle(
-    {double fontSize = FontSize.s12, required Color color}) {
-  return GoogleFonts.roboto(
+  return GoogleFonts.amiri(
     fontWeight: FontWeightManager.semiBold,
     color: color,
     fontSize: fontSize,

@@ -1,16 +1,11 @@
-import 'package:donation/presentation/_resources/color_manager.dart';
-import 'package:donation/presentation/_resources/constants_manager.dart';
-import 'package:donation/presentation/_resources/strings_manager.dart';
+import '../../app/global_imports.dart';
 import 'package:donation/presentation/on_boarding/view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
 import '../../domain/model/models.dart';
 import '../_resources/routes_manager.dart';
-import '../_resources/values_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -31,7 +26,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<OnBoardingVM>(context, listen: true);
+    final cubit = context.watch<OnBoardingVM>();
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -54,13 +49,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: provider.slidersData.length,
+                itemCount: cubit.slidersData.length,
                 onPageChanged: (index) {
-                  Provider.of<OnBoardingVM>(context, listen: false)
-                      .changeOnBoardPageIndex(index);
+                  context.read<OnBoardingVM>().changeOnBoardPageIndex(index);
                 },
                 itemBuilder: (_, index) {
-                  return OnBoardingPage(provider.slidersData[index]);
+                  return OnBoardingPage(cubit.slidersData[index]);
                 },
               ),
             ),
@@ -69,27 +63,27 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  provider.slidersData.length,
-                  (index) => _getProperCircle(index, provider),
+                  cubit.slidersData.length,
+                  (index) => _getProperCircle(index, cubit),
                 ),
               ),
             ),
             ElevatedButton(
               onPressed: () {
-                if (_isLast(provider)) {
-                  Navigator.pushReplacementNamed(context, Routes.layoutRoute);
+                if (_isLast(cubit)) {
+                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
                 } else {
                   _pageController.animateToPage(
-                    ++provider.currentIndex,
+                    ++cubit.currentIndex,
                     duration: const Duration(
                         milliseconds: AppConstants.duraitonAnimationDelay),
-                    curve: Curves.bounceInOut,
+                    curve: Curves.linear,
                   );
                 }
               },
               child: Text(
-                _isLast(provider) ? AppStrings.getStarted : AppStrings.next,
-                style: Theme.of(context).textTheme.labelLarge,
+                _isLast(cubit) ? AppStrings.getStarted : AppStrings.next,
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
             ),
             Padding(
@@ -97,15 +91,15 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: AnimatedCrossFade(
                 firstChild: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, Routes.layoutRoute);
+                    Navigator.pushReplacementNamed(context, Routes.loginRoute);
                   },
                   child: Text(
                     AppStrings.skip,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
                 secondChild: const SizedBox(),
-                crossFadeState: _isLast(provider)
+                crossFadeState: _isLast(cubit)
                     ? CrossFadeState.showSecond
                     : CrossFadeState.showFirst,
                 duration: const Duration(
@@ -119,8 +113,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     );
   }
 
-  bool _isLast(OnBoardingVM provider) {
-    return provider.currentIndex == provider.slidersData.length - 1;
+  bool _isLast(OnBoardingVM cubit) {
+    return cubit.currentIndex == cubit.slidersData.length - 1;
   }
 
   Widget _getProperCircle(int index, OnBoardingVM vm) {
@@ -144,7 +138,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;
 
-  const OnBoardingPage(this._sliderObject, {Key? key}) : super(key: key);
+  const OnBoardingPage(this._sliderObject, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +156,9 @@ class OnBoardingPage extends StatelessWidget {
             child: Text(
               _sliderObject.title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.displayLarge,
+              style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    height: 2,
+                  ),
             ),
           ),
           const SizedBox(

@@ -10,5 +10,32 @@
 
   "next": "Next",
   "skip": "skip",
-  "get-started": "Get Started"
+  "get-started": "Get Started",
+
+  "welcome": "Welcome to the Generation of Giving Foundation",
+  "welcome2": "please login or sign up to continue",
+
+  "log-with-pass": "Sign in with password",
+  "log-in": "LOGIN",
+  "register": "SIGNUP",
+  "sign-in": "SIGN-IN",
+  "sign-out": "SIGN-OUT",
+  "sign-up": "SIGN-UP",
+  "forgot-pass": "Forgotten pass",
+  "have-account": "Have an account?  ",
+  "don-have-account": "Don’t have an account?  ",
+
+
+  "usr-name": "User name",
+  "usr-email": "Email Address",
+  "usr-pass": "Password",
+  "auth-remember": "Remember me!",
+
+  "success": "Successful!",
+  "success-message": "You have successfully registered\u2028in our app and start working in it.",
+
+  "google": "Continue with Google",
+  "facebook": "Continue with Facebook",
+  "apple": "Continue with Apple",
+  "or": "    OR    "
 }

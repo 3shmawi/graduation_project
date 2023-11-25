@@ -32,7 +32,7 @@ ThemeData getApplicationTheme() {
         statusBarColor: Colors.transparent,
       ),
       shadowColor: AppColors.primaryOpacity70,
-      titleTextStyle: getRobotoRegularStyle(
+      titleTextStyle: getRegularStyle(
         color: AppColors.white,
         fontSize: FontSize.s16,
       ),
@@ -49,7 +49,7 @@ ThemeData getApplicationTheme() {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(AppSize.s255, AppSize.s50),
-        textStyle: getRobotoRegularStyle(color: AppColors.white),
+        textStyle: getRegularStyle(color: AppColors.white),
         backgroundColor: AppColors.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s12),
@@ -59,61 +59,56 @@ ThemeData getApplicationTheme() {
 
     // Text theme
     textTheme: TextTheme(
-      displayLarge: getRobotoSemiBoldStyle(
-          color: AppColors.darkGrey, fontSize: FontSize.s16),
+      //black
+      displayLarge:
+          getBoldStyle(color: AppColors.black, fontSize: FontSize.s24),
       displayMedium:
-          getRobotoRegularStyle(color: AppColors.white, fontSize: FontSize.s16),
+          getRegularStyle(color: AppColors.black, fontSize: FontSize.s16),
       displaySmall:
-          getRobotoBoldStyle(color: AppColors.primary, fontSize: FontSize.s16),
-      titleMedium: getRobotoMediumStyle(
-          color: AppColors.lightGrey, fontSize: FontSize.s14),
-      titleSmall: getRobotoMediumStyle(
-          color: AppColors.primary, fontSize: FontSize.s14),
-      bodyMedium: getRobotoMediumStyle(color: AppColors.lightGrey),
-      bodySmall: getRobotoRegularStyle(color: AppColors.grey1),
-      bodyLarge: getRobotoRegularStyle(color: AppColors.grey),
-      labelLarge:
-          getRobotoBoldStyle(color: AppColors.white, fontSize: FontSize.s16),
-      labelMedium: getRobotoSemiBoldStyle(
-          color: AppColors.grey1, fontSize: FontSize.s14),
-      labelSmall: getRobotoLightStyle(
-          color: AppColors.lightGrey, fontSize: FontSize.s12),
-      titleLarge: getSansitoBoldStyle(color: AppColors.black),
-      headlineLarge: getSansitoSemiBoldStyle(color: AppColors.primary),
-      headlineMedium: getSansitaRegularStyle(
-          color: AppColors.primary, fontSize: FontSize.s14),
-      headlineSmall: getSansitoLightStyle(color: AppColors.primaryOpacity70),
+          getSemiBoldStyle(color: AppColors.black, fontSize: FontSize.s16),
+
+      //primary
+      titleLarge:
+          getBoldStyle(color: AppColors.primary, fontSize: FontSize.s24),
+      titleMedium:
+          getMediumStyle(color: AppColors.primary, fontSize: FontSize.s18),
+      titleSmall:
+          getMediumStyle(color: AppColors.primary, fontSize: FontSize.s14),
+
+      //primary with opacity
+      bodyLarge: getRegularStyle(
+          color: AppColors.primaryOpacity70, fontSize: FontSize.s20),
+      bodyMedium: getMediumStyle(
+          color: AppColors.primaryOpacity70, fontSize: FontSize.s16),
+      bodySmall: getRegularStyle(
+          color: AppColors.primaryOpacity70, fontSize: FontSize.s14),
+
+      //gray
+      labelLarge: getBoldStyle(color: AppColors.grey, fontSize: FontSize.s20),
+      labelMedium:
+          getSemiBoldStyle(color: AppColors.grey, fontSize: FontSize.s18),
+      labelSmall: getLightStyle(color: AppColors.grey, fontSize: FontSize.s14),
+
+      //white
+      headlineLarge:
+          getBoldStyle(color: AppColors.white, fontSize: FontSize.s24),
+      headlineMedium:
+          getMediumStyle(color: AppColors.white, fontSize: FontSize.s18),
+      headlineSmall:
+          getLightStyle(color: AppColors.white, fontSize: FontSize.s14),
     ),
     // input decoration theme (text form field)
 
     inputDecorationTheme: InputDecorationTheme(
-      contentPadding: const EdgeInsets.all(AppPadding.p8),
+
+      contentPadding: const EdgeInsets.only(top: AppPadding.p6),
       // hint style
-      hintStyle: getRobotoRegularStyle(color: AppColors.grey1),
+      hintStyle: getRegularStyle(color: AppColors.grey1),
 
       // label style
-      labelStyle: getRobotoMediumStyle(color: AppColors.darkGrey),
+      labelStyle: getMediumStyle(color: AppColors.darkGrey),
       // error style
-      errorStyle: getRobotoRegularStyle(color: AppColors.error),
-
-      // enabled border
-      enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey, width: AppSize.s1_5),
-          borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8))),
-
-      // focused border
-      focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary, width: AppSize.s1_5),
-          borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8))),
-
-      // error border
-      errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.error, width: AppSize.s1_5),
-          borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8))),
-      // focused error border
-      focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primary, width: AppSize.s1_5),
-          borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8))),
+      errorStyle: getRegularStyle(color: AppColors.error),
     ),
   );
 }

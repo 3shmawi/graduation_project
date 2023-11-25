@@ -1,12 +1,5 @@
 import 'dart:async';
-
-import 'package:donation/presentation/_resources/assets_manager.dart';
-import 'package:donation/presentation/_resources/color_manager.dart';
-import 'package:donation/presentation/_resources/constants_manager.dart';
-import 'package:donation/presentation/_resources/font_manager.dart';
-import 'package:donation/presentation/_resources/strings_manager.dart';
-import 'package:donation/presentation/_resources/values_manager.dart';
-import 'package:flutter/material.dart';
+import 'package:donation/app/global_imports.dart';
 
 import '../../app/app_prefs.dart';
 import '../../app/di.dart';
@@ -42,7 +35,7 @@ class _SplashViewState extends State<SplashView> {
                         else
                           {
                             Navigator.pushReplacementNamed(
-                                context, Routes.loginRoute),
+                                context, Routes.onBoardingRoute),
                           }
                       },
                     ),
@@ -81,14 +74,13 @@ class _SplashViewState extends State<SplashView> {
             width: double.infinity,
             height: double.infinity,
           ),
-          Image.asset(
-            AppAssets.logo,
-          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: AppSize.s200),
+                Image.asset(
+                  AppAssets.logo,
+                ),
                 RichText(
                   text: TextSpan(
                     text: AppStrings.splashTitle,
