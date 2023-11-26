@@ -166,40 +166,50 @@ class AuthWithoutPassword extends StatefulWidget {
 class _AuthWithoutPasswordState extends State<AuthWithoutPassword> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AuthOutLinedButton(
-          icon: AppAssets.google,
-          onTap: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              Routes.successRoute,
-              (route) => false,
-            );
-          },
-        ),
-        AuthOutLinedButton(
-          icon: AppAssets.facebook,
-          isBlue: true,
-          padding: AppPadding.p18,
-          onTap: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              Routes.successRoute,
-              (route) => false,
-            );
-          },
-        ),
-        AuthOutLinedButton(
-          icon: AppAssets.apple,
-          isBlue: false,
-          onTap: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              Routes.successRoute,
-              (route) => false,
-            );
-          },
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppPadding.p12,
+        AppPadding.p0,
+        AppPadding.p12,
+        AppPadding.p12,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AuthOutLinedButton(
+            icon: AppAssets.google,
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                Routes.successRoute,
+                (route) => false,
+              );
+            },
+          ),
+          const SizedBox(width: AppSize.s12),
+          AuthOutLinedButton(
+            icon: AppAssets.facebook,
+            isBlue: true,
+            padding: AppPadding.p18,
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                Routes.successRoute,
+                (route) => false,
+              );
+            },
+          ),
+          const SizedBox(width: AppSize.s12),
+          AuthOutLinedButton(
+            icon: AppAssets.apple,
+            isBlue: false,
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                Routes.successRoute,
+                (route) => false,
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -220,13 +230,11 @@ class AuthOutLinedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding ?? AppPadding.p0),
+    return Expanded(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppSize.s8),
         child: Container(
-          width: AppSize.s100,
           height: AppSize.s48,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSize.s8),

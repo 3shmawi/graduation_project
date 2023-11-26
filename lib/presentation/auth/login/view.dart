@@ -84,6 +84,7 @@ class LoginPageState extends State<LoginPage>
                         ),
                         AuthDashLine(AppStrings.or),
                         const AuthWithoutPassword(),
+                        const SizedBox(height: AppSize.s12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
