@@ -71,7 +71,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             ElevatedButton(
               onPressed: () {
                 if (_isLast(cubit)) {
-                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                  Navigator.pushReplacementNamed(context, Routes.authRoute);
                 } else {
                   _pageController.animateToPage(
                     ++cubit.currentIndex,
@@ -91,7 +91,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: AnimatedCrossFade(
                 firstChild: TextButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                    Navigator.pushReplacementNamed(context, Routes.authRoute);
                   },
                   child: Text(
                     AppStrings.skip,
