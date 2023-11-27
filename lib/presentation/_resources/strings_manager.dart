@@ -39,4 +39,24 @@ class AppStrings {
   static final facebook = 'facebook'.tr();
   static final apple = 'apple'.tr();
   static final or = 'or'.tr();
+
+  static final home = 'home'.tr();
+  static final box = 'box'.tr();
+  static final chat = 'chat'.tr();
+  static final fields = 'fields'.tr();
+  static final campaign = 'campaign'.tr();
+
+  static final solidarity = 'solidarity'.tr();
+  static final health = 'health'.tr();
+  static final education = 'education'.tr();
+  static final development = 'development'.tr();
+  static final diggingWell = 'digging-well'.tr();
+  static final algarmin = 'algarmin'.tr();
+
+  static final donationMess1 = 'donation-message1'.tr();
+  static final donationMess2 = 'donation-message2'.tr();
+
+  static final currentDonation = 'current-donation'.tr();
+  static final products = 'products'.tr();
+  static final donate = 'donate'.tr();
 }

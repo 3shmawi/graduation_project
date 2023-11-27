@@ -8,7 +8,7 @@ import '../../domain/model/models.dart';
 import '../_resources/routes_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
-  const OnBoardingView({super.key});
+   const OnBoardingView({super.key});
 
   @override
   State<OnBoardingView> createState() => _OnBoardingViewState();
@@ -41,11 +41,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p12),
+        padding:  EdgeInsets.symmetric(horizontal: AppPadding.p12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: AppSize.s60),
+             SizedBox(height: AppSize.s60),
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -59,7 +59,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: AppPadding.p20),
+              padding:  EdgeInsets.only(bottom: AppPadding.p20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
@@ -75,7 +75,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 } else {
                   _pageController.animateToPage(
                     ++cubit.currentIndex,
-                    duration: const Duration(
+                    duration:  const Duration(
                         milliseconds: AppConstants.duraitonAnimationDelay),
                     curve: Curves.linear,
                   );
@@ -87,7 +87,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppPadding.p8),
+              padding:  EdgeInsets.symmetric(vertical: AppPadding.p8),
               child: AnimatedCrossFade(
                 firstChild: TextButton(
                   onPressed: () {
@@ -98,11 +98,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ),
-                secondChild: const SizedBox(),
+                secondChild:  const SizedBox(),
                 crossFadeState: _isLast(cubit)
                     ? CrossFadeState.showSecond
                     : CrossFadeState.showFirst,
-                duration: const Duration(
+                duration:  const Duration(
                   milliseconds: AppConstants.duraitonAnimationDelay,
                 ),
               ),
@@ -121,7 +121,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Container(
       height: AppSize.s14,
       width: AppSize.s14,
-      margin: const EdgeInsets.all(AppMargin.m8),
+      margin:  EdgeInsets.all(AppMargin.m8),
       decoration: BoxDecoration(
         color:
             index == vm.currentIndex ? AppColors.primary : Colors.transparent,
@@ -138,7 +138,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;
 
-  const OnBoardingPage(this._sliderObject, {super.key});
+   const OnBoardingPage(this._sliderObject, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +152,7 @@ class OnBoardingPage extends StatelessWidget {
             width: AppSize.s420,
           ),
           Padding(
-            padding: const EdgeInsets.all(AppPadding.p8),
+            padding:  EdgeInsets.all(AppPadding.p8),
             child: Text(
               _sliderObject.title,
               textAlign: TextAlign.center,
@@ -161,7 +161,7 @@ class OnBoardingPage extends StatelessWidget {
                   ),
             ),
           ),
-          const SizedBox(
+           SizedBox(
             height: AppSize.s60,
           ),
         ],

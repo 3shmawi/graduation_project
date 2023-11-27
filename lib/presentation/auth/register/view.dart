@@ -28,16 +28,16 @@ class RegisterPageState extends State<RegisterPage>
               child: Center(
                 child: Column(
                   children: [
+                    const SizedBox(height: AppSize.s8),
                     Image.asset(
                       AppAssets.logo,
                       height: AppSize.s200,
                     ),
-                    const SizedBox(height: AppSize.s8),
                     Text(
                       AppStrings.signUp,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppSize.s20),
                     AuthFormField(
                       controller: nameCtrl,
                       hintTxt: AppStrings.usrName,
@@ -61,7 +61,7 @@ class RegisterPageState extends State<RegisterPage>
                     const SizedBox(
                       height: AppSize.s40,
                     ),
-                    AuthButton(
+                    CustomButton(
                       label: AppStrings.signUp,
                       onPressed: () {
                         nameCtrl.clear();

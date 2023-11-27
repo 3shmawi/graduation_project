@@ -33,5 +33,25 @@
   "google": "استمر باستخدام Google",
   "facebook": "استمر باستخدام Facebook",
   "apple": "استمر باستخدام Apple",
-  "or": "    أو    "
+  "or": "    أو    ",
+
+  "home": "الرئيسية",
+  "box": "صندق التبرع",
+  "chat": "الرسائل",
+  "fields": "مجالات التبرع",
+  "campaign": "الحملة",
+
+  "solidarity": "التكافل",
+  "health": "الصحة",
+  "education": "التعليم",
+  "development": "التطوير",
+  "digging-well": "حفر بئر",
+  "algarmin": "الغارمين",
+
+  "donation-message1": "تبرع بسخاء،",
+  "donation-message2": "واصنع فرقًا في حياة الآخرين.",
+
+  "current-donation": "الحملات الحالية",
+  "products": "المنتجات",
+  "donate": "تبرع"
 }

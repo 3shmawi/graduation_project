@@ -1,3 +1,6 @@
+import 'package:donation/presentation/layout/layout_view_model.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+
 import 'global_imports.dart';
 
 import 'package:donation/presentation/on_boarding/view_model.dart';
@@ -30,15 +33,20 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => OnBoardingVM()),
+        BlocProvider(create: (_) => LayoutVM()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        onGenerateRoute: RouteGenerator.getRoute,
-        initialRoute: Routes.splashRoute,
-        theme: getApplicationTheme(),
+      child: ResponsiveSizer(
+        builder: (context, orientation, screenType) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            onGenerateRoute: RouteGenerator.getRoute,
+            initialRoute: Routes.splashRoute,
+            theme: getApplicationTheme(),
+          );
+        },
       ),
     );
   }

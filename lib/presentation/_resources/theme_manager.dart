@@ -48,7 +48,7 @@ ThemeData getApplicationTheme() {
     // elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(AppSize.s255, AppSize.s50),
+        minimumSize:  Size(AppSize.s255, AppSize.s50),
         textStyle: getRegularStyle(color: AppColors.white),
         backgroundColor: AppColors.primary,
         shape: RoundedRectangleBorder(
@@ -101,7 +101,7 @@ ThemeData getApplicationTheme() {
 
     inputDecorationTheme: InputDecorationTheme(
 
-      contentPadding: const EdgeInsets.only(top: AppPadding.p6),
+      contentPadding:  EdgeInsets.only(top: AppPadding.p6),
       // hint style
       hintStyle: getRegularStyle(color: AppColors.grey1),
 

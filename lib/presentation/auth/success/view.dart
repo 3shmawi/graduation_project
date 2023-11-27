@@ -32,7 +32,7 @@ class SuccessPage extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: AppSize.s40),
-              AuthButton(
+              CustomButton(
                 label: AppStrings.getStarted,
                 onPressed: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(

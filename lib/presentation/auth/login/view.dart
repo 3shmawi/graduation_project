@@ -31,16 +31,16 @@ class LoginPageState extends State<LoginPage>
                   child: Center(
                     child: Column(
                       children: [
+                        const SizedBox(height: AppSize.s8),
                         Image.asset(
                           AppAssets.logo,
                           height: AppSize.s200,
                         ),
-                        const SizedBox(height: AppSize.s8),
                         Text(
                           AppStrings.signIn,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: AppSize.s20),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: AppPadding.p20),
@@ -73,7 +73,7 @@ class LoginPageState extends State<LoginPage>
                         const SizedBox(
                           height: AppSize.s40,
                         ),
-                        AuthButton(
+                        CustomButton(
                           label: AppStrings.signIn,
                           onPressed: () {
                             Navigator.of(context).pushNamedAndRemoveUntil(

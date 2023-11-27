@@ -35,27 +35,27 @@ class _AuthPageState extends State<AuthPage> {
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               const SizedBox(height: AppSize.s28),
-              AuthButton(
+              CustomButton(
                 icon: AppAssets.google,
                 label: AppStrings.google,
                 onPressed: () {},
                 color: AppColors.white,
               ),
               const SizedBox(height: AppSize.s28),
-              AuthButton(
+              CustomButton(
                 icon: AppAssets.facebook,
                 label: AppStrings.facebook,
                 onPressed: () {},
               ),
               const SizedBox(height: AppSize.s28),
-              AuthButton(
+              CustomButton(
                 icon: AppAssets.apple,
                 label: AppStrings.apple,
                 onPressed: () {},
                 color: Colors.black,
               ),
               AuthDashLine(AppStrings.or),
-              AuthButton(
+              CustomButton(
                 label: AppStrings.withPass,
                 onPressed: () {
                   Navigator.of(context).pushNamed(Routes.loginRoute);

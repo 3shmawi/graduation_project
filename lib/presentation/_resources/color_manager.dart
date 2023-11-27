@@ -19,6 +19,10 @@ class AppColors {
   static Color gradient1 = HexColor.fromHex("#004BAB");
   static Color gradient2 = HexColor.fromHex("#02804D");
   static Color gradient3 = HexColor.fromHex("#03AB00");
+
+  //campaign
+  static Color gradient4 = HexColor.fromHex("#3C89F7").withOpacity(.6);
+  static Color gradient5 = HexColor.fromHex("#1396C2").withOpacity(.6);
 }
 
 extension HexColor on Color {

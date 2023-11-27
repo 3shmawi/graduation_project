@@ -37,5 +37,26 @@
   "google": "Continue with Google",
   "facebook": "Continue with Facebook",
   "apple": "Continue with Apple",
-  "or": "    OR    "
+  "or": "    OR    ",
+
+  "home": "Home",
+  "box": "Donation box",
+  "chat": "chats",
+  "fields": "Fields",
+  "campaign": "Campaign",
+
+
+  "solidarity": "Solidarity",
+  "health": "Health",
+  "education": "Education",
+  "development": "Development",
+  "digging-well": "Digging Well",
+  "algarmin": "Algarmin",
+
+  "donation-message1": "Donate generously,",
+  "donation-message2": "And make a difference in the lives of others.",
+
+  "current-donation": "Current donation",
+  "products": "Products",
+  "donate": "Donate now"
 }

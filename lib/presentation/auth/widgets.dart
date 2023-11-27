@@ -83,8 +83,8 @@ class _AuthFormFieldState extends State<AuthFormField> {
   }
 }
 
-class AuthButton extends StatelessWidget {
-  const AuthButton({
+class CustomButton extends StatelessWidget {
+  const CustomButton({
     required this.label,
     this.onPressed,
     this.icon,

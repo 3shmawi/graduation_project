@@ -4,3 +4,8 @@ abstract class AppCubitStates {}
 class OnBoardInitState extends AppCubitStates {}
 
 class ChangeOnBoardPageIndexState extends AppCubitStates {}
+
+//layout
+class LayoutInitState extends AppCubitStates {}
+
+class ChangeLayoutPageIndexState extends AppCubitStates {}
