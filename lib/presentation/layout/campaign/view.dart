@@ -42,7 +42,7 @@ class _CampaignPageState extends State<CampaignPage> {
             SliverAppBar(
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
-              collapsedHeight: AppSize.s100,
+              collapsedHeight: AppSize.s110,
               expandedHeight: AppSize.s100,
               flexibleSpace: Container(
                 height: AppSize.s226,
@@ -69,6 +69,7 @@ class _CampaignPageState extends State<CampaignPage> {
                           AppStrings.donationMess1,
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
+                        const SizedBox(height: AppSize.s4),
                         Text(
                           AppStrings.donationMess2,
                           style: Theme.of(context).textTheme.headlineMedium,
