@@ -2,6 +2,7 @@ import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/layout/home/view.dart';
 
 import 'campaign/view.dart';
+import 'fields/view.dart';
 
 class LayoutVM extends Cubit<AppCubitStates> {
   LayoutVM() : super(LayoutInitState());
@@ -10,7 +11,7 @@ class LayoutVM extends Cubit<AppCubitStates> {
     const HomePage(),
     const HomePage(),
     const HomePage(),
-    const HomePage(),
+    const FieldsPage(),
     const CampaignPage(),
   ];
   int currentIndex = 0;

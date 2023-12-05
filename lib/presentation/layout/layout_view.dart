@@ -16,88 +16,101 @@ class _LayoutPageState extends State<LayoutPage> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<LayoutVM>();
-    return Scaffold(
-      body: PageView.builder(
-        onPageChanged: (n) {
-          cubit.changeCurrentIndex(n);
-        },
-        scrollDirection: Axis.horizontal,
-        controller: ctrl,
-        itemBuilder: (context, index) => cubit.pages[index],
-        itemCount: cubit.pages.length,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: cubit.currentIndex,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.grey2,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        onTap: (v) {
-          cubit.changeCurrentIndex(v);
-          ctrl.animateToPage(
-            v,
+    return PopScope(
+      onPopInvoked: (v) async {
+        if (cubit.currentIndex != 0) {
+          cubit.changeCurrentIndex(0);
+          await ctrl.animateToPage(
+            0,
             duration: const Duration(
                 milliseconds: AppConstants.duraitonAnimationDelay),
             curve: Curves.linear,
           );
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: AppStrings.home,
-            icon: SvgPicture.asset(
-              AppAssets.home,
-              colorFilter: ColorFilter.mode(
-                _isSelected(cubit.currentIndex, 0)
-                    ? AppColors.primary
-                    : AppColors.grey2,
-                BlendMode.srcIn,
+        }
+      },
+      child: Scaffold(
+        body: PageView.builder(
+          onPageChanged: (n) {
+            cubit.changeCurrentIndex(n);
+          },
+          scrollDirection: Axis.horizontal,
+          controller: ctrl,
+          itemBuilder: (context, index) => cubit.pages[index],
+          itemCount: cubit.pages.length,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: cubit.currentIndex,
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppColors.grey2,
+          type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+          onTap: (v) {
+            cubit.changeCurrentIndex(v);
+            ctrl.animateToPage(
+              v,
+              duration: const Duration(
+                  milliseconds: AppConstants.duraitonAnimationDelay),
+              curve: Curves.linear,
+            );
+          },
+          items: [
+            BottomNavigationBarItem(
+              label: AppStrings.home,
+              icon: SvgPicture.asset(
+                AppAssets.home,
+                colorFilter: ColorFilter.mode(
+                  _isSelected(cubit.currentIndex, 0)
+                      ? AppColors.primary
+                      : AppColors.grey2,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-          ),
-          BottomNavigationBarItem(
-            label: AppStrings.box,
-            icon: SvgPicture.asset(
-              AppAssets.box,
-              colorFilter: ColorFilter.mode(
-                _isSelected(cubit.currentIndex, 1)
-                    ? AppColors.primary
-                    : AppColors.grey2,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              label: AppStrings.box,
+              icon: SvgPicture.asset(
+                AppAssets.box,
+                colorFilter: ColorFilter.mode(
+                  _isSelected(cubit.currentIndex, 1)
+                      ? AppColors.primary
+                      : AppColors.grey2,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-          ),
-          BottomNavigationBarItem(
-            label: AppStrings.chat,
-            icon: Lottie.asset(
-              AppAssets.chat,
-              height: AppSize.s50,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: AppStrings.fields,
-            icon: SvgPicture.asset(
-              AppAssets.fields,
-              colorFilter: ColorFilter.mode(
-                _isSelected(cubit.currentIndex, 3)
-                    ? AppColors.primary
-                    : AppColors.grey2,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              label: AppStrings.chat,
+              icon: Lottie.asset(
+                AppAssets.chat,
+                height: AppSize.s50,
               ),
             ),
-          ),
-          BottomNavigationBarItem(
-            label: AppStrings.campaign,
-            icon: SvgPicture.asset(
-              AppAssets.campaign,
-              colorFilter: ColorFilter.mode(
-                _isSelected(cubit.currentIndex, 4)
-                    ? AppColors.primary
-                    : AppColors.grey2,
-                BlendMode.srcIn,
+            BottomNavigationBarItem(
+              label: AppStrings.fields,
+              icon: SvgPicture.asset(
+                AppAssets.fields,
+                colorFilter: ColorFilter.mode(
+                  _isSelected(cubit.currentIndex, 3)
+                      ? AppColors.primary
+                      : AppColors.grey2,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
-          ),
-        ],
+            BottomNavigationBarItem(
+              label: AppStrings.campaign,
+              icon: SvgPicture.asset(
+                AppAssets.campaign,
+                colorFilter: ColorFilter.mode(
+                  _isSelected(cubit.currentIndex, 4)
+                      ? AppColors.primary
+                      : AppColors.grey2,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:donation/presentation/_resources/component/button.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../app/global_imports.dart';
@@ -122,34 +123,45 @@ class _CampaignPageState extends State<CampaignPage> {
                   SingleChildScrollView(
                     padding: const EdgeInsets.only(top: AppPadding.p35),
                     scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Item(
-                          icon: AppAssets.solidarity,
-                          label: AppStrings.solidarity,
+                    child: AnimationLimiter(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: AnimationConfiguration.toStaggeredList(
+                          duration: const Duration(milliseconds: 500),
+                          childAnimationBuilder: (widget) => SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                              child: widget,
+                            ),
+                          ),
+                          children: [
+                            Item(
+                              icon: AppAssets.solidarity,
+                              label: AppStrings.solidarity,
+                            ),
+                            Item(
+                              icon: AppAssets.health,
+                              label: AppStrings.health,
+                            ),
+                            Item(
+                              icon: AppAssets.education,
+                              label: AppStrings.education,
+                            ),
+                            Item(
+                              icon: AppAssets.development,
+                              label: AppStrings.development,
+                            ),
+                            Item(
+                              icon: AppAssets.diggingWell,
+                              label: AppStrings.diggingWell,
+                            ),
+                            Item(
+                              icon: AppAssets.algarmin,
+                              label: AppStrings.algarmin,
+                            ),
+                          ],
                         ),
-                        Item(
-                          icon: AppAssets.health,
-                          label: AppStrings.health,
-                        ),
-                        Item(
-                          icon: AppAssets.education,
-                          label: AppStrings.education,
-                        ),
-                        Item(
-                          icon: AppAssets.development,
-                          label: AppStrings.development,
-                        ),
-                        Item(
-                          icon: AppAssets.diggingWell,
-                          label: AppStrings.diggingWell,
-                        ),
-                        Item(
-                          icon: AppAssets.algarmin,
-                          label: AppStrings.algarmin,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -157,45 +169,58 @@ class _CampaignPageState extends State<CampaignPage> {
             ),
           ];
         },
-        body: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          children: [
-            HeadTitle(title: AppStrings.currentDonation),
-            SizedBox(
-              height: AppSize.s235,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => CurrentDonationItem(
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(Routes.campaignDetailsRoute),
-                  img: current[index].img,
-                  title: current[index].title,
-                  subTitle: current[index].subTitle,
+        body: AnimationLimiter(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(seconds: 1),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
                 ),
-                itemCount: current.length,
               ),
-            ),
-            HeadTitle(
-              title: AppStrings.products,
-              width: AppSize.s40,
-            ),
-            SizedBox(
-              height: AppSize.s327,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => ProductItem(
-                  title: current[index].title,
-                  subTitle: current[index].subTitle,
-                  balance: '400 جنية',
-                  img: current[index].img,
+              children: [
+                HeadTitle(title: AppStrings.currentDonation),
+                SizedBox(
+                  height: AppSize.s235,
+                  child: ListView.builder(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => CurrentDonationItem(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(Routes.campaignDetailsRoute),
+                      img: current[index].img,
+                      title: current[index].title,
+                      subTitle: current[index].subTitle,
+                    ),
+                    itemCount: current.length,
+                  ),
                 ),
-                itemCount: current.length,
-              ),
+                HeadTitle(
+                  title: AppStrings.products,
+                  width: AppSize.s40,
+                ),
+                SizedBox(
+                  height: AppSize.s327,
+                  child: ListView.builder(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => ProductItem(
+                      title: current[index].title,
+                      subTitle: current[index].subTitle,
+                      balance: '400 جنية',
+                      img: current[index].img,
+                    ),
+                    itemCount: current.length,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
