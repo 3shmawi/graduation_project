@@ -6,11 +6,13 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     required this.label,
     this.onPressed,
+    this.isPadding = true,
     this.icon,
     this.color,
     super.key,
   });
 
+  final bool isPadding;
   final String? icon;
   final String label;
   final Color? color;
@@ -36,9 +38,13 @@ class CustomButton extends StatelessWidget {
         children: [
           if (icon != null)
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  AppPadding.p20, 0, AppPadding.p8, 0),
-              child: SvgPicture.asset(icon!),
+              padding: isPadding
+                  ? const EdgeInsets.fromLTRB(
+                      AppPadding.p20, 0, AppPadding.p8, 0)
+                  : EdgeInsets.zero,
+              child: SvgPicture.asset(
+                icon!,
+              ),
             ),
           Text(
             label,

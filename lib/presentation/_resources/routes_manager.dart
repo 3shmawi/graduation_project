@@ -5,6 +5,7 @@ import 'package:donation/presentation/auth/forgotten_password/view.dart';
 import 'package:donation/presentation/auth/login/view.dart';
 import 'package:donation/presentation/auth/register/view.dart';
 import 'package:donation/presentation/auth/success/view.dart';
+import 'package:donation/presentation/layout/campaign/details.dart';
 import 'package:donation/presentation/layout/layout_view.dart';
 import 'package:donation/presentation/on_boarding/view.dart';
 import 'package:flutter/material.dart';
@@ -13,14 +14,19 @@ import '../splash/view.dart';
 
 class Routes {
   static const String splashRoute = "/";
+
   static const String onBoardingRoute = "/onBoarding";
+
   static const String authRoute = "/auth";
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
   static const String forgotPasswordRoute = "/forgotPassword";
   static const String emailVerificationRoute = "/emailVerification";
   static const String successRoute = "/success";
+
   static const String layoutRoute = "/layout";
+
+  static const String campaignDetailsRoute = "/detailsCampaign";
 }
 
 class RouteGenerator {
@@ -54,6 +60,10 @@ class RouteGenerator {
       //layout
       case Routes.layoutRoute:
         return _firstTransitionAnimation(settings, const LayoutPage());
+
+      //campaign detail
+      case Routes.campaignDetailsRoute:
+        return FadeRoute2(const CampaignDetailsScreen());
 
       //other
       default:

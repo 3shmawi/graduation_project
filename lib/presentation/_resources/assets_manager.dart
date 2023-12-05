@@ -36,4 +36,10 @@ class AppAssets {
   static const diggingWell = '$_iconPath/plumbing.svg';
   static const algarmin = '$_iconPath/algarmin.svg';
   static const ticket = '$_iconPath/ticket.svg';
+
+  static const share = '$_iconPath/share.svg';
+  static const fast = '$_iconPath/fast.svg';
+  static const calender = '$_iconPath/calender.svg';
+  static const money = '$_iconPath/money.svg';
+  static const gender = '$_iconPath/gender.svg';
 }

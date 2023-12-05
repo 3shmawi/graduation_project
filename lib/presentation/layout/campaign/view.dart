@@ -1,5 +1,6 @@
 import 'package:donation/presentation/_resources/component/button.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
+import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../app/global_imports.dart';
@@ -95,9 +96,9 @@ class _CampaignPageState extends State<CampaignPage> {
                   ),
                 ),
               ),
-              foregroundColor: Colors.white,
+              foregroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
               toolbarHeight: AppSize.s110,
               titleSpacing: AppSize.s0,
               flexibleSpace: Stack(
@@ -166,6 +167,8 @@ class _CampaignPageState extends State<CampaignPage> {
                 padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) => CurrentDonationItem(
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(Routes.campaignDetailsRoute),
                   img: current[index].img,
                   title: current[index].title,
                   subTitle: current[index].subTitle,
@@ -215,13 +218,9 @@ class Item extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       padding: const EdgeInsets.all(AppPadding.p8),
       margin: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(
-            AppSize.s12,
-          ),
-        ),
+        borderRadius: BorderRadius.circular(AppSize.s12),
       ),
       child: Column(
         children: [
@@ -290,46 +289,53 @@ class CurrentDonationItem extends StatelessWidget {
     required this.img,
     required this.title,
     required this.subTitle,
+    this.onTap,
     super.key,
   });
 
   final String img;
   final String title;
   final String subTitle;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppPadding.p12),
-      width: AppSize.s200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomCacheImage(
-            imageUrl: img,
-            height: AppSize.s128,
-            radius: AppSize.s12,
-          ),
-          const SizedBox(height: AppSize.s12),
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontSize: FontSize.s20,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: AppSize.s8),
-          Expanded(
-            child: Text(
-              subTitle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppSize.s12),
+      splashColor: AppColors.white,
+      child: Container(
+        padding: const EdgeInsets.all(AppPadding.p12),
+        width: AppSize.s200,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomCacheImage(
+              imageUrl: img,
+              height: AppSize.s128,
+              radius: AppSize.s12,
             ),
-          ),
-        ],
+            const SizedBox(height: AppSize.s12),
+            Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                    fontSize: FontSize.s20,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: AppSize.s8),
+            Expanded(
+              child: Text(
+                subTitle,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

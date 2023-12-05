@@ -8,7 +8,6 @@ import 'app/di.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
   await initAppModule();
 
   runApp(
