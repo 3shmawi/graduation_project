@@ -32,6 +32,24 @@ class _CampaignPageState extends State<CampaignPage> {
     ),
   ];
 
+  List<String> categoriesLabel = [
+    AppStrings.solidarity,
+    AppStrings.health,
+    AppStrings.education,
+    AppStrings.development,
+    AppStrings.diggingWell,
+    AppStrings.algarmin,
+  ];
+  List<String> categoriesIcon = [
+    AppAssets.solidarity,
+    AppAssets.health,
+    AppAssets.education,
+    AppAssets.development,
+    AppAssets.diggingWell,
+    AppAssets.algarmin,
+  ];
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -43,10 +61,10 @@ class _CampaignPageState extends State<CampaignPage> {
             SliverAppBar(
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
-              collapsedHeight: AppSize.s110,
-              expandedHeight: AppSize.s100,
+              collapsedHeight: AppHeight.h108,
+              expandedHeight: AppHeight.h100,
               flexibleSpace: Container(
-                height: AppSize.s226,
+                height: AppHeight.h226,
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(
                   vertical: AppPadding.p35,
@@ -63,25 +81,30 @@ class _CampaignPageState extends State<CampaignPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Expanded(child:
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           AppStrings.donationMess1,
+                          maxLines: 1,
                           style: Theme.of(context).textTheme.headlineLarge,
                         ),
-                        const SizedBox(height: AppSize.s4),
+                        const SizedBox(height: AppHeight.h4),
                         Text(
                           AppStrings.donationMess2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ],
-                    ),
-                    const Spacer(),
+                    ),),
                     IconButton(
                       onPressed: () {},
-                      icon: SvgPicture.asset(
-                        AppAssets.notification,
+                      icon: Icon(
+                        Icons.notifications,
+                        color: AppColors.white,
+                        size: AppSize.s28,
                       ),
                     ),
                   ],
@@ -101,12 +124,12 @@ class _CampaignPageState extends State<CampaignPage> {
               foregroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
               backgroundColor: Colors.transparent,
-              toolbarHeight: AppSize.s110,
+              toolbarHeight: AppHeight.h110,
               titleSpacing: AppSize.s0,
               flexibleSpace: Stack(
                 children: [
                   Container(
-                    height: AppSize.s92,
+                    height: AppHeight.h92,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.vertical(
@@ -134,32 +157,18 @@ class _CampaignPageState extends State<CampaignPage> {
                               child: widget,
                             ),
                           ),
-                          children: [
-                            Item(
-                              icon: AppAssets.solidarity,
-                              label: AppStrings.solidarity,
+                          children: List.generate(
+                            categoriesIcon.length,
+                            (index) => Item(
+                              onTap: () {
+                                currentIndex = index;
+                                setState(() {});
+                              },
+                              isSelected: index == currentIndex,
+                              icon: categoriesIcon[index],
+                              label: categoriesLabel[index],
                             ),
-                            Item(
-                              icon: AppAssets.health,
-                              label: AppStrings.health,
-                            ),
-                            Item(
-                              icon: AppAssets.education,
-                              label: AppStrings.education,
-                            ),
-                            Item(
-                              icon: AppAssets.development,
-                              label: AppStrings.development,
-                            ),
-                            Item(
-                              icon: AppAssets.diggingWell,
-                              label: AppStrings.diggingWell,
-                            ),
-                            Item(
-                              icon: AppAssets.algarmin,
-                              label: AppStrings.algarmin,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -184,7 +193,7 @@ class _CampaignPageState extends State<CampaignPage> {
               children: [
                 HeadTitle(title: AppStrings.currentDonation),
                 SizedBox(
-                  height: AppSize.s235,
+                  height: AppHeight.h235,
                   child: ListView.builder(
                     padding:
                         const EdgeInsets.symmetric(horizontal: AppPadding.p8),
@@ -201,10 +210,10 @@ class _CampaignPageState extends State<CampaignPage> {
                 ),
                 HeadTitle(
                   title: AppStrings.products,
-                  width: AppSize.s40,
+                  width: AppWidth.w40,
                 ),
                 SizedBox(
-                  height: AppSize.s327,
+                  height: AppHeight.h327,
                   child: ListView.builder(
                     padding:
                         const EdgeInsets.symmetric(horizontal: AppPadding.p8),
@@ -231,44 +240,58 @@ class Item extends StatelessWidget {
   const Item({
     required this.icon,
     required this.label,
+    this.isSelected = false,
+    this.onTap,
     super.key,
   });
 
+  final bool isSelected;
   final String icon;
   final String label;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: AppSize.s60,
+      width: AppWidth.w60,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       padding: const EdgeInsets.all(AppPadding.p8),
       margin: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSelected ? AppColors.black : AppColors.white,
         borderRadius: BorderRadius.circular(AppSize.s12),
       ),
-      child: Column(
-        children: [
-          icon.startsWith('http')
-              ? CustomCacheImage(
-                  imageUrl: icon,
-                  radius: AppSize.s8,
-                )
-              : SvgPicture.asset(
-                  icon,
-                  height: AppSize.s40,
-                  width: AppSize.s40,
-                ),
-          const Divider(),
-          const Spacer(),
-          Text(
-            label,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.labelSmall,
-          ),
-        ],
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppSize.s12),
+        child: Column(
+          children: [
+            icon.startsWith('http')
+                ? CustomCacheImage(
+                    imageUrl: icon,
+                    radius: AppSize.s8,
+                  )
+                : SvgPicture.asset(
+                    icon,
+                    colorFilter: ColorFilter.mode(
+                      isSelected ? AppColors.white : AppColors.grey,
+                      BlendMode.srcIn,
+                    ),
+                    height: AppHeight.h40,
+                    width: AppWidth.w40,
+                  ),
+            const Divider(),
+            const Spacer(),
+            Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: isSelected ? AppColors.white : AppColors.grey,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -277,7 +300,7 @@ class Item extends StatelessWidget {
 class HeadTitle extends StatelessWidget {
   const HeadTitle({
     required this.title,
-    this.width = AppSize.s110,
+    this.width = AppWidth.w110,
     super.key,
   });
 
@@ -297,7 +320,7 @@ class HeadTitle extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: AppSize.s4),
+            const SizedBox(height: AppHeight.h4),
             Container(
               height: 2,
               width: width,
@@ -332,26 +355,25 @@ class CurrentDonationItem extends StatelessWidget {
       splashColor: AppColors.white,
       child: Container(
         padding: const EdgeInsets.all(AppPadding.p12),
-        width: AppSize.s200,
+        width: AppWidth.w200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomCacheImage(
               imageUrl: img,
-              height: AppSize.s128,
+              height: AppHeight.h128,
               radius: AppSize.s12,
             ),
-            const SizedBox(height: AppSize.s12),
+            const SizedBox(height: AppHeight.h12),
             Text(
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    fontSize: FontSize.s20,
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            const SizedBox(height: AppSize.s8),
+            const SizedBox(height: AppHeight.h8),
             Expanded(
               child: Text(
                 subTitle,
@@ -385,26 +407,25 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(AppPadding.p12),
-      width: AppSize.s200,
+      width: AppWidth.w200,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCacheImage(
             imageUrl: img,
             radius: AppSize.s12,
-            height: AppSize.s100,
+            height: AppHeight.h100,
           ),
-          const SizedBox(height: AppSize.s12),
+          const SizedBox(height: AppHeight.h12),
           Text(
             title,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontSize: FontSize.s20,
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          const SizedBox(height: AppSize.s8),
+          const SizedBox(height: AppHeight.h8),
           Expanded(
             child: Text(
               subTitle,

@@ -25,7 +25,7 @@ class CustomButton extends StatelessWidget {
         foregroundColor:
             color == AppColors.white ? AppColors.black : AppColors.white,
         elevation: 2,
-        minimumSize: const Size(AppSize.s327, AppSize.s48),
+        minimumSize: const Size(AppWidth.w327, AppHeight.h48),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSize.s12),
         ),

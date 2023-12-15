@@ -28,16 +28,16 @@ class RegisterPageState extends State<RegisterPage>
               child: Center(
                 child: Column(
                   children: [
-                    const SizedBox(height: AppSize.s8),
+                    const SizedBox(height: AppHeight.h8),
                     Image.asset(
                       AppAssets.logo,
-                      height: AppSize.s200,
+                      height: AppHeight.h200,
                     ),
                     Text(
                       AppStrings.signUp,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    const SizedBox(height: AppSize.s20),
+                    const SizedBox(height: AppHeight.h20),
                     AuthFormField(
                       controller: nameCtrl,
                       hintTxt: AppStrings.usrName,
@@ -59,7 +59,7 @@ class RegisterPageState extends State<RegisterPage>
                       isPassword: true,
                     ),
                     const SizedBox(
-                      height: AppSize.s40,
+                      height: AppHeight.h40,
                     ),
                     CustomButton(
                       label: AppStrings.signUp,
@@ -68,32 +68,20 @@ class RegisterPageState extends State<RegisterPage>
                         mailCtrl.clear();
                         passCtrl.clear();
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            Routes.loginRoute, (route) => false);
+                          Routes.loginRoute,
+                          (route) => false,
+                        );
                       },
                     ),
                     AuthDashLine(AppStrings.or),
                     const AuthWithoutPassword(),
-                    const SizedBox(height: AppSize.s12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppStrings.haveAcc,
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(Routes.loginRoute);
-                          },
-                          child: Text(
-                            AppStrings.signIn,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(fontSize: FontSize.s18),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: AppHeight.h12),
+                    Toggle(
+                      title: AppStrings.haveAcc,
+                      bTxt: AppStrings.signIn,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.loginRoute);
+                      },
                     ),
                   ],
                 ),

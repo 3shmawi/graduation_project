@@ -10,7 +10,66 @@ class FieldsPage extends StatefulWidget {
   FieldsPageState createState() => FieldsPageState();
 }
 
-class FieldsPageState extends State<FieldsPage>
+class FieldsPageState extends State<FieldsPage> {
+  int calculateCrossAxisCount(BuildContext context) {
+    final screenWidth = Dimensions.screenWidth(context);
+
+    if (screenWidth > 1200) {
+      return 4;
+    } else if (screenWidth > 768) {
+      return 3;
+    } else {
+      return 2;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(title: Text(AppStrings.fields)),
+      body: SafeArea(
+        child: GridView.builder(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppPadding.p14,
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: calculateCrossAxisCount(context),
+            mainAxisSpacing: Dimensions.heightPercentage(context, 1),
+            crossAxisSpacing: Dimensions.widthPercentage(context, 1),
+            childAspectRatio: 0.7,
+          ),
+          itemBuilder: (context, index) {
+            return CardItem(
+              icon:
+                  'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8',
+              title: AppStrings.chat,
+            );
+          },
+          itemCount: 10,
+        ),
+      ),
+    );
+  }
+}
+
+class CardItem extends StatefulWidget {
+  const CardItem({
+    required this.icon,
+    required this.title,
+    this.onTap,
+    super.key,
+  });
+
+  final GestureTapCallback? onTap;
+  final String icon;
+  final String title;
+
+  @override
+  State<CardItem> createState() => _CardItemState();
+}
+
+class _CardItemState extends State<CardItem>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -44,97 +103,19 @@ class FieldsPageState extends State<FieldsPage>
     super.dispose();
   }
 
-  int calculateCrossAxisCount(BuildContext context) {
-    final screenWidth = Dimensions.screenWidth(context);
-
-    if (screenWidth > 1200) {
-      return 4;
-    } else if (screenWidth > 768) {
-      return 3;
-    } else {
-      return 2;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(
-              AppSize.s8,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppColors.black,
-        elevation: 0,
-        shadowColor: Colors.white10,
-        title: Text(
-          AppStrings.fields,
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
-        centerTitle: false,
-      ),
-      body: SafeArea(
-        child: GridView.builder(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppPadding.p14,
-          ),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: calculateCrossAxisCount(context),
-            mainAxisSpacing: Dimensions.heightPercentage(context, 1),
-            crossAxisSpacing: Dimensions.widthPercentage(context, 1),
-            childAspectRatio: 0.7,
-          ),
-          itemBuilder: (context, index) {
-            return CardItem(
-              animation2: _animation2,
-              animation: _animation,
-              icon:
-                  'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8',
-              title: AppStrings.chat,
-            );
-          },
-          itemCount: 10,
-        ),
-      ),
-    );
-  }
-}
-
-class CardItem extends StatelessWidget {
-  const CardItem({
-    required this.animation,
-    required this.animation2,
-    required this.icon,
-    required this.title,
-    this.onTap,
-    super.key,
-  });
-
-  final Animation<double> animation;
-  final Animation<double> animation2;
-  final GestureTapCallback? onTap;
-  final String icon;
-  final String title;
-
   @override
   Widget build(BuildContext context) {
     final double w = MediaQuery.sizeOf(context).width;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppPadding.p12),
       child: Opacity(
-        opacity: animation.value,
+        opacity: _animation.value,
         child: Transform.translate(
-          offset: Offset(0, animation2.value),
+          offset: Offset(0, _animation2.value),
           child: InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
-            onTap: onTap,
+            onTap: widget.onTap,
             child: SizedBox(
               height: w / 1.5,
               child: Card(
@@ -146,13 +127,13 @@ class CardItem extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     CustomCacheImage(
-                      imageUrl: icon,
+                      imageUrl: widget.icon,
                       height: w / 1.1,
                       width: double.infinity,
                       radius: 25,
                     ),
                     Container(
-                      height: AppSize.s35,
+                      height: AppHeight.h35,
                       decoration: const BoxDecoration(
                         color: Colors.black38,
                         borderRadius: BorderRadius.vertical(
@@ -161,7 +142,7 @@ class CardItem extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          title,
+                          widget.title,
                           maxLines: 4,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,

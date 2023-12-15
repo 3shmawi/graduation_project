@@ -1,5 +1,8 @@
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/layout/layout_view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,7 +14,7 @@ class LayoutPage extends StatefulWidget {
 }
 
 class _LayoutPageState extends State<LayoutPage> {
-  final ctrl = PageController(initialPage: 0);
+  final ctrl = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +23,16 @@ class _LayoutPageState extends State<LayoutPage> {
       onPopInvoked: (v) async {
         if (cubit.currentIndex != 0) {
           cubit.changeCurrentIndex(0);
-          await ctrl.animateToPage(
+          ctrl.animateToPage(
             0,
             duration: const Duration(
-                milliseconds: AppConstants.duraitonAnimationDelay),
-            curve: Curves.linear,
+              milliseconds: 200,
+            ),
+            curve: Curves.easeIn,
           );
+        } else {
+          await SystemChannels.platform
+              .invokeMethod<void>('SystemNavigator.pop', true);
         }
       },
       child: Scaffold(
@@ -49,13 +56,13 @@ class _LayoutPageState extends State<LayoutPage> {
             ctrl.animateToPage(
               v,
               duration: const Duration(
-                  milliseconds: AppConstants.duraitonAnimationDelay),
+                  milliseconds: AppConstants.durationAnimationDelay3,),
               curve: Curves.linear,
             );
           },
           items: [
             BottomNavigationBarItem(
-              label: AppStrings.home,
+              label: AppStrings.home.tr(),
               icon: SvgPicture.asset(
                 AppAssets.home,
                 colorFilter: ColorFilter.mode(
@@ -67,9 +74,9 @@ class _LayoutPageState extends State<LayoutPage> {
               ),
             ),
             BottomNavigationBarItem(
-              label: AppStrings.box,
+              label: AppStrings.campaign.tr(),
               icon: SvgPicture.asset(
-                AppAssets.box,
+                AppAssets.campaign,
                 colorFilter: ColorFilter.mode(
                   _isSelected(cubit.currentIndex, 1)
                       ? AppColors.primary
@@ -79,14 +86,14 @@ class _LayoutPageState extends State<LayoutPage> {
               ),
             ),
             BottomNavigationBarItem(
-              label: AppStrings.chat,
+              label: AppStrings.chat.tr(),
               icon: Lottie.asset(
                 AppAssets.chat,
-                height: AppSize.s50,
+                height: AppHeight.h50,
               ),
             ),
             BottomNavigationBarItem(
-              label: AppStrings.fields,
+              label: AppStrings.fields.tr(),
               icon: SvgPicture.asset(
                 AppAssets.fields,
                 colorFilter: ColorFilter.mode(
@@ -98,16 +105,8 @@ class _LayoutPageState extends State<LayoutPage> {
               ),
             ),
             BottomNavigationBarItem(
-              label: AppStrings.campaign,
-              icon: SvgPicture.asset(
-                AppAssets.campaign,
-                colorFilter: ColorFilter.mode(
-                  _isSelected(cubit.currentIndex, 4)
-                      ? AppColors.primary
-                      : AppColors.grey2,
-                  BlendMode.srcIn,
-                ),
-              ),
+              label: AppStrings.profile.tr(),
+              icon: const Icon(Feather.user),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:donation/presentation/_resources/logic/view_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../app/global_imports.dart';
@@ -17,6 +18,8 @@ class AuthFormField extends StatefulWidget {
     required this.prefixIcon,
     this.isPassword = false,
     this.textInputType = TextInputType.text,
+    this.focusNode,
+    this.onTap,
     super.key,
   });
 
@@ -25,6 +28,8 @@ class AuthFormField extends StatefulWidget {
   final bool isPassword;
   final TextInputType textInputType;
   final IconData prefixIcon;
+  final GestureTapCallback? onTap;
+  final FocusNode? focusNode;
 
   @override
   State<AuthFormField> createState() => _AuthFormFieldState();
@@ -42,16 +47,21 @@ class _AuthFormFieldState extends State<AuthFormField> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
+    final isDark = context.watch<AppLogicVM>().isDark;
     return Container(
       height: width / 8,
       alignment: Alignment.center,
       padding: EdgeInsets.only(right: width / 30),
       decoration: BoxDecoration(
-        color: AppColors.lightGrey,
-        border: Border.all(color: AppColors.black, width: AppSize.s1_5),
+        color: isDark ? null : AppColors.lightGrey,
+        border: Border.all(
+            color: isDark ? AppColors.primary : AppColors.black,
+            width: AppWidth.w1_5),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
+        focusNode: widget.focusNode,
+        onTap: widget.onTap,
         controller: widget.controller,
         obscureText: isPass,
         style: Theme.of(context).textTheme.titleMedium,
@@ -104,9 +114,14 @@ class CustomButton extends StatelessWidget {
         foregroundColor:
             color == AppColors.white ? AppColors.black : AppColors.white,
         elevation: 2,
-        minimumSize: const Size(AppSize.s327, AppSize.s48),
+        minimumSize: const Size(
+          AppWidth.w327,
+          AppHeight.h48,
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSize.s12),
+          borderRadius: BorderRadius.circular(
+            AppSize.s12,
+          ),
         ),
         backgroundColor: color ?? AppColors.primary,
       ),
@@ -118,7 +133,11 @@ class CustomButton extends StatelessWidget {
           if (icon != null)
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                  AppPadding.p20, 0, AppPadding.p8, 0),
+                AppPadding.p20,
+                0,
+                AppPadding.p8,
+                0,
+              ),
               child: SvgPicture.asset(icon!),
             ),
           Text(
@@ -185,7 +204,7 @@ class _AuthWithoutPasswordState extends State<AuthWithoutPassword> {
               );
             },
           ),
-          const SizedBox(width: AppSize.s12),
+          const SizedBox(width: AppWidth.w12),
           AuthOutLinedButton(
             icon: AppAssets.facebook,
             isBlue: true,
@@ -197,7 +216,7 @@ class _AuthWithoutPasswordState extends State<AuthWithoutPassword> {
               );
             },
           ),
-          const SizedBox(width: AppSize.s12),
+          const SizedBox(width: AppWidth.w12),
           AuthOutLinedButton(
             icon: AppAssets.apple,
             isBlue: false,
@@ -235,12 +254,12 @@ class AuthOutLinedButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppSize.s8),
         child: Container(
-          height: AppSize.s48,
+          height: AppHeight.h48,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppSize.s8),
             border: Border.all(
               color: Colors.grey.withOpacity(.5),
-              width: AppSize.s1_5,
+              width: AppWidth.w1_5,
             ),
           ),
           child: Center(
@@ -256,6 +275,46 @@ class AuthOutLinedButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Toggle extends StatelessWidget {
+  const Toggle({
+    required this.title,
+    required this.bTxt,
+    this.onPressed,
+    super.key,
+  });
+
+  final String title;
+  final String bTxt;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.labelSmall,
+        ),
+        TextButton(
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                AppSize.s8,
+              ),
+            ),
+          ),
+          onPressed: onPressed,
+          child: Text(
+            bTxt,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+      ],
     );
   }
 }

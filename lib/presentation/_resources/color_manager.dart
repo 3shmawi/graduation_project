@@ -23,6 +23,13 @@ class AppColors {
   //campaign
   static Color gradient4 = HexColor.fromHex("#3C89F7").withOpacity(.6);
   static Color gradient5 = HexColor.fromHex("#1396C2").withOpacity(.6);
+
+  //dark
+  static Color darkBackground = HexColor.fromHex("#121212");
+  static Color darkSurface = HexColor.fromHex("#1E1E1E");
+  static Color darkAppBarBackground = HexColor.fromHex("#212121");
+  static Color darkError = HexColor.fromHex("#CF6679");
+
 }
 
 extension HexColor on Color {

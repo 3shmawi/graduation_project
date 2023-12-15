@@ -19,3 +19,7 @@ class Dimensions {
   static double radius(BuildContext context, double percentage) =>
       screenHeight(context) * percentage / 100;
 }
+
+bool isStartWithArabic(String letter) {
+  return RegExp(r'^[\u0600-\u06FF]').hasMatch(letter);
+}

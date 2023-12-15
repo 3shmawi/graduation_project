@@ -1,10 +1,12 @@
 {
+  "app-name": "T3awon",
+
   "no-route-founded": "No Routes Founded",
 
   "splash-title": "Generation Giving Foundation",
   "splash-sub-title": "For charity",
 
-  "onboard-title1": "“Generation Giving” is an application dedicated to charitable work and volunteering, and aims to encourage young people to participate in charitable work and social initiatives.",
+  "onboard-title1": "“Donation” is an application dedicated to charitable work and volunteering, and aims to encourage young people to participate in charitable work and social initiatives.",
   "onboard-title2": "Providing Financial Support: The app can also provide a way for users to make financial donations to various charitable projects. Individuals and companies can easily donate through the app.",
   "onboard-title3": "Learning and Outreach: The application provides educational content on issues of giving and volunteering. Users can see information about social and environmental challenges and how they can contribute to solving them.",
 
@@ -40,8 +42,8 @@
   "or": "    OR    ",
 
   "home": "Home",
-  "box": "Donation box",
-  "chat": "chats",
+  "profile": "Profile",
+  "chat": "Chats",
   "fields": "Fields",
   "campaign": "Campaign",
 
@@ -58,5 +60,57 @@
 
   "current-donation": "Current donation",
   "products": "Products",
-  "donate": "Donate now"
+  "donate": "Donate now",
+
+  "general-settings": "General settings",
+  "edit-profile": "Edit profile",
+  "logout": "Logout",
+  "bookmarks": "Bookmarks",
+  "dark-mode": "Dark mode",
+  "get-notification": "Get notifications",
+  "contact-us": "Contact us",
+  "language": "Language",
+  "rate-app": "Rate this app",
+  "licence": "Licence",
+  "privacy": "Privacy",
+  "about-us": "About us",
+  "security": "Security",
+  "facebook-page": "Facebook page",
+  "youtube": "Youtube channel",
+  "twitter": "Twitter",
+
+  "logout-title" : "Do you really want to logout from the app?",
+  "yes" : "Yes",
+  "no" : "No",
+
+  "clear-all" : "Clear all",
+  "clear-all-notification-dialog": "Do you want to clear all the notification data?",
+  "no-notification-title": "No notifications found!",
+  "no-notification-description" : "You haven't received any notifications yet. Make sure you have turned on the notifications from the settings.",
+  "delete-user-data": "Delete My Data & Account",
+  "account-delete-title": "Do you really want to delete your data?",
+  "account-delete-subtitle": "Your account information like profile data, bookmarks, etc will be erased from the app database and You will have to sign up again in the app to continue.",
+  "account-delete-confirm": "Yes, Delete My Account",
+
+  "cancel" : "Cancel",
+
+  "show-details": "Show details",
+  "apply": "Apply",
+
+  "upload-post": "Upload",
+  "world": "World",
+  "for-you": "For you",
+
+  "recent-searches": "Recent searches",
+  "we-have-found": "We have found this",
+  "search": "Type wt u need",
+  "try-again": "Try again with another words",
+  "no-results": "We can't find wt u need",
+  "search-desc": "Just write and leave the rest to us",
+
+  "write-something": "Write your message"
+
+
+
+
 }

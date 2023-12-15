@@ -1,4 +1,5 @@
 class AppConstants {
-  static const int splashDelay = 2;
-  static const int duraitonAnimationDelay = 300;
+  static const splashDelay = 2;
+  static const durationAnimationDelay3 = 300;
+  static const durationAnimationDelay5 = 500;
 }

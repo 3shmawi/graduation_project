@@ -1,3 +1,4 @@
+import 'package:donation/presentation/_resources/logic/view_model.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/auth/widgets.dart';
 
@@ -14,76 +15,68 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p14),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                AppAssets.logo,
-                height: AppSize.s200,
-              ),
-              const SizedBox(height: AppSize.s8),
-              Text(
-                AppStrings.welcome,
-                style: Theme.of(context).textTheme.displayLarge,
-              ),
-              const SizedBox(height: AppSize.s14),
-              Text(
-                AppStrings.welcome2,
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              const SizedBox(height: AppSize.s28),
-              CustomButton(
-                icon: AppAssets.google,
-                label: AppStrings.google,
-                onPressed: () {},
-                color: AppColors.white,
-              ),
-              const SizedBox(height: AppSize.s28),
-              CustomButton(
-                icon: AppAssets.facebook,
-                label: AppStrings.facebook,
-                onPressed: () {},
-              ),
-              const SizedBox(height: AppSize.s28),
-              CustomButton(
-                icon: AppAssets.apple,
-                label: AppStrings.apple,
-                onPressed: () {},
-                color: Colors.black,
-              ),
-              AuthDashLine(AppStrings.or),
-              CustomButton(
-                label: AppStrings.withPass,
-                onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.loginRoute);
-                },
-              ),
-              const SizedBox(height: AppSize.s8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppStrings.donHaveAcc,
-                    style: Theme.of(context).textTheme.labelMedium,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.registerRoute);
-                    },
-                    child: Text(
-                      AppStrings.signUp,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(fontSize: FontSize.s18),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(top: AppPadding.p28),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p14),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AppAssets.logo,
+                  height: AppHeight.h200,
+                ),
+                const SizedBox(height: AppHeight.h8),
+                Text(
+                  AppStrings.welcome,
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+                const SizedBox(height: AppHeight.h14),
+                Text(
+                  AppStrings.welcome2,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                const SizedBox(height: AppHeight.h28),
+                CustomButton(
+                  icon: AppAssets.google,
+                  label: AppStrings.google,
+                  onPressed: () {},
+                  color: context.watch<AppLogicVM>().isDark
+                      ? AppColors.white.withOpacity(.7)
+                      : AppColors.white,
+                ),
+                const SizedBox(height: AppHeight.h28),
+                CustomButton(
+                  icon: AppAssets.facebook,
+                  label: AppStrings.facebook,
+                  onPressed: () {},
+                ),
+                const SizedBox(height: AppHeight.h28),
+                CustomButton(
+                  icon: AppAssets.apple,
+                  label: AppStrings.apple,
+                  onPressed: () {},
+                  color: Colors.black,
+                ),
+                AuthDashLine(AppStrings.or),
+                CustomButton(
+                  label: AppStrings.withPass,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.loginRoute);
+                  },
+                ),
+                const SizedBox(height: AppHeight.h8),
+                Toggle(
+                  title: AppStrings.donHaveAcc,
+                  bTxt: AppStrings.signUp,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.registerRoute);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

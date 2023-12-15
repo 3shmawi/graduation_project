@@ -1,5 +1,6 @@
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/layout/home/view.dart';
+import 'package:donation/presentation/layout/profile/view.dart';
 
 import 'campaign/view.dart';
 import 'chats/view.dart';
@@ -10,10 +11,10 @@ class LayoutVM extends Cubit<AppCubitStates> {
 
   List<Widget> pages = [
     const HomePage(),
-    const HomePage(),
+    const CampaignPage(),
     const ChatsPage(),
     const FieldsPage(),
-    const CampaignPage(),
+    const ProfilePage(),
   ];
   int currentIndex = 0;
 

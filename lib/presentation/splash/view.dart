@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/presentation/_resources/logic/view_model.dart';
 
-import '../../app/app_prefs.dart';
-import '../../app/di.dart';
 import '../_resources/routes_manager.dart';
 
 class SplashView extends StatefulWidget {
@@ -13,39 +12,19 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  final AppPreferences _appPreferences = instance<AppPreferences>();
   Timer? _timer;
 
   _startDelay() {
     _timer = Timer(const Duration(seconds: AppConstants.splashDelay), _goNext);
   }
 
-  _goNext() async {
-    _appPreferences.isOnBoardingScreenViewed().then(
-          (isOnBoardingScreenViewed) => {
-            if (isOnBoardingScreenViewed)
-              {
-                _appPreferences.isUserLoggedIn().then(
-                      (isUserLoggedIn) => {
-                        if (isUserLoggedIn)
-                          {
-                            Navigator.pushReplacementNamed(
-                                context, Routes.layoutRoute),
-                          }
-                        else
-                          {
-                            Navigator.pushReplacementNamed(
-                                context, Routes.onBoardingRoute),
-                          }
-                      },
-                    ),
-              }
-            else
-              {
-                Navigator.pushReplacementNamed(context, Routes.onBoardingRoute),
-              }
-          },
-        );
+  _goNext() {
+    final appLogic = context.read<AppLogicVM>();
+
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      Routes.chooseLanguageRoute,
+      (_) => false,
+    );
   }
 
   @override

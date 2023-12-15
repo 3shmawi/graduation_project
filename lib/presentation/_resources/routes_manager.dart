@@ -6,27 +6,36 @@ import 'package:donation/presentation/auth/login/view.dart';
 import 'package:donation/presentation/auth/register/view.dart';
 import 'package:donation/presentation/auth/success/view.dart';
 import 'package:donation/presentation/layout/campaign/details.dart';
+import 'package:donation/presentation/layout/home/search/view.dart';
 import 'package:donation/presentation/layout/layout_view.dart';
+import 'package:donation/presentation/layout/profile/security.dart';
 import 'package:donation/presentation/on_boarding/view.dart';
 import 'package:flutter/material.dart';
 
+import '../splash/choose_language.dart';
 import '../splash/view.dart';
 
 class Routes {
-  static const String splashRoute = "/";
+  static const splashRoute = "/";
 
-  static const String onBoardingRoute = "/onBoarding";
+  static const chooseLanguageRoute = "chooseLanguage";
 
-  static const String authRoute = "/auth";
-  static const String loginRoute = "/login";
-  static const String registerRoute = "/register";
-  static const String forgotPasswordRoute = "/forgotPassword";
-  static const String emailVerificationRoute = "/emailVerification";
-  static const String successRoute = "/success";
+  static const onBoardingRoute = "/onBoarding";
 
-  static const String layoutRoute = "/layout";
+  static const authRoute = "/auth";
+  static const loginRoute = "/login";
+  static const registerRoute = "/register";
+  static const forgotPasswordRoute = "/forgotPassword";
+  static const emailVerificationRoute = "/emailVerification";
+  static const successRoute = "/success";
 
-  static const String campaignDetailsRoute = "/detailsCampaign";
+  static const layoutRoute = "/layout";
+
+  static const campaignDetailsRoute = "/detailsCampaign";
+
+  static const securityRoute = "/security";
+
+  static const searchRoute = "/search";
 }
 
 class RouteGenerator {
@@ -35,6 +44,10 @@ class RouteGenerator {
       //splash
       case Routes.splashRoute:
         return _secondTransitionAnimation(settings, const SplashView());
+
+      //select lang
+      case Routes.chooseLanguageRoute:
+        return _secondTransitionAnimation(settings, const ChooseLanguagePage());
 
       //onboard
       case Routes.onBoardingRoute:
@@ -64,6 +77,14 @@ class RouteGenerator {
       //campaign detail
       case Routes.campaignDetailsRoute:
         return FadeRoute2(const CampaignDetailsScreen());
+
+      //security
+      case Routes.securityRoute:
+        return FadeRoute2(const SecurityPage());
+
+      //search
+      case Routes.searchRoute:
+        return FadeRoute1(const SearchPage());
 
       //other
       default:

@@ -5,6 +5,7 @@ const String _jsonPath = 'assets/json';
 class AppAssets {
   static const icon = '$_iconPath/icon.png';
   static const logo = '$_imgPath/logo.png';
+  static const logo2 = '$_imgPath/logo2.png';
   static const splash = '$_imgPath/splash.png';
 
   static const onBoardingImg1 = '$_imgPath/onboard1.png';

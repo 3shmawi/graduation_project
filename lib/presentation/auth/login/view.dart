@@ -31,16 +31,16 @@ class LoginPageState extends State<LoginPage>
                   child: Center(
                     child: Column(
                       children: [
-                        const SizedBox(height: AppSize.s8),
+                        const SizedBox(height: AppHeight.h8),
                         Image.asset(
                           AppAssets.logo,
-                          height: AppSize.s200,
+                          height: AppHeight.h200,
                         ),
                         Text(
                           AppStrings.signIn,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        const SizedBox(height: AppSize.s20),
+                        const SizedBox(height: AppHeight.h20),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: AppPadding.p20),
@@ -71,7 +71,7 @@ class LoginPageState extends State<LoginPage>
                           ],
                         ),
                         const SizedBox(
-                          height: AppSize.s40,
+                          height: AppHeight.h40,
                         ),
                         CustomButton(
                           label: AppStrings.signIn,
@@ -84,28 +84,14 @@ class LoginPageState extends State<LoginPage>
                         ),
                         AuthDashLine(AppStrings.or),
                         const AuthWithoutPassword(),
-                        const SizedBox(height: AppSize.s12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppStrings.donHaveAcc,
-                              style: Theme.of(context).textTheme.labelMedium,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(Routes.registerRoute);
-                              },
-                              child: Text(
-                                AppStrings.signUp,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge!
-                                    .copyWith(fontSize: FontSize.s18),
-                              ),
-                            ),
-                          ],
+                        const SizedBox(height: AppHeight.h12),
+                        Toggle(
+                          title: AppStrings.donHaveAcc,
+                          bTxt: AppStrings.signUp,
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(Routes.registerRoute);
+                          },
                         ),
                       ],
                     ),

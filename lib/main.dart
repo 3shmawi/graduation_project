@@ -12,8 +12,11 @@ Future<void> main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [ENGLISH_LOCAL, ARABIC_LOCAL],
-      path: ASSETS_PATH_LOCALISATIONS,
+      supportedLocales: const [
+        Locale("ar", "SA"),
+        Locale("en", "US"),
+      ],
+      path: "assets/translations",
       child: Phoenix(
         child: const MyApp(),
       ),

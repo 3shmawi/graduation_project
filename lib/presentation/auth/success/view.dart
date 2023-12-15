@@ -31,7 +31,7 @@ class SuccessPage extends StatelessWidget {
                       height: 2,
                     ),
               ),
-              const SizedBox(height: AppSize.s40),
+              const SizedBox(height: AppHeight.h40),
               CustomButton(
                 label: AppStrings.getStarted,
                 onPressed: () {
