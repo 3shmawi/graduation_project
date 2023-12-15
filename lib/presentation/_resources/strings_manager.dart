@@ -40,11 +40,11 @@ class AppStrings {
   static String get apple => 'apple'.tr();
   static String get or => 'or'.tr();
 
-  static String get home => 'home'.tr();
-  static String get fields => 'fields'.tr();
-  static String get chat => 'chat'.tr();
-  static String get campaign => 'campaign'.tr();
-  static String get profile => 'profile'.tr();
+  static String get home => 'home';
+  static String get fields => 'fields';
+  static String get chat => 'chat';
+  static String get campaign => 'campaign';
+  static String get profile => 'profile';
 
   static String get solidarity => 'solidarity'.tr();
   static String get health => 'health'.tr();

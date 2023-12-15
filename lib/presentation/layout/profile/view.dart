@@ -3,6 +3,7 @@ import 'package:donation/presentation/_resources/logic/view_model.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/layout/profile/language.dart';
 import 'package:donation/presentation/layout/profile/view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:line_icons/line_icons.dart';
@@ -45,7 +46,7 @@ class ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(AppStrings.profile),
+        title: Text(AppStrings.profile).tr(),
       ),
       body: SafeArea(
         child: AnimationLimiter(
@@ -393,8 +394,10 @@ class Item extends StatelessWidget {
           color: AppColors.white,
         ),
       ),
-      trailing: const Icon(
-        Feather.chevron_right,
+      trailing: Icon(
+        context.locale.countryCode == "US"
+            ? Entypo.chevron_right
+            : Feather.chevron_left,
         size: AppSize.s20,
       ),
       onTap: onTap,

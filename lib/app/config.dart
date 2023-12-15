@@ -8,5 +8,9 @@ class AppConfigs {
   static const ourWebsiteUrl = '....';
   static const iOSAppId = '000000';
 
+  static const facebookPageUrl = '  ';
+  static const youtubeChannelUrl = '  ';
+  static const twitterUrl = '  ';
+
   static const List<String> languages = ['English', 'Arabic'];
 }

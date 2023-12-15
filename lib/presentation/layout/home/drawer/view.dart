@@ -1,6 +1,9 @@
+import 'package:donation/app/config.dart';
+import 'package:donation/presentation/layout/profile/language.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../../../app/global_imports.dart';
+import '../../../../app/services.dart';
 import '../../profile/view_model.dart';
 
 class DrawerMenu extends StatelessWidget {
@@ -70,33 +73,36 @@ class DrawerMenu extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   leading: CircleAvatar(
-                      radius: AppSize.s20,
-                      backgroundColor: Theme.of(context).secondaryHeaderColor,
-                      child: Icon(
-                        icons[index],
-                        color: Colors.grey[600],
-                      )),
+                    radius: AppSize.s20,
+                    backgroundColor: Theme.of(context).secondaryHeaderColor,
+                    child: Icon(
+                      icons[index],
+                      color: Colors.grey[600],
+                    ),
+                  ),
                   onTap: () async {
-                    Navigator.pop(context);
+                    // Navigator.of(context).pop();
                     if (index == 0) {
                       // nextScreen(context, BookmarkPage());
                     } else if (index == 1) {
-                      // nextScreenPopup(context, const LanguagePopup());
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const LanguagePopup(),
+                        ),
+                      );
                     } else if (index == 2) {
-                      // AppService().openLinkWithCustomTab(
-                      //     context, Config().ourWebsiteUrl);
+                      AppService.openLink(context, AppConfigs.ourWebsiteUrl);
                     } else if (index == 3) {
-                      // AppService().openLinkWithCustomTab(
-                      //     context, Config().privacyPolicyUrl);
+                      AppService.openLink(context, AppConfigs.privacyPolicyUrl);
                     } else if (index == 4) {
-                      // AppService().openEmailSupport(context);
+                      AppService.openEmailSupport(context);
                     } else if (index == 5) {
-                      // AppService().openLink(context, Config.facebookPageUrl);
+                      AppService.openLink(context, AppConfigs.facebookPageUrl);
                     } else if (index == 6) {
-                      // AppService()
-                      //     .openLink(context, Config.youtubeChannelUrl);
+                      AppService.openLink(
+                          context, AppConfigs.youtubeChannelUrl);
                     } else if (index == 7) {
-                      // AppService().openLink(context, Config.twitterUrl);
+                      AppService.openLink(context, AppConfigs.twitterUrl);
                     }
                   },
                 );

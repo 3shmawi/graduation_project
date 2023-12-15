@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 class LanguagePopup extends StatefulWidget {
   const LanguagePopup({super.key});
 
+
   @override
   LanguagePopupState createState() => LanguagePopupState();
 }
@@ -14,7 +15,15 @@ class LanguagePopupState extends State<LanguagePopup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.language)),
+      appBar: AppBar(
+        title: Text(AppStrings.language),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
+      ),
       body: ListView.builder(
         padding: const EdgeInsets.all(AppPadding.p12),
         itemCount: AppConfigs.languages.length,
@@ -35,6 +44,7 @@ class LanguagePopupState extends State<LanguagePopup> {
           title: Text(d),
           onTap: () async {
             if (d == 'English') {
+              print(context.locale.countryCode);
               context.setLocale(const Locale('en', 'US'));
             } else if (d == 'Arabic') {
               context.setLocale(const Locale('ar', 'SA'));
@@ -42,6 +52,7 @@ class LanguagePopupState extends State<LanguagePopup> {
             // else if(d == 'your_language_name'){
             //   context.setLocale(Locale('your_language_code'));
             // }
+
             Navigator.pop(context);
           },
         ),

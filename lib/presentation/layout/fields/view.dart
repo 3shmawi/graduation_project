@@ -1,4 +1,5 @@
 import 'package:donation/presentation/_resources/component/cache_img.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../app/functions.dart';
 import '../../../app/global_imports.dart';
@@ -27,7 +28,7 @@ class FieldsPageState extends State<FieldsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(title: Text(AppStrings.fields)),
+      appBar: AppBar(title: Text(AppStrings.fields).tr()),
       body: SafeArea(
         child: GridView.builder(
           padding: const EdgeInsets.symmetric(
