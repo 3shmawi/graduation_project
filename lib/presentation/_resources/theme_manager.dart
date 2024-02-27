@@ -48,7 +48,7 @@ class AppTheme {
       displayLarge:
           getBoldStyle(color: AppColors.black, fontSize: FontSize.s24),
       displayMedium:
-          getRegularStyle(color: AppColors.black, fontSize: FontSize.s16),
+          getRegularStyle(color: AppColors.black, fontSize: FontSize.s20),
       displaySmall:
           getSemiBoldStyle(color: AppColors.black, fontSize: FontSize.s16),
 

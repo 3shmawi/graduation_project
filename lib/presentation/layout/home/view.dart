@@ -49,7 +49,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.norifications);
+                      },
                       icon: const Icon(
                         Icons.notifications_none_outlined,
                       ),
