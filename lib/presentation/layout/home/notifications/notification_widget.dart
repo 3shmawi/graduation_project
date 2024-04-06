@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../_resources/color_manager.dart';
-import '../../../_resources/routes_manager.dart';
 import '../../../_resources/strings_manager.dart';
 import '../../../_resources/values_manager.dart';
 
