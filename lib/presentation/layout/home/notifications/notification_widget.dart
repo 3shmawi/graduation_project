@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../../../_resources/color_manager.dart';
-import '../../../_resources/routes_manager.dart';
 import '../../../_resources/strings_manager.dart';
 import '../../../_resources/values_manager.dart';
 
-class NotificationWidget extends StatelessWidget {
-  const NotificationWidget({Key? key}) : super(key: key);
+class NotificationWidget extends StatefulWidget {
+  String notificationContent;
+  NotificationWidget({required this.notificationContent});
+
+  @override
+  State<NotificationWidget> createState() => _NotificationWidgetState();
+}
+
+class _NotificationWidgetState extends State<NotificationWidget> {
+  bool counter = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +48,30 @@ class NotificationWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        //notofications content!
-                        'your last story had 16 viewers . share a new story with friends',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayMedium!
-                            .copyWith(color: AppColors.gradient1),
-                      ),
+                          //notofications content!
+                          widget.notificationContent,
+                          style: counter == true
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(color: AppColors.gradient1)
+                              : Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .copyWith(
+                                    color: Colors.white30,
+                                  )),
                       Text(
-                        '${DateTime.now().hour} :'
-                        '${DateTime.now().minute}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: AppColors.black),
-                      ),
+                          '${DateTime.now().hour} :'
+                          '${DateTime.now().minute}',
+                          style: counter == true
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: Colors.black)
+                              : Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Colors.white30,
+                                  )),
                     ],
                   ),
                 ),
@@ -63,12 +79,19 @@ class NotificationWidget extends StatelessWidget {
                   flex: 2,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    counter = false;
+                    setState(() {});
+                  },
                   child: Text(AppStrings.notification_done,
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayLarge!
-                          .copyWith(color: AppColors.gradient1)),
+                      style: counter == true
+                          ? Theme.of(context)
+                              .textTheme
+                              .displayLarge!
+                              .copyWith(color: AppColors.gradient1)
+                          : Theme.of(context).textTheme.displayLarge!.copyWith(
+                                color: Colors.white30,
+                              )),
                 ),
               ],
             ),
