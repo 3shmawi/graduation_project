@@ -49,7 +49,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.norifications);
+                      },
                       icon: const Icon(
                         Icons.notifications_none_outlined,
                       ),
@@ -280,7 +282,9 @@ class SocialPostItemState extends State<SocialPostItem>
                       color: AppColors.error,
                     ),
                     Button(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.comments);
+                      },
                       icon: CupertinoIcons.chat_bubble_2_fill,
                       number: "22K",
                       color: AppColors.grey,

@@ -12,6 +12,8 @@ import 'package:donation/presentation/on_boarding/view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../layout/home/comments/comment_view.dart';
+import '../layout/home/notifications/notifications.dart';
 import '../splash/choose_language.dart';
 import '../splash/view.dart';
 
@@ -36,6 +38,8 @@ class Routes {
   static const securityRoute = "/security";
 
   static const searchRoute = "/search";
+  static const norifications = "/notification";
+  static const comments = "comment";
 }
 
 class RouteGenerator {
@@ -85,6 +89,12 @@ class RouteGenerator {
       //search
       case Routes.searchRoute:
         return FadeRoute1(const SearchPage());
+      // notifications
+      case Routes.norifications:
+        return FadeRoute3(const Notifications());
+      //comments
+      case Routes.comments:
+        return FadeRoute4(const CommentView());
 
       //other
       default:
@@ -189,4 +199,45 @@ class FadeRoute2 extends PageRouteBuilder {
             );
           },
         );
+}
+
+class FadeRoute3 extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute3(this.page)
+      : super(
+    pageBuilder: (context, animation, anotherAnimation) => page,
+    transitionDuration: const Duration(seconds: 2),
+    reverseTransitionDuration: const Duration(milliseconds: 200),
+    transitionsBuilder: (context, animation, anotherAnimation, child) {
+      animation = CurvedAnimation(
+          curve: Curves.fastLinearToSlowEaseIn,
+          parent: animation,
+          reverseCurve: Curves.fastOutSlowIn);
+      return FadeTransition(
+        opacity: animation,
+        child: page,
+      );
+    },
+  );
+}
+class FadeRoute4 extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute4(this.page)
+      : super(
+    pageBuilder: (context, animation, anotherAnimation) => page,
+    transitionDuration: const Duration(seconds: 2),
+    reverseTransitionDuration: const Duration(milliseconds: 200),
+    transitionsBuilder: (context, animation, anotherAnimation, child) {
+      animation = CurvedAnimation(
+          curve: Curves.fastLinearToSlowEaseIn,
+          parent: animation,
+          reverseCurve: Curves.fastOutSlowIn);
+      return FadeTransition(
+        opacity: animation,
+        child: page,
+      );
+    },
+  );
 }
