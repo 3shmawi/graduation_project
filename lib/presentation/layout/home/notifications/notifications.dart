@@ -34,7 +34,10 @@ class Notifications extends StatelessWidget {
               child: ListView.builder(
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return NotificationWidget();
+                    return NotificationWidget(
+                      notificationContent:
+                          'your last story had 16 viewers . share a new story with friends',
+                    );
                   }),
             ),
           ],
