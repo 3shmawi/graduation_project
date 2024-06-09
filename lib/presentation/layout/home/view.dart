@@ -74,6 +74,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   expandedHeight: AppHeight.h60,
                   elevation: AppSize.s20,
                   shape: const RoundedRectangleBorder(

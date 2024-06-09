@@ -1,5 +1,6 @@
 import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/auth/widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../app/global_imports.dart';
@@ -20,12 +21,12 @@ class SuccessPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppPadding.p20),
                 child: Text(
-                  AppStrings.success,
+                  AppStrings.success.tr(),
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
               ),
               Text(
-                AppStrings.successMessage,
+                AppStrings.successMessage.tr(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       height: 2,

@@ -1,6 +1,7 @@
 import 'package:donation/presentation/_resources/component/button.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -81,24 +82,25 @@ class _CampaignPageState extends State<CampaignPage> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(child:
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppStrings.donationMess1,
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.headlineLarge,
-                        ),
-                        const SizedBox(height: AppHeight.h4),
-                        Text(
-                          AppStrings.donationMess2,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                      ],
-                    ),),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppStrings.donationMess1,
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
+                          const SizedBox(height: AppHeight.h4),
+                          Text(
+                            AppStrings.donationMess2,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                        ],
+                      ),
+                    ),
                     IconButton(
                       onPressed: () {},
                       icon: Icon(
@@ -280,10 +282,10 @@ class Item extends StatelessWidget {
                     height: AppHeight.h40,
                     width: AppWidth.w40,
                   ),
-            const Divider(),
+            const Divider(color: Colors.deepPurple),
             const Spacer(),
             Text(
-              label,
+              label.tr(),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: Theme.of(context).textTheme.labelSmall!.copyWith(

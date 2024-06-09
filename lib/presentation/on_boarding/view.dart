@@ -1,9 +1,7 @@
+import 'package:donation/presentation/on_boarding/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../app/global_imports.dart';
-import 'package:donation/presentation/on_boarding/view_model.dart';
-import 'package:flutter/services.dart';
-
 import '../../domain/model/models.dart';
 import '../_resources/routes_manager.dart';
 
@@ -15,114 +13,106 @@ class OnBoardingView extends StatefulWidget {
 }
 
 class _OnBoardingViewState extends State<OnBoardingView> {
-  final PageController _pageController = PageController(initialPage: 0);
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<OnBoardingVM>();
+    return BlocProvider(
+      create: (context) => OnBoardingCtrl(),
+      child: BlocBuilder<OnBoardingCtrl, int>(
+        builder: (context, state) {
+          final cubit = context.watch<OnBoardingCtrl>();
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: AppSize.s0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: AppColors.white,
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: AppHeight.h60),
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: cubit.slidersData.length,
-                onPageChanged: (index) {
-                  context.read<OnBoardingVM>().changeOnBoardPageIndex(index);
-                },
-                itemBuilder: (_, index) {
-                  return OnBoardingPage(cubit.slidersData[index]);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppPadding.p20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  cubit.slidersData.length,
-                  (index) => _getProperCircle(index, cubit),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_isLast(cubit)) {
-                  Navigator.pushReplacementNamed(context, Routes.authRoute);
-                } else {
-                  _pageController.animateToPage(
-                    ++cubit.currentIndex,
-                    duration: const Duration(
-                      milliseconds: AppConstants.durationAnimationDelay3,
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: AppHeight.h60),
+                  Expanded(
+                    child: PageView.builder(
+                      controller: cubit.controller,
+                      itemCount: cubit.slidersData.length,
+                      onPageChanged: (index) =>
+                          cubit.changeOnBoardPageIndex(index),
+                      itemBuilder: (_, index) {
+                        return OnBoardingPage(cubit.slidersData[index]);
+                      },
                     ),
-                    curve: Curves.linear,
-                  );
-                }
-              },
-              child: Text(
-                _isLast(cubit) ? AppStrings.getStarted : AppStrings.next,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppPadding.p8),
-              child: AnimatedCrossFade(
-                firstChild: TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, Routes.authRoute);
-                  },
-                  child: Text(
-                    AppStrings.skip,
-                    style: Theme.of(context).textTheme.displayMedium,
                   ),
-                ),
-                secondChild: const SizedBox(),
-                crossFadeState: _isLast(cubit)
-                    ? CrossFadeState.showSecond
-                    : CrossFadeState.showFirst,
-                duration: const Duration(
-                  milliseconds: AppConstants.durationAnimationDelay3,
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppPadding.p20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        cubit.slidersData.length,
+                        (index) => _getProperCircle(index, cubit),
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_isLast(cubit)) {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          Routes.loginRoute,
+                          (_) => false,
+                        );
+                      } else {
+                        cubit.nextPage();
+                      }
+                    },
+                    child: Text(
+                      _isLast(cubit) ? AppStrings.getStarted : AppStrings.next,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ).tr(),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: AppPadding.p8),
+                    child: AnimatedCrossFade(
+                      firstChild: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Routes.loginRoute,
+                            (_) => false,
+                          );
+                        },
+                        child: Text(
+                          AppStrings.skip.tr(),
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      ),
+                      secondChild: const SizedBox(),
+                      crossFadeState: _isLast(cubit)
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                      duration: const Duration(
+                        milliseconds: AppConstants.durationAnimationDelay3,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  bool _isLast(OnBoardingVM cubit) {
-    return cubit.currentIndex == cubit.slidersData.length - 1;
+  bool _isLast(OnBoardingCtrl cubit) {
+    return cubit.state == cubit.slidersData.length - 1;
   }
 
-  Widget _getProperCircle(int index, OnBoardingVM vm) {
+  Widget _getProperCircle(int index, OnBoardingCtrl vm) {
     return Container(
       height: AppHeight.h14,
       width: AppWidth.w14,
       margin: const EdgeInsets.all(AppMargin.m8),
       decoration: BoxDecoration(
-        color:
-            index == vm.currentIndex ? AppColors.primary : Colors.transparent,
+        color: index == vm.state ? AppColors.primary : Colors.transparent,
         shape: BoxShape.circle,
         border: Border.all(
           color: AppColors.primary,

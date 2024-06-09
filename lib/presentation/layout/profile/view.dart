@@ -1,5 +1,5 @@
 import 'package:donation/app/config.dart';
-import 'package:donation/presentation/_resources/logic/view_model.dart';
+import 'package:donation/controller/theme.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/layout/profile/language.dart';
 import 'package:donation/presentation/layout/profile/view_model.dart';
@@ -42,7 +42,6 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final logic = context.watch<AppLogicVM>();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -70,7 +69,7 @@ class ProfilePageState extends State<ProfilePage> {
               children: [
                 false ? const GuestUserUI() : const UserUI(),
                 Text(
-                  AppStrings.generalSettings,
+                  AppStrings.generalSettings.tr(),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(
@@ -87,7 +86,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
                 ListTile(
                   title: Text(
-                    AppStrings.darkMode,
+                    AppStrings.darkMode.tr(),
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                   leading: Container(
@@ -105,10 +104,9 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                   trailing: Switch.adaptive(
                     activeColor: Theme.of(context).primaryColor,
-                    value: logic.isDark,
-                    onChanged: (bool b) {
-                      context.read<AppLogicVM>().toggleTheme();
-                    },
+                    value: context.watch<ThemeCtrl>().state,
+                    onChanged: (bool b) =>
+                        context.read<ThemeCtrl>().changeTheme(),
                   ),
                 ),
                 const Divider(
@@ -116,7 +114,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
                 ListTile(
                   title: Text(
-                    AppStrings.getNotification,
+                    AppStrings.getNotification.tr(),
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                   leading: Container(
@@ -312,7 +310,10 @@ class UserUI extends StatelessWidget {
             Item(
               label: AppStrings.logout,
               icon: Feather.log_out,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    Routes.loginRoute, (route) => false);
+              },
             ),
             const SizedBox(
               height: AppHeight.h16,
@@ -328,14 +329,14 @@ class UserUI extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppStrings.logoutTitle),
+          title: Text(AppStrings.logoutTitle.tr()),
           actions: [
             TextButton(
-              child: Text(AppStrings.no),
+              child: Text(AppStrings.no.tr()),
               onPressed: () => Navigator.pop(context),
             ),
             TextButton(
-              child: Text(AppStrings.yes),
+              child: Text(AppStrings.yes.tr()),
               onPressed: () async {
                 // await context
                 //     .read<SignInBloc>()
@@ -376,7 +377,7 @@ class Item extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        label,
+        label.tr(),
         style: Theme.of(context).textTheme.displayMedium,
       ),
       leading: Container(

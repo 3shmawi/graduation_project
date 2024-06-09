@@ -1,7 +1,7 @@
-import 'package:donation/app/app_prefs.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/local_database.dart';
 
 final instance = GetIt.instance;
 

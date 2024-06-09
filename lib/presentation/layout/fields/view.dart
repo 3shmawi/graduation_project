@@ -143,7 +143,7 @@ class _CardItemState extends State<CardItem>
                       ),
                       child: Center(
                         child: Text(
-                          widget.title,
+                          widget.title.tr(),
                           maxLines: 4,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,

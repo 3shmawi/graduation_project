@@ -1,11 +1,9 @@
 import 'package:donation/app/config.dart';
 import 'package:donation/app/global_imports.dart';
-import 'package:donation/presentation/_resources/logic/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class LanguagePopup extends StatefulWidget {
   const LanguagePopup({super.key});
-
 
   @override
   LanguagePopupState createState() => LanguagePopupState();
@@ -16,7 +14,7 @@ class LanguagePopupState extends State<LanguagePopup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.language),
+        title: Text(AppStrings.language.tr()),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -35,8 +33,6 @@ class LanguagePopupState extends State<LanguagePopup> {
   }
 
   Widget _itemList(BuildContext context, d, index) {
-    final logic = context.watch<AppLogicVM>();
-
     return Column(
       children: [
         ListTile(
@@ -44,14 +40,10 @@ class LanguagePopupState extends State<LanguagePopup> {
           title: Text(d),
           onTap: () async {
             if (d == 'English') {
-              print(context.locale.countryCode);
               context.setLocale(const Locale('en', 'US'));
             } else if (d == 'Arabic') {
               context.setLocale(const Locale('ar', 'SA'));
             }
-            // else if(d == 'your_language_name'){
-            //   context.setLocale(Locale('your_language_code'));
-            // }
 
             Navigator.pop(context);
           },
