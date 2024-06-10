@@ -1,6 +1,7 @@
-import 'package:donation/presentation/_resources/logic/view_model.dart';
+import 'package:donation/controller/theme.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/auth/widgets.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../app/global_imports.dart';
 
@@ -30,20 +31,23 @@ class _AuthPageState extends State<AuthPage> {
                 ),
                 const SizedBox(height: AppHeight.h8),
                 Text(
-                  AppStrings.welcome,
+                  AppStrings.welcome.tr(),
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
                 const SizedBox(height: AppHeight.h14),
                 Text(
-                  AppStrings.welcome2,
+                  AppStrings.welcome2.tr(),
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 const SizedBox(height: AppHeight.h28),
                 CustomButton(
                   icon: AppAssets.google,
                   label: AppStrings.google,
-                  onPressed: () {},
-                  color: context.watch<AppLogicVM>().isDark
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Routes.successRoute, (route) => false);
+                  },
+                  color: context.watch<ThemeCtrl>().state
                       ? AppColors.white.withOpacity(.7)
                       : AppColors.white,
                 ),
@@ -51,16 +55,22 @@ class _AuthPageState extends State<AuthPage> {
                 CustomButton(
                   icon: AppAssets.facebook,
                   label: AppStrings.facebook,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Routes.successRoute, (route) => false);
+                  },
                 ),
                 const SizedBox(height: AppHeight.h28),
                 CustomButton(
                   icon: AppAssets.apple,
                   label: AppStrings.apple,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Routes.successRoute, (route) => false);
+                  },
                   color: Colors.black,
                 ),
-                AuthDashLine(AppStrings.or),
+                const AuthDashLine(AppStrings.or),
                 CustomButton(
                   label: AppStrings.withPass,
                   onPressed: () {

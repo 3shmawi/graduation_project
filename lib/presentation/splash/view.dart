@@ -1,6 +1,7 @@
 import 'dart:async';
+
 import 'package:donation/app/global_imports.dart';
-import 'package:donation/presentation/_resources/logic/view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../_resources/routes_manager.dart';
 
@@ -19,8 +20,6 @@ class _SplashViewState extends State<SplashView> {
   }
 
   _goNext() {
-    final appLogic = context.read<AppLogicVM>();
-
     Navigator.of(context).pushNamedAndRemoveUntil(
       Routes.chooseLanguageRoute,
       (_) => false,
@@ -62,7 +61,7 @@ class _SplashViewState extends State<SplashView> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: AppStrings.splashTitle,
+                    text: AppStrings.splashSubTitle.tr(),
                     style: TextStyle(
                       fontSize: FontSize.s24,
                       fontWeight: FontWeight.w700,
@@ -83,10 +82,6 @@ class _SplashViewState extends State<SplashView> {
                         ),
                     ),
                   ),
-                ),
-                Text(
-                  AppStrings.splashSubTitle,
-                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ],
             ),

@@ -1,16 +1,33 @@
-import '../../app/global_imports.dart';
-import '../../domain/model/models.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OnBoardingVM extends Cubit<AppCubitStates> {
-  OnBoardingVM() : super(OnBoardInitState());
+import '../../domain/model/models.dart';
+import '../_resources/assets_manager.dart';
+import '../_resources/constants_manager.dart';
+import '../_resources/strings_manager.dart';
+
+class OnBoardingCtrl extends Cubit<int> {
+  OnBoardingCtrl() : super(0);
 
   List<SliderObject> get slidersData => _getSliderData;
 
-  int currentIndex = 0;
+  PageController get controller => _pageController;
+
+  final _pageController = PageController(initialPage: 0);
 
   void changeOnBoardPageIndex(int index) {
-    currentIndex = index;
-    emit(ChangeOnBoardPageIndexState());
+    emit(index);
+  }
+
+  void nextPage() {
+    int index = state;
+    _pageController.animateToPage(
+      ++index,
+      duration: const Duration(
+        milliseconds: AppConstants.durationAnimationDelay3,
+      ),
+      curve: Curves.linear,
+    );
   }
 
   final List<SliderObject> _getSliderData = [

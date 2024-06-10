@@ -1,5 +1,5 @@
 import 'package:donation/app/global_imports.dart';
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EmptyPage extends StatelessWidget {
   final IconData icon;
@@ -30,7 +30,7 @@ class EmptyPage extends StatelessWidget {
               height: AppHeight.h20,
             ),
             Text(
-              message,
+              message.tr(),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelLarge,
             ),
@@ -38,7 +38,7 @@ class EmptyPage extends StatelessWidget {
               height: 5,
             ),
             Text(
-              message1,
+              message1.tr(),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall,
             )

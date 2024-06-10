@@ -1,4 +1,5 @@
 import 'package:donation/presentation/layout/home/search/view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -46,7 +47,7 @@ class SearchPageState extends State<SearchPage> {
                     : AppStrings.weHaveFound,
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.labelMedium,
-              ),
+              ).tr(),
             ),
             context.watch<SearchVM>().searchStarted == false
                 ? const SuggestionsUI()
@@ -68,10 +69,11 @@ class SearchPageState extends State<SearchPage> {
         controller: context.watch<SearchVM>().textFieldCtrl,
         style: Theme.of(context).textTheme.displayMedium,
         decoration: InputDecoration(
-border: const OutlineInputBorder(),
-          hintText: AppStrings.search,
+          border: const OutlineInputBorder(),
+          hintText: AppStrings.search.tr(),
           hintStyle: Theme.of(context).textTheme.labelSmall,
-          contentPadding: const EdgeInsets.symmetric(horizontal: AppPadding.p8,vertical: AppPadding.p12),
+          contentPadding: const EdgeInsets.symmetric(
+              horizontal: AppPadding.p8, vertical: AppPadding.p12),
           suffixIcon: IconButton(
             icon: Icon(
               Icons.close,
@@ -105,7 +107,7 @@ class SuggestionsUI extends StatelessWidget {
     final sb = context.watch<SearchVM>();
     return Expanded(
       child: sb.recentSearchData.isEmpty
-          ?  EmptyPage(
+          ? EmptyPage(
               icon: Feather.search,
               message: AppStrings.search,
               message1: AppStrings.searchDesc,

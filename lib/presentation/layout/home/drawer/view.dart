@@ -1,5 +1,6 @@
 import 'package:donation/app/config.dart';
 import 'package:donation/presentation/layout/profile/language.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../../../app/global_imports.dart';
@@ -71,7 +72,7 @@ class DrawerMenu extends StatelessWidget {
                   title: Text(
                     titles[index],
                     style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  ).tr(),
                   leading: CircleAvatar(
                     radius: AppSize.s20,
                     backgroundColor: Theme.of(context).secondaryHeaderColor,
