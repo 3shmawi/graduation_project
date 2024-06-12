@@ -2,6 +2,7 @@ import 'package:donation/app/api.dart';
 import 'package:donation/app/enums.dart';
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/domain/model/user_model.dart';
+import 'package:donation/presentation/_resources/component/toast.dart';
 import 'package:donation/services/dio_helper.dart';
 
 import '../../services/local_database.dart';
@@ -25,50 +26,76 @@ class AuthCtrl extends Cubit<AuthStates> {
 
   void login() {
     emit(AuthLoginLoadingState());
-    _http.post(
-      ApiUrl.signIn,
-      data: {
-        'email': emailCtrl.text,
-        'password': passwordCtrl.text,
-      },
-    ).then((value) {
-      _user = UserModel.fromJson(value);
-      if (saveLoginProcess) {
-        CacheHelper.saveData(
-          key: SharedPrefKeys.userId,
-          value: _user!.data!.user!.id,
-        );
-        CacheHelper.saveData(
-          key: SharedPrefKeys.userToken,
-          value: _user!.token,
-        );
-      }
-      emit(AuthLoginSuccessState());
-    }).catchError((e) {
-      emit(AuthLoginErrorState(e.toString()));
-    });
+    if (_isFieldAtLoginEmpty()) {
+      ShowToast.error("Please fill all fields");
+      emit(AuthLoginErrorState());
+    } else {
+      _http.post(
+        ApiUrl.signIn,
+        data: {
+          'email': emailCtrl.text.trim(),
+          'password': passwordCtrl.text,
+        },
+      ).then((value) {
+        if (value['status'] == "success") {
+          _user = UserModel.fromJson(value);
+          usrToken = _user!.token!;
+          usrId = _user!.data!.model!.id;
+          if (saveLoginProcess) {
+            CacheHelper.saveData(
+              key: SharedPrefKeys.userId,
+              value: _user!.data!.model!.id,
+            );
+            CacheHelper.saveData(
+              key: SharedPrefKeys.userToken,
+              value: _user!.token,
+            );
+          }
+          ShowToast.success(value['status']);
+          emit(AuthLoginSuccessState());
+        } else {
+          ShowToast.error(value['message']);
+          emit(AuthLoginErrorState());
+        }
+      }).catchError((e) {
+        ShowToast.error("An error occurred ${e.toString()}");
+        emit(AuthLoginErrorState());
+      });
+    }
   }
 
-  bool isFieldAtLoginEmpty() =>
+  bool _isFieldAtLoginEmpty() =>
       emailCtrl.text.isEmpty || passwordCtrl.text.isEmpty;
 
   void register() {
     emit(AuthRegisterLoadingState());
-    _http.post(
-      ApiUrl.signUp,
-      data: {
-        'email': emailCtrl.text,
-        'password': passwordCtrl.text,
-        'passwordConfirm': confirmPasswordCtrl.text,
-      },
-    ).then((value) {
-      emit(AuthRegisterSuccessState());
-    }).catchError((e) {
-      emit(AuthRegisterErrorState(e.toString()));
-    });
+    if (_isFieldAtRegisterEmpty()) {
+      ShowToast.error("Please fill all the fields");
+      emit(AuthRegisterErrorState());
+    } else {
+      _http.post(
+        ApiUrl.signUp,
+        data: {
+          'email': emailCtrl.text.trim(),
+          'password': passwordCtrl.text,
+          'passwordConfirm': confirmPasswordCtrl.text,
+        },
+      ).then((value) {
+        if (value['status'] == "success") {
+          ShowToast.success(value['status']);
+          emit(AuthRegisterSuccessState());
+        } else {
+          ShowToast.error(value['message']);
+          emit(AuthRegisterErrorState());
+        }
+      }).catchError((e) {
+        ShowToast.error("An error occurred ${e.toString()}");
+        emit(AuthRegisterErrorState());
+      });
+    }
   }
 
-  bool isFieldAtRegisterEmpty() =>
+  bool _isFieldAtRegisterEmpty() =>
       nameCtrl.text.isEmpty ||
       emailCtrl.text.isEmpty ||
       passwordCtrl.text.isEmpty ||
@@ -91,22 +118,14 @@ class AuthLoginLoadingState extends AuthStates {}
 
 class AuthLoginSuccessState extends AuthStates {}
 
-class AuthLoginErrorState extends AuthStates {
-  final String message;
-
-  AuthLoginErrorState(this.message);
-}
+class AuthLoginErrorState extends AuthStates {}
 
 // register
 class AuthRegisterLoadingState extends AuthStates {}
 
 class AuthRegisterSuccessState extends AuthStates {}
 
-class AuthRegisterErrorState extends AuthStates {
-  final String message;
-
-  AuthRegisterErrorState(this.message);
-}
+class AuthRegisterErrorState extends AuthStates {}
 
 //other
 class ChangeSaveLoginState extends AuthStates {}

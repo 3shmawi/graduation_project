@@ -5,8 +5,9 @@ import '../../../_resources/strings_manager.dart';
 import '../../../_resources/values_manager.dart';
 
 class NotificationWidget extends StatefulWidget {
-  String notificationContent;
-  NotificationWidget({required this.notificationContent});
+  final String notificationContent;
+
+  const NotificationWidget({super.key, required this.notificationContent});
 
   @override
   State<NotificationWidget> createState() => _NotificationWidgetState();
@@ -83,7 +84,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                     counter = false;
                     setState(() {});
                   },
-                  child: Text(AppStrings.notification_done,
+                  child: Text(AppStrings.notificationDone,
                       style: counter == true
                           ? Theme.of(context)
                               .textTheme

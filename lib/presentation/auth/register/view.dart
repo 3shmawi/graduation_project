@@ -41,13 +41,6 @@ class RegisterPageState extends State<RegisterPage>
               Routes.loginRoute,
               (r) => false,
             );
-          } else if (state is AuthRegisterErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                backgroundColor: Colors.red,
-                content: Text("Create profile failed,please try again"),
-              ),
-            );
           }
         },
         buildWhen: (_, current) =>
@@ -57,92 +50,77 @@ class RegisterPageState extends State<RegisterPage>
         builder: (context, state) {
           final cubit = context.read<AuthCtrl>();
           return Scaffold(
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p28),
-                child: ScrollConfiguration(
-                  behavior: MyBehavior(),
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: AppHeight.h8),
-                          Image.asset(
-                            AppAssets.logo,
-                            height: AppHeight.h200,
+            body: CenteredItemScrollView(
+              child: SafeArea(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p28),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: AppHeight.h8),
+                        Image.asset(
+                          AppAssets.logo,
+                          height: AppHeight.h200,
+                        ),
+                        Text(
+                          AppStrings.signUp.tr(),
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: AppHeight.h20),
+                        AuthFormField(
+                          controller: cubit.nameCtrl,
+                          hintTxt: AppStrings.usrName,
+                          prefixIcon: Icons.person,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: AppPadding.p20),
+                          child: AuthFormField(
+                            controller: cubit.emailCtrl,
+                            hintTxt: AppStrings.usrEmail,
+                            prefixIcon: Icons.mail,
                           ),
-                          Text(
-                            AppStrings.signUp.tr(),
-                            style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        AuthFormField(
+                          controller: cubit.passwordCtrl,
+                          hintTxt: AppStrings.usrPass,
+                          prefixIcon: Icons.lock,
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: AppHeight.h20),
+                        AuthFormField(
+                          controller: cubit.confirmPasswordCtrl,
+                          hintTxt: AppStrings.confirmUsrPass,
+                          prefixIcon: Icons.password,
+                          isPassword: true,
+                        ),
+                        const SizedBox(
+                          height: AppHeight.h40,
+                        ),
+                        CustomButton(
+                          label: AppStrings.signUp,
+                          onPressed: state is AuthRegisterLoadingState
+                              ? null
+                              : cubit.register,
+                        ),
+                        if (state is AuthRegisterLoadingState)
+                          const Padding(
+                            padding: EdgeInsets.all(AppPadding.p8),
+                            child: LinearProgressIndicator(),
                           ),
-                          const SizedBox(height: AppHeight.h20),
-                          AuthFormField(
-                            controller: cubit.nameCtrl,
-                            hintTxt: AppStrings.usrName,
-                            prefixIcon: Icons.person,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: AppPadding.p20),
-                            child: AuthFormField(
-                              controller: cubit.emailCtrl,
-                              hintTxt: AppStrings.usrEmail,
-                              prefixIcon: Icons.mail,
-                            ),
-                          ),
-                          AuthFormField(
-                            controller: cubit.passwordCtrl,
-                            hintTxt: AppStrings.usrPass,
-                            prefixIcon: Icons.lock,
-                            isPassword: true,
-                          ),
-                          const SizedBox(height: AppHeight.h20),
-                          AuthFormField(
-                            controller: cubit.confirmPasswordCtrl,
-                            hintTxt: AppStrings.confirmUsrPass,
-                            prefixIcon: Icons.password,
-                            isPassword: true,
-                          ),
-                          const SizedBox(
-                            height: AppHeight.h40,
-                          ),
-                          CustomButton(
-                            label: AppStrings.signUp,
-                            onPressed: state is AuthRegisterLoadingState
-                                ? null
-                                : () {
-                                    if (cubit.isFieldAtRegisterEmpty()) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          backgroundColor: Colors.red,
-                                          content: Text(
-                                              "Please fill all the fields"),
-                                        ),
-                                      );
-                                    } else {
-                                      cubit.register();
-                                    }
-                                  },
-                          ),
-                          if (state is AuthRegisterLoadingState)
-                            const Padding(
-                              padding: EdgeInsets.all(AppPadding.p8),
-                              child: LinearProgressIndicator(),
-                            ),
-                          // AuthDashLine(AppStrings.or),
-                          // const AuthWithoutPassword(),
-                          const SizedBox(height: AppHeight.h12),
-                          Toggle(
-                            title: AppStrings.haveAcc,
-                            bTxt: AppStrings.signIn,
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed(Routes.loginRoute);
-                            },
-                          ),
-                        ],
-                      ),
+                        // AuthDashLine(AppStrings.or),
+                        // const AuthWithoutPassword(),
+                        const SizedBox(height: AppHeight.h12),
+                        Toggle(
+                          title: AppStrings.haveAcc,
+                          bTxt: AppStrings.signIn,
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(Routes.loginRoute);
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

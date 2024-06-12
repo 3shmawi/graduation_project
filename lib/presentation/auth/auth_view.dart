@@ -70,7 +70,7 @@ class _AuthPageState extends State<AuthPage> {
                   },
                   color: Colors.black,
                 ),
-                const AuthDashLine(AppStrings.or),
+                AuthDashLine(AppStrings.or),
                 CustomButton(
                   label: AppStrings.withPass,
                   onPressed: () {

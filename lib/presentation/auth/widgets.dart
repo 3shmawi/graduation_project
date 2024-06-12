@@ -319,3 +319,23 @@ class Toggle extends StatelessWidget {
     );
   }
 }
+
+class CenteredItemScrollView extends StatelessWidget {
+  final Widget child;
+
+  const CenteredItemScrollView({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: child,
+          ),
+        ),
+      ],
+    );
+  }
+}

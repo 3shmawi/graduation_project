@@ -1,11 +1,8 @@
 import 'dart:convert';
 
-/// status : "success"
-/// token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MTAwODVlZWNmYzUwMDU3YzRiYjczMiIsImlhdCI6MTcxMjQxODYxMiwiZXhwIjoxNzE1MDEwNjEyfQ.33sNK4XX-LLW-Ed1tJtqZ868JInvZd-c8dyQHJ_zOcQ"
-/// data : {"user":{"location":{"coordinates":[]},"_id":"6610085eecfc50057c4bb732","email":"mohamedashmawy918@gmail.com","verified":true,"photoLink":"","createdAt":"2024-04-05T14:19:10.940Z","updatedAt":"2024-04-05T14:19:40.691Z","__v":0}}
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-UserModel userModeFromJson(String str) => UserModel.fromJson(json.decode(str));
-String userModeToJson(UserModel data) => json.encode(data.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
   UserModel({
@@ -23,9 +20,11 @@ class UserModel {
     _token = json['token'];
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+
   String? _status;
   String? _token;
   Data? _data;
+
   UserModel copyWith({
     String? status,
     String? token,
@@ -36,8 +35,11 @@ class UserModel {
         token: token ?? _token,
         data: data ?? _data,
       );
+
   String? get status => _status;
+
   String? get token => _token;
+
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -51,119 +53,155 @@ class UserModel {
   }
 }
 
-/// user : {"location":{"coordinates":[]},"_id":"6610085eecfc50057c4bb732","email":"mohamedashmawy918@gmail.com","verified":true,"photoLink":"","createdAt":"2024-04-05T14:19:10.940Z","updatedAt":"2024-04-05T14:19:40.691Z","__v":0}
-
 Data dataFromJson(String str) => Data.fromJson(json.decode(str));
+
 String dataToJson(Data data) => json.encode(data.toJson());
 
 class Data {
   Data({
-    User? user,
+    Model? model,
   }) {
-    _user = user;
+    _model = model;
   }
 
   Data.fromJson(dynamic json) {
-    _user = json['user'] != null ? User.fromJson(json['user']) : null;
+    _model = json['model'] != null ? Model.fromJson(json['model']) : null;
   }
-  User? _user;
+
+  Model? _model;
+
   Data copyWith({
-    User? user,
+    Model? model,
   }) =>
       Data(
-        user: user ?? _user,
+        model: model ?? _model,
       );
-  User? get user => _user;
+
+  Model? get model => _model;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    if (_user != null) {
-      map['user'] = _user?.toJson();
+    if (_model != null) {
+      map['model'] = _model?.toJson();
     }
     return map;
   }
 }
 
-/// location : {"coordinates":[]}
-/// _id : "6610085eecfc50057c4bb732"
-/// email : "mohamedashmawy918@gmail.com"
-/// verified : true
-/// photoLink : ""
-/// createdAt : "2024-04-05T14:19:10.940Z"
-/// updatedAt : "2024-04-05T14:19:40.691Z"
-/// __v : 0
+Model modelFromJson(String str) => Model.fromJson(json.decode(str));
 
-User userFromJson(String str) => User.fromJson(json.decode(str));
-String userToJson(User data) => json.encode(data.toJson());
+String modelToJson(Model data) => json.encode(data.toJson());
 
-class User {
-  User({
+class Model {
+  Model({
     Location? location,
     String? id,
+    String? userName,
     String? email,
+    String? role,
     bool? verified,
     String? photoLink,
     String? createdAt,
     String? updatedAt,
-    num? v,
+    int? v,
+    String? passwordResetExpires,
+    String? passwordHash,
   }) {
     _location = location;
     _id = id;
+    _userName = userName;
     _email = email;
+    _role = role;
     _verified = verified;
     _photoLink = photoLink;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _v = v;
+    _passwordResetExpires = passwordResetExpires;
+    _passwordHash = passwordHash;
   }
 
-  User.fromJson(dynamic json) {
+  Model.fromJson(dynamic json) {
     _location =
         json['location'] != null ? Location.fromJson(json['location']) : null;
     _id = json['_id'];
+    _userName = json['userName'];
     _email = json['email'];
+    _role = json['role'];
     _verified = json['verified'];
     _photoLink = json['photoLink'];
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
     _v = json['__v'];
+    _passwordResetExpires = json['passwordResetExpires'];
+    _passwordHash = json['passwordHash'];
   }
+
   Location? _location;
   String? _id;
+  String? _userName;
   String? _email;
+  String? _role;
   bool? _verified;
   String? _photoLink;
   String? _createdAt;
   String? _updatedAt;
-  num? _v;
-  User copyWith({
+  int? _v;
+  String? _passwordResetExpires;
+  String? _passwordHash;
+
+  Model copyWith({
     Location? location,
     String? id,
+    String? userName,
     String? email,
+    String? role,
     bool? verified,
     String? photoLink,
     String? createdAt,
     String? updatedAt,
-    num? v,
+    int? v,
+    String? passwordResetExpires,
+    String? passwordHash,
   }) =>
-      User(
+      Model(
         location: location ?? _location,
         id: id ?? _id,
+        userName: userName ?? _userName,
         email: email ?? _email,
+        role: role ?? _role,
         verified: verified ?? _verified,
         photoLink: photoLink ?? _photoLink,
         createdAt: createdAt ?? _createdAt,
         updatedAt: updatedAt ?? _updatedAt,
         v: v ?? _v,
+        passwordResetExpires: passwordResetExpires ?? _passwordResetExpires,
+        passwordHash: passwordHash ?? _passwordHash,
       );
+
   Location? get location => _location;
+
   String? get id => _id;
+
+  String? get userName => _userName;
+
   String? get email => _email;
+
+  String? get role => _role;
+
   bool? get verified => _verified;
+
   String? get photoLink => _photoLink;
+
   String? get createdAt => _createdAt;
+
   String? get updatedAt => _updatedAt;
-  num? get v => _v;
+
+  int? get v => _v;
+
+  String? get passwordResetExpires => _passwordResetExpires;
+
+  String? get passwordHash => _passwordHash;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -171,24 +209,27 @@ class User {
       map['location'] = _location?.toJson();
     }
     map['_id'] = _id;
+    map['userName'] = _userName;
     map['email'] = _email;
+    map['role'] = _role;
     map['verified'] = _verified;
     map['photoLink'] = _photoLink;
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
     map['__v'] = _v;
+    map['passwordResetExpires'] = _passwordResetExpires;
+    map['passwordHash'] = _passwordHash;
     return map;
   }
 }
 
-/// coordinates : []
-
 Location locationFromJson(String str) => Location.fromJson(json.decode(str));
+
 String locationToJson(Location data) => json.encode(data.toJson());
 
 class Location {
   Location({
-    List<dynamic>? coordinates,
+    List<String>? coordinates,
   }) {
     _coordinates = coordinates;
   }
@@ -201,19 +242,22 @@ class Location {
       });
     }
   }
-  List<dynamic>? _coordinates;
+
+  List<String>? _coordinates;
+
   Location copyWith({
-    List<dynamic>? coordinates,
+    List<String>? coordinates,
   }) =>
       Location(
         coordinates: coordinates ?? _coordinates,
       );
+
   List<dynamic>? get coordinates => _coordinates;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (_coordinates != null) {
-      map['coordinates'] = _coordinates?.map((v) => v.toJson()).toList();
+      map['coordinates'] = _coordinates;
     }
     return map;
   }

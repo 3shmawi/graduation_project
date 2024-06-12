@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:donation/presentation/auth/auth_view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../app/api.dart';
+import '../presentation/_resources/component/toast.dart';
 
 class HttpUtil {
   late Dio _dio;
@@ -29,7 +31,7 @@ class HttpUtil {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          var accessToken = "";
+          var accessToken = AuthCtrl.usrToken ?? "";
           if (accessToken.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $accessToken';
           }
@@ -86,6 +88,32 @@ class HttpUtil {
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data;
+      }
+      throw "something went wrong";
+    } catch (e) {
+      if (e is DioException) {
+        ErrorEntity eInfo = createErrorEntity(e);
+
+        onError(eInfo);
+      }
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> patch(
+    String path, {
+    data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final Response response = await _dio.patch(
+        path,
+        data: data,
+        queryParameters: queryParameters,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -226,77 +254,77 @@ void onError(ErrorEntity eInfo) {
   switch (eInfo.code) {
     case 400:
       if (kDebugMode) {
-        showErrorToast("Bad Request");
+        ShowToast.error("Bad Request");
       }
       break;
     case 401:
       if (kDebugMode) {
-        showErrorToast("Unauthorized");
+        ShowToast.error("Unauthorized");
       }
       break;
     case 403:
       if (kDebugMode) {
-        showErrorToast("Forbidden");
+        ShowToast.error("Forbidden");
       }
       break;
     case 404:
       if (kDebugMode) {
-        showErrorToast("Not Found");
+        ShowToast.error("Not Found");
       }
       break;
     case 405:
       if (kDebugMode) {
-        showErrorToast("Method Not Allowed");
+        ShowToast.error("Method Not Allowed");
       }
       break;
     case 408:
       if (kDebugMode) {
-        showErrorToast("Request Timeout");
+        ShowToast.error("Request Timeout");
       }
       break;
     case 409:
       if (kDebugMode) {
-        showErrorToast("Conflict");
+        ShowToast.error("Conflict");
       }
       break;
     case 410:
       if (kDebugMode) {
-        showErrorToast("Gone");
+        ShowToast.error("Gone");
       }
       break;
     case 500:
       if (kDebugMode) {
-        showErrorToast("Internal Server Error");
+        ShowToast.error("Internal Server Error");
       }
       break;
     case 501:
       if (kDebugMode) {
-        showErrorToast("Not Implemented");
+        ShowToast.error("Not Implemented");
       }
       break;
     case 502:
       if (kDebugMode) {
-        showErrorToast("Bad Gateway");
+        ShowToast.error("Bad Gateway");
       }
       break;
     case 503:
       if (kDebugMode) {
-        showErrorToast("Service Unavailable");
+        ShowToast.error("Service Unavailable");
       }
       break;
     case 504:
       if (kDebugMode) {
-        showErrorToast("Gateway Timeout");
+        ShowToast.error("Gateway Timeout");
       }
       break;
     case 505:
       if (kDebugMode) {
-        showErrorToast("HTTP Version Not Supported");
+        ShowToast.error("HTTP Version Not Supported");
       }
       break;
     default:
       if (kDebugMode) {
-        showErrorToast("Unknown Error");
+        ShowToast.error("Unknown Error");
       }
       break;
   }

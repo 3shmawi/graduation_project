@@ -5,12 +5,15 @@ class EmptyPage extends StatelessWidget {
   final IconData icon;
   final String message;
   final String message1;
+  final VoidCallback? onPressed;
 
-  const EmptyPage(
-      {super.key,
-      required this.icon,
-      required this.message,
-      required this.message1});
+  const EmptyPage({
+    super.key,
+    required this.icon,
+    required this.message,
+    required this.message1,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +40,13 @@ class EmptyPage extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Text(
-              message1.tr(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall,
+            TextButton(
+              onPressed: onPressed,
+              child: Text(
+                message1.tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
             )
           ],
         ),

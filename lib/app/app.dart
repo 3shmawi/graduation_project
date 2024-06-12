@@ -1,5 +1,6 @@
 import 'package:donation/controller/theme.dart';
 import 'package:donation/presentation/layout/home/search/view_model.dart';
+import 'package:donation/presentation/layout/home/view_model.dart';
 import 'package:donation/presentation/layout/layout_view_model.dart';
 import 'package:donation/presentation/layout/profile/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -25,6 +26,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => LayoutVM()),
         BlocProvider(create: (_) => SearchVM()..getRecentSearchList()),
         BlocProvider(create: (_) => SettingVM()..initPackageInfo()),
+        BlocProvider(create: (_) => HomeCtrl()..getPosts()),
       ],
       child: ResponsiveSizer(
         builder: (context, orientation, screenType) {
