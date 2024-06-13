@@ -80,7 +80,8 @@ class AppStrings {
   static String get yes => "yes".tr();
   static String get no => "no".tr();
   static String get notification => "Notifications".tr();
-  static String get notification_done => "Done!".tr();
+  static String get comment => "Comments".tr();
+  static String get newComment => "New Comments".tr();
 
 
   static String get clearAll => "clear-all".tr();
