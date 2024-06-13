@@ -1,4 +1,5 @@
 import 'package:donation/presentation/_resources/strings_manager.dart';
+import 'package:donation/presentation/auth/auth_view.dart';
 import 'package:donation/presentation/auth/email_verification/view.dart';
 import 'package:donation/presentation/auth/forgotten_password/view.dart';
 import 'package:donation/presentation/auth/login/view.dart';
@@ -9,12 +10,10 @@ import 'package:donation/presentation/layout/home/search/view.dart';
 import 'package:donation/presentation/layout/layout_view.dart';
 import 'package:donation/presentation/layout/profile/security.dart';
 import 'package:donation/presentation/on_boarding/view.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../layout/home/comments/comment_view.dart';
+import '../layout/home/comment/view.dart';
 import '../layout/home/notifications/notifications.dart';
-import '../layout/profile/contact_us.dart';
 import '../splash/choose_language.dart';
 import '../splash/view.dart';
 
@@ -25,7 +24,7 @@ class Routes {
 
   static const onBoardingRoute = "/onBoarding";
 
-  // static const authRoute = "/auth";
+  static const authRoute = "/auth";
   static const loginRoute = "/login";
   static const registerRoute = "/register";
   static const forgotPasswordRoute = "/forgotPassword";
@@ -40,8 +39,7 @@ class Routes {
 
   static const searchRoute = "/search";
   static const norifications = "/notification";
-  static const comments = "comment";
-  static const contactUs = "contact us";
+  static const comment = "/comment";
 }
 
 class RouteGenerator {
@@ -60,8 +58,8 @@ class RouteGenerator {
         return _secondTransitionAnimation(settings, const OnBoardingView());
 
       //auth
-      // case Routes.authRoute:
-      //   return FadeRoute2(const LoginPage());
+      case Routes.authRoute:
+        return FadeRoute2(const AuthPage());
 
       case Routes.loginRoute:
         return FadeRoute2(const LoginPage());
@@ -87,20 +85,16 @@ class RouteGenerator {
       //security
       case Routes.securityRoute:
         return FadeRoute2(const SecurityPage());
-      //contact us
-      case Routes.contactUs:
-        return FadeRoute2(  ConnectWithUs());
 
       //search
       case Routes.searchRoute:
         return FadeRoute1(const SearchPage());
-      // notifications
+      //notifications
       case Routes.norifications:
         return FadeRoute3(const Notifications());
-      //comments
-      case Routes.comments:
-        return FadeRoute4(const CommentView());
-
+      //comment
+      case Routes.comment:
+        return FadeRoute4(const Comment());
       //other
       default:
         return unDefinedRoute();
@@ -111,10 +105,10 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.noRoute).tr(),
+          title: Text(AppStrings.noRoute),
         ),
         body: Center(
-          child: Text(AppStrings.noRoute).tr(),
+          child: Text(AppStrings.noRoute),
         ),
       ),
     );
@@ -246,3 +240,4 @@ class FadeRoute4 extends PageRouteBuilder {
     },
   );
 }
+

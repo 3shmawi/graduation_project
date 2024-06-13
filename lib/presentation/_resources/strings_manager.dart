@@ -1,112 +1,119 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class AppStrings {
-  static const noRoute = 'no_route_founded';
+  static String get noRoute => 'no-route-founded'.tr();
 
-  static const splashTitle = 'splash_title';
-  static const splashSubTitle = 'splash_sub_title';
+  static String get splashTitle => 'splash-title'.tr();
+  static String get splashSubTitle => 'splash-sub-title'.tr();
 
-  static const onBoardTitle1 = 'onboard_title1';
-  static const onBoardTitle2 = 'onboard_title2';
-  static const onBoardTitle3 = 'onboard_title3';
+  static String get onBoardTitle1 => 'onboard-title1';
+  static String get onBoardTitle2 => 'onboard-title2';
+  static String get onBoardTitle3 => 'onboard-title3';
 
-  static const next = 'next';
-  static const skip = 'skip';
-  static const getStarted = 'get_started';
+  static String get next => 'next'.tr();
+  static String get skip => 'skip'.tr();
+  static String get getStarted => 'get-started'.tr();
 
-  static const welcome = 'welcome';
-  static const welcome2 = 'welcome2';
+  static String get welcome => 'welcome'.tr();
+  static String get welcome2 => 'welcome2'.tr();
 
-  static const withPass = 'log_with_pass';
-  static const login = 'log_in';
-  static const register = 'register';
-  static const signIn = 'sign_in';
-  static const signOut = 'sign_out';
-  static const signUp = 'sign_up';
-  static const forgotPass = 'forgot_pass';
-  static const donHaveAcc = 'don_have_account';
-  static const haveAcc = 'have_account';
-  static const confirmUsrPass = 'confirm_usr_pass';
+  static String get withPass => 'log-with-pass'.tr();
+  static String get login => 'log-in'.tr();
+  static String get register => 'register'.tr();
+  static String get signIn => 'sign-in'.tr();
+  static String get signOut => 'sign-out'.tr();
+  static String get signUp => 'sign-up'.tr();
+  static String get forgotPass => 'forgot-pass'.tr();
+  static String get donHaveAcc => 'don-have-account'.tr();
+  static String get haveAcc => 'have-account'.tr();
 
-  static const usrName = 'usr_name';
-  static const usrEmail = 'usr_email';
-  static const usrPass = 'usr_pass';
-  static const rememberAuth = 'auth_remember';
+  static String get usrName => 'usr-name'.tr();
+  static String get usrEmail => 'usr-email'.tr();
+  static String get usrPass => 'usr-pass'.tr();
+  static String get rememberAuth => 'auth-remember'.tr();
 
-  static const success = 'success';
-  static const successMessage = 'success_message';
+  static String get success => 'success'.tr();
+  static String get successMessage => 'success-message'.tr();
 
-  static const google = 'google';
-  static const facebook = 'facebook';
-  static const apple = 'apple';
-  static const or = 'or';
+  static String get google => 'google'.tr();
+  static String get facebook => 'facebook'.tr();
+  static String get apple => 'apple'.tr();
+  static String get or => 'or'.tr();
 
-  static const home = 'home';
-  static const fields = 'fields';
-  static const chat = 'chat';
-  static const campaign = 'campaign';
-  static const profile = 'profile';
+  static String get home => 'home';
+  static String get fields => 'fields';
+  static String get chat => 'chat';
+  static String get campaign => 'campaign';
+  static String get profile => 'profile';
 
-  static const solidarity = 'solidarity';
-  static const health = 'health';
-  static const education = 'education';
-  static const development = 'development';
-  static const diggingWell = 'digging_well';
-  static const algarmin = 'algarmin';
+  static String get solidarity => 'solidarity'.tr();
+  static String get health => 'health'.tr();
+  static String get education => 'education'.tr();
+  static String get development => 'development'.tr();
+  static String get diggingWell => 'digging-well'.tr();
+  static String get algarmin => 'algarmin'.tr();
 
-  static const donationMess1 = 'donation_message1';
-  static const donationMess2 = 'donation_message2';
+  static String get donationMess1 => 'donation-message1'.tr();
+  static String get donationMess2 => 'donation-message2'.tr();
 
-  static const currentDonation = 'current_donation';
-  static const products = 'products';
-  static const donate = 'donate';
+  static String get currentDonation => 'current-donation'.tr();
+  static String get products => 'products'.tr();
+  static String get donate => 'donate'.tr();
 
-  static const generalSettings = "general_settings";
-  static const editProfile = "edit_profile";
-  static const logout = "logout";
-  static const bookmarks = "bookmarks";
-  static const darkMode = "dark_mode";
-  static const getNotification = "get_notification";
-  static const contactUs = "contact_us";
-  static const language = "language";
-  static const rateApp = "rate_app";
-  static const licence = "licence";
-  static const privacy = "privacy";
-  static const aboutUs = "about_us";
-  static const security = "security";
-  static const facebookPage = "facebook_page";
-  static const youtube = "youtube";
-  static const twitter = "twitter";
-  static const logoutTitle = "logout_title";
-  static const yes = "yes";
-  static const no = "no";
-  static const notification = "Notifications";
-  static const notificationDone = "Done!";
+  static String get generalSettings => "general-settings".tr();
+  static String get editProfile => "edit-profile".tr();
+  static String get logout => "logout".tr();
+  static String get bookmarks => "bookmarks".tr();
+  static String get darkMode => "dark-mode".tr();
+  static String get getNotification => "get-notification".tr();
+  static String get contactUs => "contact-us".tr();
+  static String get language => "language".tr();
+  static String get rateApp => "rate-app".tr();
+  static String get licence => "licence".tr();
+  static String get privacy => "privacy".tr();
+  static String get aboutUs => "about-us".tr();
+  static String get security => "security".tr();
+  static String get facebookPage => "facebook-page".tr();
+  static String get youtube => "youtube".tr();
+  static String get twitter => "twitter".tr();
+  static String get logoutTitle => "logout-title".tr();
+  static String get yes => "yes".tr();
+  static String get no => "no".tr();
+  static String get notification => "Notifications".tr();
+  static String get comment => "Comments".tr();
+  static String get newComment => "New Comments".tr();
 
-  static const clearAll = "clear_all";
-  static const clearAllNotifications = "clear_all_notification_dialog";
-  static const noNotificationsTitle = "no_notification_title";
-  static const noNotificationDesc = "no_notification_description";
-  static const deleteUsrData = "delete_user_data";
-  static const accountDeleteTitle = "account_delete_title";
-  static const accountDeleteSubtitle = "account_delete_subtitle";
-  static const accountDeleteConfirm = "account_delete_confirm";
 
-  static const cancel = "cancel";
+  static String get clearAll => "clear-all".tr();
+  static String get clearAllNotifications => "clear-all-notification-dialog".tr();
+  static String get noNotificationsTitle => "no-notification-title".tr();
+  static String get noNotificationDesc => "no-notification-description".tr();
+  static String get deleteUsrData => "delete-user-data".tr();
+  static String get accountDeleteTitle => "account-delete-title".tr();
+  static String get accountDeleteSubtitle => "account-delete-subtitle".tr();
+  static String get accountDeleteConfirm => "account-delete-confirm".tr();
 
-  static const showDetails = "show_details";
-  static const apply = "apply";
+  static String get cancel => "cancel".tr();
 
-  static get upload => "upload_post".tr();
-  static get world => "world".tr();
-  static get forU => "for_you".tr();
 
-  static const recentSearch = "recent_searches";
-  static const weHaveFound = "we_have_found";
-  static const search = "search";
-  static const tryAgain = "try_again";
-  static const noResults = "no_results";
-  static const searchDesc = "search_desc";
+  static String get showDetails => "show-details".tr();
+  static String get apply => "apply".tr();
 
-  static const writeSomething = "write_something";
-}
+
+  static String get upload => "upload-post".tr();
+  static String get world => "world".tr();
+  static String get forU => "for-you".tr();
+
+  static String get recentSearch => "recent-searches".tr();
+  static String get weHaveFound => "we-have-found".tr();
+  static String get search => "search".tr();
+  static String get tryAgain => "try-again".tr();
+  static String get noResults => "no-results".tr();
+  static String get searchDesc => "search-desc".tr();
+
+
+  static String get writeSomething => "write-something".tr();
+
+
+
+ }
