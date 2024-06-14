@@ -1,4 +1,5 @@
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/presentation/_resources/values_manager.dart';
 import 'package:donation/presentation/auth/widgets.dart';
 import 'package:donation/presentation/layout/layout_view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -65,16 +66,28 @@ class LoginPage extends StatelessWidget {
                           isPassword: true,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Checkbox(
-                                value: cubit.saveLoginProcess,
-                                onChanged: (state) {
-                                  cubit.changeSaveLoginState();
-                                }),
-                            Text(
-                              AppStrings.rememberAuth,
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ).tr(),
+                            Row(
+                              children: [
+                                Checkbox(
+                                    value: cubit.saveLoginProcess,
+                                    onChanged: (state) {
+                                      cubit.changeSaveLoginState();
+                                    }),
+                                Text(
+                                  AppStrings.rememberAuth,
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ).tr(),
+                              ],
+                            ),
+                            TextButton(
+                                onPressed: (){
+                                  Navigator.pushNamed(context, Routes.forgotPasswordRoute);
+                                },
+                                child: Text('forget password !' ,
+                                  style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Colors.black),)
+                            )
                           ],
                         ),
                         const SizedBox(
