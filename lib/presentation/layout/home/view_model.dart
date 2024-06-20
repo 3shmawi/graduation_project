@@ -12,6 +12,12 @@ class HomeCtrl extends Cubit<HomeStates> {
   HomeCtrl() : super(HomeInitialState());
 
   final _http = HttpUtil();
+  late TabController tabCtrl;
+
+  void initTacCtrl(TabController tab) {
+    tabCtrl = tab;
+    emit(HomeInitialTabState());
+  }
 
   PostModel? _model;
   final List<Document> posts = [];
@@ -57,8 +63,14 @@ class HomeCtrl extends Cubit<HomeStates> {
         }
       } else {
         contentCtrl.clear();
-        getPosts();
-        emit(CreatePostLoadedState());
+        final post = Document.fromJson(response['data']['document']);
+
+        posts.insert(0, post);
+        tabCtrl.animateTo(0);
+
+        ShowToast.success(response['status']);
+
+        emit(GetPostsLoadedState(posts));
       }
     }).catchError((error) {
       emit(CreatePostErrorState());
@@ -92,8 +104,11 @@ class HomeCtrl extends Cubit<HomeStates> {
         contentCtrl.clear();
         images.clear();
         isPostContainPhotos = false;
-        getPosts();
-        emit(CreatePostLoadedState());
+        final post = Document.fromJson(response['data']['document']);
+        posts.insert(0, post);
+        tabCtrl.animateTo(0);
+        ShowToast.success(response['status']);
+        emit(GetPostsLoadedState(posts));
       }
     }).catchError((error) {
       emit(CreatePostErrorState());
@@ -131,6 +146,8 @@ class HomeCtrl extends Cubit<HomeStates> {
       posts[index].copyWith(
         content: contentCtrl.text,
       );
+      tabCtrl.animateTo(0);
+
       emit(GetPostsLoadedState(posts));
     }).catchError((error) {
       ShowToast.error(error.toString());
@@ -142,6 +159,8 @@ class HomeCtrl extends Cubit<HomeStates> {
 abstract class HomeStates {}
 
 final class HomeInitialState extends HomeStates {}
+
+final class HomeInitialTabState extends HomeStates {}
 
 final class GetPostsLoadingState extends HomeStates {}
 

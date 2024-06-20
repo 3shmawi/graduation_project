@@ -6,6 +6,7 @@ import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/auth/auth_view_model.dart';
 import 'package:donation/presentation/layout/home/global_view.dart';
 import 'package:donation/presentation/layout/home/upload_post_view.dart';
+import 'package:donation/presentation/layout/home/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -19,142 +20,167 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+//goxecix532@fna6.com محمد محروس
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late final _tabCtrl;
+
+  @override
+  void initState() {
+    _tabCtrl = TabController(length: 3, vsync: this);
+    super.initState();
+
+    Future.delayed(Duration.zero).then((v) {
+      context.read<HomeCtrl>().initTacCtrl(_tabCtrl);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         drawer: const DrawerMenu(),
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  expandedHeight: AppHeight.h50,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: AppSize.s0,
-                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.searchRoute);
-                      },
-                      icon: const Icon(
-                        Feather.search,
+        body: BlocBuilder<HomeCtrl, HomeStates>(
+          buildWhen: (_, current) => current is HomeInitialTabState,
+          builder: (context, state) {
+            return SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: AppHeight.h50,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      elevation: AppSize.s0,
+                      surfaceTintColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(Routes.searchRoute);
+                          },
+                          icon: const Icon(
+                            Feather.search,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(Routes.norifications);
+                          },
+                          icon: const Icon(
+                            Icons.notifications_none_outlined,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: const Icon(
+                            Feather.menu,
+                          ),
+                        ),
+                      ],
+                      title: Row(
+                        children: [
+                          Image.asset(
+                            AppAssets.logo2,
+                            height: AppHeight.h48,
+                          ),
+                          Text(AppConfigs.appName),
+                        ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.norifications);
-                      },
-                      icon: const Icon(
-                        Icons.notifications_none_outlined,
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: AppHeight.h60,
+                      elevation: AppSize.s20,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(
+                            AppSize.s16,
+                          ),
+                        ),
+                      ),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      surfaceTintColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      pinned: true,
+                      floating: true,
+                      snap: false,
+                      bottom: TabBar(
+                        controller: _tabCtrl,
+                        labelStyle:
+                            Theme.of(context).textTheme.titleSmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                        unselectedLabelStyle:
+                            Theme.of(context).textTheme.labelSmall,
+                        unselectedLabelColor: AppColors.grey,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorPadding: const EdgeInsets.symmetric(
+                          horizontal: AppPadding.p20,
+                        ),
+                        tabs: [
+                          Tab(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                const Icon(AntDesign.home),
+                                const SizedBox(width: AppWidth.w8),
+                                Text(AppStrings.forU),
+                              ],
+                            ),
+                          ),
+                          Tab(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(Icons.public_outlined),
+                                const SizedBox(width: AppWidth.w8),
+                                Text(AppStrings.world),
+                              ],
+                            ),
+                          ),
+                          Tab(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                const Icon(Entypo.upload),
+                                const SizedBox(width: AppWidth.w8),
+                                Text(
+                                  AppStrings.upload,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: const Icon(
-                        Feather.menu,
-                      ),
-                    ),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabCtrl,
+                  children: const [
+                    GlobalView(),
+                    GlobalView(),
+                    UploadPostPage(),
                   ],
-                  title: Row(
-                    children: [
-                      Image.asset(
-                        AppAssets.logo2,
-                        height: AppHeight.h48,
-                      ),
-                      Text(AppConfigs.appName),
-                    ],
-                  ),
                 ),
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  expandedHeight: AppHeight.h60,
-                  elevation: AppSize.s20,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(
-                        AppSize.s16,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-                  pinned: true,
-                  floating: true,
-                  snap: false,
-                  bottom: TabBar(
-                    labelStyle:
-                        Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                    unselectedLabelStyle:
-                        Theme.of(context).textTheme.labelSmall,
-                    unselectedLabelColor: AppColors.grey,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorPadding: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.p20,
-                    ),
-                    tabs: [
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            const Icon(AntDesign.home),
-                            const SizedBox(width: AppWidth.w8),
-                            Text(AppStrings.forU),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Icon(Icons.public_outlined),
-                            const SizedBox(width: AppWidth.w8),
-                            Text(AppStrings.world),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            const Icon(Entypo.upload),
-                            const SizedBox(width: AppWidth.w8),
-                            Text(
-                              AppStrings.upload,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ];
-            },
-            body: const TabBarView(
-              children: [
-                GlobalView(),
-                GlobalView(),
-                UploadPostPage(),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -335,9 +361,9 @@ class SocialPostItemState extends State<SocialPostItem>
                   onSelected: (value) {
                     switch (value) {
                       case 0:
-
+                        context.read<HomeCtrl>().tabCtrl.animateTo(2);
                       case 1:
-
+                        context.read<HomeCtrl>().deletePost(post);
                     }
                   },
                   itemBuilder: (context) {

@@ -76,6 +76,7 @@ class AuthCtrl extends Cubit<AuthStates> {
       _http.post(
         ApiUrl.signUp,
         data: {
+          'userName': nameCtrl.text,
           'email': emailCtrl.text.trim(),
           'password': passwordCtrl.text,
           'passwordConfirm': confirmPasswordCtrl.text,

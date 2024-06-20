@@ -40,12 +40,15 @@ class EmptyPage extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            TextButton(
+            OutlinedButton(
               onPressed: onPressed,
               child: Text(
                 message1.tr(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelSmall,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge!
+                    .copyWith(color: AppColors.primary),
               ),
             )
           ],

@@ -8,6 +8,7 @@ import '../../_resources/component/loading_card.dart';
 class GlobalView extends StatelessWidget {
   const GlobalView({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -42,7 +43,7 @@ class GlobalView extends StatelessWidget {
                 left: AppPadding.p20,
               ),
               itemBuilder: (context, index) {
-                return SocialPostItem(state.posts[index]);
+                return SocialPostItem(state.posts[index],);
               },
               itemCount: state.posts.length,
             );

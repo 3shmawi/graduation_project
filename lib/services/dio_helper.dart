@@ -41,7 +41,7 @@ class HttpUtil {
     );
   }
 
-  Future<Map<String, dynamic>> get(
+  get(
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,

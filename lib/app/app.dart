@@ -1,4 +1,5 @@
 import 'package:donation/controller/theme.dart';
+import 'package:donation/presentation/layout/chats/view_model.dart';
 import 'package:donation/presentation/layout/home/search/view_model.dart';
 import 'package:donation/presentation/layout/home/view_model.dart';
 import 'package:donation/presentation/layout/layout_view_model.dart';
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => SearchVM()..getRecentSearchList()),
         BlocProvider(create: (_) => SettingVM()..initPackageInfo()),
         BlocProvider(create: (_) => HomeCtrl()..getPosts()),
+        BlocProvider(create: (_) => ChatCtrl()),
       ],
       child: ResponsiveSizer(
         builder: (context, orientation, screenType) {

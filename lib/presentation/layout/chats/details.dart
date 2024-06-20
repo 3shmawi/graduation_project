@@ -1,5 +1,9 @@
 import 'package:donation/app/functions.dart';
+import 'package:donation/presentation/_resources/component/empty_page.dart';
+import 'package:donation/presentation/auth/auth_view_model.dart';
 import 'package:donation/presentation/auth/widgets.dart';
+import 'package:donation/presentation/layout/chats/view_model.dart';
+import 'package:donation/services/socket_io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -14,7 +18,6 @@ class ChatDetailPage extends StatefulWidget {
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
   final ScrollController _scrollController = ScrollController();
-  final TextEditingController _textEditingController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool isKeyboardActive = false;
 
@@ -30,6 +33,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   @override
   void initState() {
     super.initState();
+    SocketIOManager.connect();
+
+    Future.delayed(Duration.zero).then((v) {
+      context.read<ChatCtrl>().getChats("6669e585d790fce4e5af390e");
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _goBottom();
     });
@@ -38,128 +46,143 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   @override
   void dispose() {
     _focusNode.dispose();
+    SocketIOManager.disconnect();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          const SizedBox(
-            width: AppWidth.w14,
-          ),
-          Row(
-            children: [
-              Text(
-                'Mohamed Ashmawi',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      fontSize: AppSize.s18,
-                      height: 1.1,
-                    ),
+    return BlocBuilder<ChatCtrl, ChatStates>(
+      buildWhen: (_, current) =>
+          current is ChatLoadingState ||
+          current is ChatLoadedState ||
+          current is ChatErrorState,
+      builder: (context, state) {
+        final cubit = context.read<ChatCtrl>();
+        return Scaffold(
+          appBar: AppBar(
+            actions: [
+              const SizedBox(
+                width: AppWidth.w14,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Mohamed Ashmawi',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                          fontSize: AppSize.s18,
+                          height: 1.1,
+                        ),
+                  ),
+                  const SizedBox(
+                    width: AppWidth.w8,
+                  ),
+                  CircleAvatar(
+                    radius: AppSize.s20,
+                    backgroundImage: NetworkImage(imageUrl),
+                  ),
+                ],
               ),
               const SizedBox(
-                width: AppWidth.w8,
-              ),
-              CircleAvatar(
-                radius: AppSize.s20,
-                backgroundImage: NetworkImage(imageUrl),
+                width: AppWidth.w14,
               ),
             ],
           ),
-          const SizedBox(
-            width: AppWidth.w14,
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              controller: _scrollController,
-              padding: const EdgeInsets.only(bottom: AppPadding.p14),
-              shrinkWrap: true,
-              children: const [
-                RightMessage(
-                    "hello i'm mohamed ashmawi wow com sdfkj oijf how are you sir "),
-                LeftMessage("hi jlsk lskjf lksf lkjlsd lskjdfl lksjf"),
-                RightMessage("hello"),
-                LeftMessage("hi"),
-                RightMessage("hello"),
-                RightMessage(
-                    "hello i'm mohamed ashmawi wow com sdfkj oijf how are you sir "),
-                LeftMessage("محمد عبدالفتاح عشماوي\nتمام "),
-                LeftMessage("hi"),
-                RightMessage(
-                    "hello i'm mohamed ashmawi wow com sdfkj oijf how are you sir "),
-                LeftMessage("hi jlsk lskjf lksf lkjlsd lskjdfl lksjf"),
-                RightMessage("hello"),
-                LeftMessage("hi"),
-                RightMessage("hello"),
-                RightMessage(
-                    "hello i'm mohamed ashmawi wow com sdfkj oijf how are you sir "),
-                LeftMessage("محمد عبدالفتاح عشماوي\nتمام "),
-                LeftMessage("hi"),
-              ],
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            height: AppHeight.h60,
-            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-            decoration: const BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(
-                  AppSize.s8,
+          body: Column(
+            children: [
+              if (state is ChatLoadingState)
+                Expanded(
+                  child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: const CircularProgressIndicator()),
+                ),
+              if (state is ChatLoadedState)
+                Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      if (AuthCtrl.usrId == state.chats[index].senderId) {
+                        return RightMessage(state.chats[index].message,
+                            state.chats[index].createdAt);
+                      }
+                      return LeftMessage(state.chats[index].message,
+                          state.chats[index].createdAt);
+                    },
+                    itemCount: state.chats.length,
+                  ),
+                ),
+              if (state is ChatErrorState)
+                Expanded(
+                  child: EmptyPage(
+                    icon: Entypo.message,
+                    message: "An error happened!",
+                    message1: "refresh",
+                    onPressed: () {
+                      cubit.getChats("6669e585d790fce4e5af390e");
+                    },
+                  ),
+                ),
+              Container(
+                width: double.infinity,
+                height: AppHeight.h60,
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(
+                      AppSize.s8,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        _goBottom();
+                        cubit.sendMessage("6669e585d790fce4e5af390e");
+                      },
+                      splashColor: AppColors.primary,
+                      icon: Icon(
+                        Feather.send,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    Expanded(
+                      child: AuthFormField(
+                        controller: cubit.txtCtrl,
+                        focusNode: _focusNode,
+                        onTap: () {
+                          Future.delayed(
+                            const Duration(
+                              milliseconds: 600,
+                            ),
+                          ).then((value) {
+                            _goBottom();
+                          });
+                        },
+                        hintTxt: AppStrings.writeSomething,
+                        prefixIcon: CupertinoIcons.chat_bubble_text_fill,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    _goBottom();
-                    _textEditingController.clear();
-                  },
-                  splashColor: AppColors.primary,
-                  icon: Icon(
-                    Feather.send,
-                    color: AppColors.primary,
-                  ),
-                ),
-                Expanded(
-                  child: AuthFormField(
-                    controller: _textEditingController,
-                    focusNode: _focusNode,
-                    onTap: () {
-                      Future.delayed(
-                        const Duration(
-                          milliseconds: 600,
-                        ),
-                      ).then((value) {
-                        _goBottom();
-                      });
-                    },
-                    hintTxt: AppStrings.writeSomething,
-                    prefixIcon: CupertinoIcons.chat_bubble_text_fill,
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
 class RightMessage extends StatelessWidget {
-  const RightMessage(this.message, {super.key});
+  const RightMessage(this.message, this.time, {super.key});
 
   final String message;
+  final DateTime time;
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +221,7 @@ class RightMessage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "1د",
+                    daysBetween(time),
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],
@@ -216,9 +239,10 @@ class RightMessage extends StatelessWidget {
 }
 
 class LeftMessage extends StatelessWidget {
-  const LeftMessage(this.message, {super.key});
+  const LeftMessage(this.message, this.time, {super.key});
 
   final String message;
+  final DateTime time;
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +269,7 @@ class LeftMessage extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: AppColors.grey,
+                      color: AppColors.grey.withOpacity(.3),
                       borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(20),
                         topLeft: Radius.circular(20),
@@ -257,11 +281,14 @@ class LeftMessage extends StatelessWidget {
                       textAlign: isStartWithArabic(message)
                           ? TextAlign.start
                           : TextAlign.end,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                color: AppColors.primary,
+                              ),
                     ),
                   ),
                   Text(
-                    "7m",
+                    daysBetween(time),
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],

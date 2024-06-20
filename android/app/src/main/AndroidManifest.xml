@@ -6,6 +6,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
+        android:usesCleartextTraffic="true"
         android:label="تعاون">
         <activity
             android:name=".MainActivity"
