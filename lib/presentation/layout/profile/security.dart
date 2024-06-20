@@ -1,5 +1,6 @@
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 class SecurityPage extends StatefulWidget {
@@ -18,21 +19,21 @@ class _SecurityPageState extends State<SecurityPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(AppStrings.accountDeleteTitle),
-            content: Text(AppStrings.accountDeleteSubtitle),
+            title: Text(AppStrings.accountDeleteTitle.tr()),
+            content: Text(AppStrings.accountDeleteSubtitle.tr()),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   _handleDeleteAccount();
                 },
-                child: Text(AppStrings.accountDeleteConfirm),
+                child: Text(AppStrings.accountDeleteConfirm.tr()),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text(AppStrings.cancel),
+                child: Text(AppStrings.cancel.tr()),
               ),
             ],
           );
@@ -63,14 +64,14 @@ class _SecurityPageState extends State<SecurityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.security)),
+      appBar: AppBar(title: Text(AppStrings.security.tr())),
       body: Stack(
         alignment: Alignment.center,
         children: [
           Column(
             children: [
               ListTile(
-                title: Text(AppStrings.deleteUsrData),
+                title: Text(AppStrings.deleteUsrData.tr()),
                 leading: const Icon(
                   Feather.trash,
                   size: AppSize.s20,

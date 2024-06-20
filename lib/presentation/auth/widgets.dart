@@ -1,7 +1,8 @@
-import 'package:donation/presentation/_resources/logic/view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../app/global_imports.dart';
+import '../../controller/theme.dart';
 import '../_resources/routes_manager.dart';
 
 class MyBehavior extends ScrollBehavior {
@@ -47,7 +48,7 @@ class _AuthFormFieldState extends State<AuthFormField> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.sizeOf(context).width;
-    final isDark = context.watch<AppLogicVM>().isDark;
+    final isDark = context.watch<ThemeCtrl>().state;
     return Container(
       height: width / 8,
       alignment: Alignment.center,
@@ -67,27 +68,28 @@ class _AuthFormFieldState extends State<AuthFormField> {
         style: Theme.of(context).textTheme.titleMedium,
         keyboardType: widget.textInputType,
         decoration: InputDecoration(
-            prefixIcon: Icon(
-              widget.prefixIcon,
-            ),
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          isPass = !isPass;
-                        },
-                      );
-                    },
-                    icon: Icon(
-                      isPass ? Icons.visibility : Icons.visibility_off_outlined,
-                    ),
-                  )
-                : null,
-            border: InputBorder.none,
-            hintMaxLines: 1,
-            hintText: widget.hintTxt,
-            hintStyle: Theme.of(context).textTheme.labelSmall),
+          prefixIcon: Icon(
+            widget.prefixIcon,
+          ),
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  onPressed: () {
+                    setState(
+                      () {
+                        isPass = !isPass;
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    isPass ? Icons.visibility : Icons.visibility_off_outlined,
+                  ),
+                )
+              : null,
+          border: InputBorder.none,
+          hintMaxLines: 1,
+          hintText: widget.hintTxt.tr(),
+          hintStyle: Theme.of(context).textTheme.labelSmall,
+        ),
       ),
     );
   }
@@ -141,7 +143,7 @@ class CustomButton extends StatelessWidget {
               child: SvgPicture.asset(icon!),
             ),
           Text(
-            label,
+            label.tr(),
             style: color == Colors.white
                 ? Theme.of(context).textTheme.displayMedium
                 : Theme.of(context).textTheme.headlineMedium,
@@ -165,7 +167,7 @@ class AuthDashLine extends StatelessWidget {
         children: [
           const Expanded(child: Divider()),
           Text(
-            string,
+            string.tr(),
             style: Theme.of(context).textTheme.labelMedium,
           ),
           const Expanded(child: Divider()),
@@ -185,6 +187,8 @@ class AuthWithoutPassword extends StatefulWidget {
 class _AuthWithoutPasswordState extends State<AuthWithoutPassword> {
   @override
   Widget build(BuildContext context) {
+    final theme = context.watch<ThemeCtrl>().state;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppPadding.p12,
@@ -198,32 +202,29 @@ class _AuthWithoutPasswordState extends State<AuthWithoutPassword> {
           AuthOutLinedButton(
             icon: AppAssets.google,
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.of(context).pushReplacementNamed(
                 Routes.successRoute,
-                (route) => false,
               );
             },
           ),
           const SizedBox(width: AppWidth.w12),
           AuthOutLinedButton(
             icon: AppAssets.facebook,
-            isBlue: true,
+            color: AppColors.primary,
             padding: AppPadding.p18,
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.of(context).pushReplacementNamed(
                 Routes.successRoute,
-                (route) => false,
               );
             },
           ),
           const SizedBox(width: AppWidth.w12),
           AuthOutLinedButton(
             icon: AppAssets.apple,
-            isBlue: false,
+            color: theme ? AppColors.white : AppColors.black,
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.of(context).pushReplacementNamed(
                 Routes.successRoute,
-                (route) => false,
               );
             },
           ),
@@ -237,14 +238,14 @@ class AuthOutLinedButton extends StatelessWidget {
   const AuthOutLinedButton({
     required this.icon,
     this.onTap,
-    this.isBlue,
+    this.color,
     this.padding,
     super.key,
   });
 
   final String icon;
   final GestureTapCallback? onTap;
-  final bool? isBlue;
+  final Color? color;
   final double? padding;
 
   @override
@@ -265,10 +266,10 @@ class AuthOutLinedButton extends StatelessWidget {
           child: Center(
             child: SvgPicture.asset(
               icon,
-              colorFilter: isBlue == null
+              colorFilter: color == null
                   ? null
                   : ColorFilter.mode(
-                      isBlue! ? AppColors.primary : AppColors.black,
+                      color!,
                       BlendMode.srcIn,
                     ),
             ),
@@ -297,7 +298,7 @@ class Toggle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          title,
+          title.tr(),
           style: Theme.of(context).textTheme.labelSmall,
         ),
         TextButton(
@@ -310,8 +311,28 @@ class Toggle extends StatelessWidget {
           ),
           onPressed: onPressed,
           child: Text(
-            bTxt,
+            bTxt.tr(),
             style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CenteredItemScrollView extends StatelessWidget {
+  final Widget child;
+
+  const CenteredItemScrollView({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Center(
+            child: child,
           ),
         ),
       ],

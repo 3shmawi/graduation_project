@@ -113,6 +113,7 @@ class AppTheme {
       centerTitle: false,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
         statusBarColor: Colors.transparent,
       ),
       titleTextStyle:

@@ -1,16 +1,19 @@
 import 'package:donation/app/global_imports.dart';
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EmptyPage extends StatelessWidget {
   final IconData icon;
   final String message;
   final String message1;
+  final VoidCallback? onPressed;
 
-  const EmptyPage(
-      {super.key,
-      required this.icon,
-      required this.message,
-      required this.message1});
+  const EmptyPage({
+    super.key,
+    required this.icon,
+    required this.message,
+    required this.message1,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +33,23 @@ class EmptyPage extends StatelessWidget {
               height: AppHeight.h20,
             ),
             Text(
-              message,
+              message.tr(),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelLarge,
             ),
             const SizedBox(
               height: 5,
             ),
-            Text(
-              message1,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall,
+            OutlinedButton(
+              onPressed: onPressed,
+              child: Text(
+                message1.tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelLarge!
+                    .copyWith(color: AppColors.primary),
+              ),
             )
           ],
         ),

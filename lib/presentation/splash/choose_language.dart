@@ -1,6 +1,4 @@
 import 'package:donation/app/global_imports.dart';
-import 'package:donation/presentation/_resources/language_manager.dart';
-import 'package:donation/presentation/_resources/logic/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../_resources/component/button.dart';
@@ -16,7 +14,6 @@ class ChooseLanguagePage extends StatefulWidget {
 class _ChooseLanguagePageState extends State<ChooseLanguagePage> {
   @override
   Widget build(BuildContext context) {
-    final logic = context.watch<AppLogicVM>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('اختر اللغة'),

@@ -28,7 +28,7 @@ class FieldsPageState extends State<FieldsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(title: Text(AppStrings.fields).tr()),
+      appBar: AppBar(title: const Text(AppStrings.fields).tr()),
       body: SafeArea(
         child: GridView.builder(
           padding: const EdgeInsets.symmetric(
@@ -41,7 +41,7 @@ class FieldsPageState extends State<FieldsPage> {
             childAspectRatio: 0.7,
           ),
           itemBuilder: (context, index) {
-            return CardItem(
+            return const CardItem(
               icon:
                   'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8',
               title: AppStrings.chat,
@@ -143,7 +143,7 @@ class _CardItemState extends State<CardItem>
                       ),
                       child: Center(
                         child: Text(
-                          widget.title,
+                          widget.title.tr(),
                           maxLines: 4,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,

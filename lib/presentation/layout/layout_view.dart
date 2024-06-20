@@ -20,13 +20,15 @@ class _LayoutPageState extends State<LayoutPage> {
   Widget build(BuildContext context) {
     final cubit = context.watch<LayoutVM>();
     return PopScope(
+      canPop: false,
       onPopInvoked: (v) async {
         if (cubit.currentIndex != 0) {
           cubit.changeCurrentIndex(0);
+
           ctrl.animateToPage(
             0,
             duration: const Duration(
-              milliseconds: 200,
+              milliseconds: AppConstants.durationAnimationDelay3,
             ),
             curve: Curves.easeIn,
           );
@@ -56,7 +58,8 @@ class _LayoutPageState extends State<LayoutPage> {
             ctrl.animateToPage(
               v,
               duration: const Duration(
-                  milliseconds: AppConstants.durationAnimationDelay3,),
+                milliseconds: AppConstants.durationAnimationDelay3,
+              ),
               curve: Curves.linear,
             );
           },

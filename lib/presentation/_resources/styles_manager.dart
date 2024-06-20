@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
+
 import 'font_manager.dart';
 
 // regular style
@@ -49,7 +49,6 @@ TextStyle getBoldStyle({double fontSize = FontSize.s12, required Color color}) {
 }
 
 // semi bold style
-
 TextStyle getSemiBoldStyle(
     {double fontSize = FontSize.s12, required Color color}) {
   return GoogleFonts.amiri(

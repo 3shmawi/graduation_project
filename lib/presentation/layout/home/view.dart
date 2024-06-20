@@ -1,8 +1,12 @@
 import 'package:donation/app/functions.dart';
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/domain/model/post_model.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
-import 'package:donation/presentation/_resources/component/loading_card.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:donation/presentation/auth/auth_view_model.dart';
+import 'package:donation/presentation/layout/home/global_view.dart';
+import 'package:donation/presentation/layout/home/upload_post_view.dart';
+import 'package:donation/presentation/layout/home/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -16,172 +20,167 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final imageUrl =
-      'https://images.unsplash.com/photo-1701906268416-b461ec4caa34?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D'; // Replace with your image URL
+//goxecix532@fna6.com محمد محروس
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late final _tabCtrl;
+
+  @override
+  void initState() {
+    _tabCtrl = TabController(length: 3, vsync: this);
+    super.initState();
+
+    Future.delayed(Duration.zero).then((v) {
+      context.read<HomeCtrl>().initTacCtrl(_tabCtrl);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         drawer: const DrawerMenu(),
-        body: SafeArea(
-          child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return [
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  expandedHeight: AppHeight.h50,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  elevation: AppSize.s0,
-                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.searchRoute);
-                      },
-                      icon: const Icon(
-                        Feather.search,
+        body: BlocBuilder<HomeCtrl, HomeStates>(
+          buildWhen: (_, current) => current is HomeInitialTabState,
+          builder: (context, state) {
+            return SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: AppHeight.h50,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      elevation: AppSize.s0,
+                      surfaceTintColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      actions: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(Routes.searchRoute);
+                          },
+                          icon: const Icon(
+                            Feather.search,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(Routes.norifications);
+                          },
+                          icon: const Icon(
+                            Icons.notifications_none_outlined,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: const Icon(
+                            Feather.menu,
+                          ),
+                        ),
+                      ],
+                      title: Row(
+                        children: [
+                          Image.asset(
+                            AppAssets.logo2,
+                            height: AppHeight.h48,
+                          ),
+                          Text(AppConfigs.appName),
+                        ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.norifications);
-                      },
-                      icon: const Icon(
-                        Icons.notifications_none_outlined,
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      expandedHeight: AppHeight.h60,
+                      elevation: AppSize.s20,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(
+                            AppSize.s16,
+                          ),
+                        ),
+                      ),
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      surfaceTintColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      pinned: true,
+                      floating: true,
+                      snap: false,
+                      bottom: TabBar(
+                        controller: _tabCtrl,
+                        labelStyle:
+                            Theme.of(context).textTheme.titleSmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                        unselectedLabelStyle:
+                            Theme.of(context).textTheme.labelSmall,
+                        unselectedLabelColor: AppColors.grey,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorPadding: const EdgeInsets.symmetric(
+                          horizontal: AppPadding.p20,
+                        ),
+                        tabs: [
+                          Tab(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                const Icon(AntDesign.home),
+                                const SizedBox(width: AppWidth.w8),
+                                Text(AppStrings.forU),
+                              ],
+                            ),
+                          ),
+                          Tab(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const Icon(Icons.public_outlined),
+                                const SizedBox(width: AppWidth.w8),
+                                Text(AppStrings.world),
+                              ],
+                            ),
+                          ),
+                          Tab(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                const Icon(Entypo.upload),
+                                const SizedBox(width: AppWidth.w8),
+                                Text(
+                                  AppStrings.upload,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      icon: const Icon(
-                        Feather.menu,
-                      ),
-                    ),
+                  ];
+                },
+                body: TabBarView(
+                  controller: _tabCtrl,
+                  children: const [
+                    GlobalView(),
+                    GlobalView(),
+                    UploadPostPage(),
                   ],
-                  title: Row(
-                    children: [
-                      Image.asset(
-                        AppAssets.logo2,
-                        height: AppHeight.h48,
-                      ),
-                      Text(AppConfigs.appName),
-                    ],
-                  ),
                 ),
-                SliverAppBar(
-                  expandedHeight: AppHeight.h60,
-                  elevation: AppSize.s20,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(
-                        AppSize.s16,
-                      ),
-                    ),
-                  ),
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
-                  pinned: true,
-                  floating: true,
-                  snap: false,
-                  bottom: TabBar(
-                    labelStyle:
-                        Theme.of(context).textTheme.titleSmall!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                    unselectedLabelStyle:
-                        Theme.of(context).textTheme.labelSmall,
-                    unselectedLabelColor: AppColors.grey,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorPadding: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.p20,
-                    ),
-                    tabs: [
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            const Icon(AntDesign.home),
-                            const SizedBox(width: AppWidth.w8),
-                            Text(AppStrings.forU),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Icon(Icons.public_outlined),
-                            const SizedBox(width: AppWidth.w8),
-                            Text(AppStrings.world),
-                          ],
-                        ),
-                      ),
-                      Tab(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            const Icon(Entypo.upload),
-                            const SizedBox(width: AppWidth.w8),
-                            Text(
-                              AppStrings.upload,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ];
-            },
-            body: TabBarView(
-              children: [
-                ListView.builder(
-                  padding: const EdgeInsets.only(
-                    top: AppPadding.p20,
-                    right: AppPadding.p20,
-                    left: AppPadding.p20,
-                  ),
-                  itemBuilder: (context, index) {
-                    if (index != 0 && index % 5 == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: AppPadding.p20),
-                        child: LoadingCard(height: height / 3.2),
-                      );
-                    }
-                    return const SocialPostItem();
-                  },
-                  itemCount: 10,
-                ),
-                ListView.builder(
-                  padding: const EdgeInsets.only(top: AppPadding.p20),
-                  itemBuilder: (context, index) {
-                    return const SocialPostItem();
-                  },
-                  itemCount: 10,
-                ),
-                Center(
-                  child: Icon(
-                    CupertinoIcons.add,
-                    size: AppSize.s50,
-                    color: AppColors.primary,
-                  ),
-                )
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -189,7 +188,9 @@ class _HomePageState extends State<HomePage> {
 }
 
 class SocialPostItem extends StatefulWidget {
-  const SocialPostItem({super.key});
+  const SocialPostItem(this.data, {super.key});
+
+  final Document data;
 
   @override
   SocialPostItemState createState() => SocialPostItemState();
@@ -201,10 +202,12 @@ class SocialPostItemState extends State<SocialPostItem>
   late Animation<double> _animation;
   late Animation<double> _animation2;
 
+  late final Document post;
+
   @override
   void initState() {
     super.initState();
-
+    post = widget.data;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -230,8 +233,6 @@ class SocialPostItemState extends State<SocialPostItem>
   }
 
   bool isExpanded = false;
-  final imageUrl =
-      'https://images.unsplash.com/photo-1701906268416-b461ec4caa34?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D'; // Replace with your image URL
 
   @override
   Widget build(BuildContext context) {
@@ -249,25 +250,15 @@ class SocialPostItemState extends State<SocialPostItem>
             mainAxisSize: MainAxisSize.min,
             children: [
               // Header (Profile image, name, time posted, more button)
-              _profile("Mohamed Ashmawi"),
+              _profile(),
               const Divider(height: AppHeight.h0),
               // Content (Description, Expandable Section)
               // Image
-              Padding(
-                padding: const EdgeInsets.all(AppPadding.p8),
-                child: CustomCacheImage(
-                  imageUrl: imageUrl,
-                  radius: AppSize.s30,
-                  topRight: false,
-                  bottomLeft: false,
-                  height: AppHeight.h150,
-                  width: double.infinity,
+              if (post.photosLink!.isNotEmpty)
+                ImgCard(
+                  post.photosLink!,
                 ),
-              ),
-              const ExpandedText(
-                title:
-                    "تطبيق تعاون للأعمال الخيرية هو تطبيق يهدف إلى تسهيل وتعزيز العمل الخيري وتحفيز التعاون فيما بين المتبرعين والمنظمات الخيرية. يتيح هذا التطبيق للأفراد والمؤسسات التواصل والمشاركة في مجال الأعمال الخيرية بطريقة مبسطة وفعّالة.",
-              ),
+              ExpandedText(title: post.content ?? "Content"),
 
               // Buttons (Like, Share, Comment)
               Padding(
@@ -281,7 +272,9 @@ class SocialPostItemState extends State<SocialPostItem>
                       color: AppColors.error,
                     ),
                     Button(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.comments);
+                      },
                       icon: CupertinoIcons.chat_bubble_2_fill,
                       number: "22K",
                       color: AppColors.grey,
@@ -332,16 +325,21 @@ class SocialPostItemState extends State<SocialPostItem>
     );
   }
 
-  _profile(String name) => Directionality(
-        textDirection:
-            isStartWithArabic(name) ? TextDirection.rtl : TextDirection.ltr,
+  _profile() => Directionality(
+        textDirection: isStartWithArabic(post.userID!.userName!)
+            ? TextDirection.rtl
+            : TextDirection.ltr,
         child: ListTile(
           leading: CircleAvatar(
             radius: AppSize.s25,
-            backgroundImage: NetworkImage(imageUrl),
+            backgroundImage: NetworkImage(
+              post.userID!.photoLink!.isEmpty
+                  ? AppConfigs.defaultImg
+                  : post.userID!.photoLink!,
+            ),
           ),
           title: Text(
-            name,
+            post.userID!.userName!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -349,17 +347,51 @@ class SocialPostItemState extends State<SocialPostItem>
                 ),
           ), // User Name
           subtitle: Text(
-            '2 hours ago',
+            daysBetween(DateTime.parse(post.createdAt!)),
             style: Theme.of(context).textTheme.labelSmall!.copyWith(
                   fontSize: FontSize.s12,
                 ),
           ), // Time Posted
-          trailing: IconButton(
-            icon: const Icon(Feather.more_vertical),
-            onPressed: () {
-              // Handle more button tap
-            },
-          ),
+          trailing: post.userID!.id == AuthCtrl.usrId
+              ? PopupMenuButton(
+                  icon: Icon(
+                    Feather.more_vertical,
+                    color: AppColors.black,
+                  ),
+                  onSelected: (value) {
+                    switch (value) {
+                      case 0:
+                        context.read<HomeCtrl>().tabCtrl.animateTo(2);
+                      case 1:
+                        context.read<HomeCtrl>().deletePost(post);
+                    }
+                  },
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        value: 0,
+                        child: Text(
+                          "Edit Post",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: AppColors.primary),
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 1,
+                        child: Text(
+                          "Delete Post",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: Colors.red),
+                        ),
+                      ),
+                    ];
+                  },
+                )
+              : null,
         ),
       );
 }
@@ -471,6 +503,72 @@ class Button extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ImgCard extends StatefulWidget {
+  const ImgCard(this.images, {super.key});
+
+  final List<String> images;
+
+  @override
+  State<ImgCard> createState() => _ImgCardState();
+}
+
+class _ImgCardState extends State<ImgCard> {
+  int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(AppPadding.p8),
+      child: Stack(
+        children: [
+          CustomCacheImage(
+            imageUrl: widget.images[currentIndex],
+            radius: AppSize.s30,
+            topRight: false,
+            bottomLeft: false,
+            height: AppHeight.h150,
+            width: double.infinity,
+          ),
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (currentIndex > 0) {
+                    setState(() {
+                      currentIndex--;
+                    });
+                  }
+                },
+                icon: const Icon(
+                  CupertinoIcons.arrow_right_circle,
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  if (currentIndex < widget.images.length - 1) {
+                    setState(() {
+                      currentIndex++;
+                    });
+                  }
+                },
+                icon: const Icon(
+                  CupertinoIcons.arrow_left_circle,
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
