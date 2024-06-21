@@ -11,7 +11,6 @@ import 'package:donation/presentation/layout/profile/security.dart';
 import 'package:donation/presentation/on_boarding/view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import '../layout/home/comments/comment_view.dart';
 import '../layout/home/notifications/notifications.dart';
 import '../splash/choose_language.dart';
@@ -67,7 +66,7 @@ class RouteGenerator {
         return FadeRoute2(const RegisterPage());
       case Routes.forgotPasswordRoute:
         return _firstTransitionAnimation(
-            settings, const ForgottenPasswordPage());
+            settings,  ForgottenPasswordPage());
       case Routes.emailVerificationRoute:
         return _secondTransitionAnimation(
             settings, const EmailVerificationPage());
@@ -94,7 +93,7 @@ class RouteGenerator {
         return FadeRoute3(const Notifications());
       //comments
       case Routes.comments:
-        return FadeRoute4(const CommentView());
+        return FadeRoute4(const Comment());
 
       //other
       default:

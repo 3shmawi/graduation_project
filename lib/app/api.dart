@@ -6,6 +6,7 @@ class ApiUrl {
   //auth
   static const signUp = "users/signUp";
   static const signIn = "users/login";
+  static const forgetPass = "users/forgotPassword";
 
   //posts
   static const getPosts = "posts/";
