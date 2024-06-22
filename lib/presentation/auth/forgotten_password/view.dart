@@ -22,7 +22,8 @@ class ForgottenPasswordPage extends StatelessWidget {
             ));
           } else if (state is ForgotPasswordFailure) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              duration: Duration(seconds: 2), content: Text('Password reset email failed!.'),
+              duration: Duration(seconds: 2),
+              content: Text('Password reset email failed!.'),
             ));
           }
         },
@@ -49,20 +50,21 @@ class ForgottenPasswordPage extends StatelessWidget {
                         BlocProvider.of<ForgotPasswordCubit>(context)
                             .requestPasswordReset(emailController.text);
                       },
-                      child: Text('Reset Password'),
+                      child: const Text(
+                        'Reset Password',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                      ),
                     ),
                     if (state is ForgotPasswordLoading)
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
                   ],
                 ),
               ),
             ),
           );
         },
-
       ),
     );
-
-
   }
 }

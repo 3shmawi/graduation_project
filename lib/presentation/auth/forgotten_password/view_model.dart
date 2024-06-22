@@ -1,7 +1,6 @@
-import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../app/api.dart';
 import '../../../app/global_imports.dart';
 import '../../../services/dio_helper.dart';
@@ -19,23 +18,20 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       ShowToast.error("Please fill all fields");
       emit(ForgotPasswordFailure());
     } else {
-      _http.post(
-        ApiUrl.forgetPass,
-
-      )
-          .then((onValue) {
-        if (onValue["status"] == "success") {
-          ShowToast.success(onValue['status']);
-          emit(ForgotPasswordSuccess());
+      try{
+        _http.post(
+          ApiUrl.forgetPass,
+          data: {
+            'email': emailCtrl.text.trim(),
+          },
+        );
+      }on DioException catch (e){
+        if (e.response != null) {
+          print('DioError: ${e.response!.statusCode} ${e.response!.statusMessage}');
         } else {
-          ShowToast.error(onValue['message']);
-          emit(ForgotPasswordFailure());
+          print('Error: ${e.message}');
         }
-      }).catchError((error) {
-        ShowToast.error("An error occurred ${error.toString()}");
-        emit(ForgotPasswordFailure());
       }
-      );
     }
   }
 
@@ -50,3 +46,4 @@ class ForgotPasswordLoading extends ForgotPasswordState {}
 class ForgotPasswordSuccess extends ForgotPasswordState {}
 
 class ForgotPasswordFailure extends ForgotPasswordState {}
+
