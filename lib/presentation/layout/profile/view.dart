@@ -156,7 +156,12 @@ class ProfilePageState extends State<ProfilePage> {
                 Item(
                   label: AppStrings.contactUs,
                   icon: Feather.mail,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      Routes.contactUs,
+                          (route) => false,
+                    );
+                  },
                   color: Colors.blueAccent,
                 ),
                 const Divider(

@@ -41,6 +41,7 @@ dependencies:
   image_picker: ^1.1.2
   path: ^1.9.0
   socket_io_client: ^2.0.3+1
+  font_awesome_flutter: ^10.7.0
 
 
 dev_dependencies:

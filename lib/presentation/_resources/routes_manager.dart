@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 
 import '../layout/home/comments/comment_view.dart';
 import '../layout/home/notifications/notifications.dart';
+import '../layout/profile/contact_us.dart';
 import '../splash/choose_language.dart';
 import '../splash/view.dart';
 
@@ -40,6 +41,7 @@ class Routes {
   static const searchRoute = "/search";
   static const norifications = "/notification";
   static const comments = "comment";
+  static const contactUs = "contact us";
 }
 
 class RouteGenerator {
@@ -85,6 +87,9 @@ class RouteGenerator {
       //security
       case Routes.securityRoute:
         return FadeRoute2(const SecurityPage());
+      //contact us
+      case Routes.contactUs:
+        return FadeRoute2(  ConnectWithUs());
 
       //search
       case Routes.searchRoute:
