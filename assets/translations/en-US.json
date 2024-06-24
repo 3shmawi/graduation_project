@@ -108,8 +108,18 @@
   "no_results": "We can't find wt u need",
   "search_desc": "Just write and leave the rest to us",
 
-  "write_something": "Write your message"
+  "write_something": "Write your message",
 
+  "our_mission": "Our Mission",
+  "our_mission1": "To make a difference in the lives of those in need through our charitable initiatives." ,
+  "our_vision": "Our Vision",
+  "our_vision1": "A world where every person has access to basic necessities and opportunities for a better life.",
+  "our_values": "Our Values",
+  "our_values1":"Compassion, Integrity, Accountability, Collaboration, Innovation.",
+  "achievements": "Achievements",
+  "achievements1": "• Raised ${1} M for clean water projects.",
+  "achievements2": "• Provided education to 10,000 children.",
+  "achievements3": "• Distributed food to 50,000 families in need."
 
 
 

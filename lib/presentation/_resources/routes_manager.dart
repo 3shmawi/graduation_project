@@ -11,12 +11,12 @@ import 'package:donation/presentation/layout/profile/security.dart';
 import 'package:donation/presentation/on_boarding/view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import '../layout/home/comments/comment_view.dart';
 import '../layout/home/notifications/notifications.dart';
 import '../layout/profile/contact_us.dart';
 import '../splash/choose_language.dart';
 import '../splash/view.dart';
+import 'package:donation/presentation/layout/profile/about_us.dart';
 
 class Routes {
   static const splashRoute = "/";
@@ -42,6 +42,7 @@ class Routes {
   static const norifications = "/notification";
   static const comments = "comment";
   static const contactUs = "contact us";
+  static const aboutUs = "about us";
 }
 
 class RouteGenerator {
@@ -90,6 +91,9 @@ class RouteGenerator {
       //contact us
       case Routes.contactUs:
         return FadeRoute2(  ConnectWithUs());
+      //aboutUs
+      case Routes.aboutUs:
+        return FadeRoute2(  AboutUsScreen());
 
       //search
       case Routes.searchRoute:

@@ -157,9 +157,8 @@ class ProfilePageState extends State<ProfilePage> {
                   label: AppStrings.contactUs,
                   icon: Feather.mail,
                   onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
+                    Navigator.of(context).pushNamed(
                       Routes.contactUs,
-                          (route) => false,
                     );
                   },
                   color: Colors.blueAccent,
@@ -200,10 +199,9 @@ class ProfilePageState extends State<ProfilePage> {
                   label: AppStrings.aboutUs,
                   icon: Feather.info,
                   color: Colors.green,
-                  onTap: () async => AppService.openLink(
-                    context,
-                    AppConfigs.ourWebsiteUrl,
-                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.aboutUs);
+                  }
                 ),
                 false ? Container() : const SecurityOption(),
               ],
