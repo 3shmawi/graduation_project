@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "295368262040",
+    "project_id": "donation-4de07",
+    "storage_bucket": "donation-4de07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:295368262040:android:9ee68576ff842b8df3abed",
+        "android_client_info": {
+          "package_name": "com.ashmawi.donation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAChQhUaqvcbdUT7AKEq0iCzVjSvxFwGhw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

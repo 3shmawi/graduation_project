@@ -99,6 +99,7 @@ class Model {
     String? userName,
     String? email,
     String? role,
+    String? userType,
     bool? verified,
     String? photoLink,
     String? createdAt,
@@ -112,6 +113,7 @@ class Model {
     _userName = userName;
     _email = email;
     _role = role;
+    _userType = userType;
     _verified = verified;
     _photoLink = photoLink;
     _createdAt = createdAt;
@@ -128,6 +130,7 @@ class Model {
     _userName = json['userName'];
     _email = json['email'];
     _role = json['role'];
+    _userType = json['userType'];
     _verified = json['verified'];
     _photoLink = json['photoLink'];
     _createdAt = json['createdAt'];
@@ -142,6 +145,7 @@ class Model {
   String? _userName;
   String? _email;
   String? _role;
+  String? _userType;
   bool? _verified;
   String? _photoLink;
   String? _createdAt;
@@ -156,6 +160,7 @@ class Model {
     String? userName,
     String? email,
     String? role,
+    String? userType,
     bool? verified,
     String? photoLink,
     String? createdAt,
@@ -170,6 +175,7 @@ class Model {
         userName: userName ?? _userName,
         email: email ?? _email,
         role: role ?? _role,
+        userType: userType ?? _userType,
         verified: verified ?? _verified,
         photoLink: photoLink ?? _photoLink,
         createdAt: createdAt ?? _createdAt,
@@ -188,6 +194,8 @@ class Model {
   String? get email => _email;
 
   String? get role => _role;
+
+  String? get userType => _userType;
 
   bool? get verified => _verified;
 
@@ -212,6 +220,7 @@ class Model {
     map['userName'] = _userName;
     map['email'] = _email;
     map['role'] = _role;
+    map['userType'] = _userType;
     map['verified'] = _verified;
     map['photoLink'] = _photoLink;
     map['createdAt'] = _createdAt;

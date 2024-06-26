@@ -1,4 +1,5 @@
 import 'package:donation/app/config.dart';
+import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/layout/profile/language.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -84,7 +85,7 @@ class DrawerMenu extends StatelessWidget {
                   onTap: () async {
                     // Navigator.of(context).pop();
                     if (index == 0) {
-                      // nextScreen(context, BookmarkPage());
+                      Navigator.of(context).pushNamed(Routes.bookmark);
                     } else if (index == 1) {
                       Navigator.of(context).push(
                         MaterialPageRoute(

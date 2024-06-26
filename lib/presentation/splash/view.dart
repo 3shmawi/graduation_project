@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:donation/app/enums.dart';
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/presentation/auth/auth_view_model.dart';
+import 'package:donation/services/local_database.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../_resources/routes_manager.dart';
@@ -20,10 +23,19 @@ class _SplashViewState extends State<SplashView> {
   }
 
   _goNext() {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      Routes.chooseLanguageRoute,
-      (_) => false,
-    );
+    final isUsrExist = CacheHelper.getData(key: SharedPrefKeys.userId);
+    if (isUsrExist == null) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.chooseLanguageRoute,
+        (_) => false,
+      );
+    } else {
+      context.read<AuthCtrl>().getUsrData();
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.layoutRoute,
+        (_) => false,
+      );
+    }
   }
 
   @override

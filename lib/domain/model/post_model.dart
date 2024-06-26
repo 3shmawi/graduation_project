@@ -100,6 +100,7 @@ String documentToJson(Document data) => json.encode(data.toJson());
 class Document {
   Document({
     String? id,
+    String? postID,
     UserId? userID,
     String? content,
     List<String>? photos,
@@ -108,6 +109,7 @@ class Document {
     String? updatedAt,
   }) {
     _id = id;
+    _postID = postID;
     _userID = userID;
     _content = content;
     _photos = photos;
@@ -118,6 +120,7 @@ class Document {
 
   Document.fromJson(dynamic json) {
     _id = json['_id'];
+    _postID = json['postID'] ?? json['_id'];
     _userID = json['userID'] != null ? UserId.fromJson(json['userID']) : null;
     _content = json['content'];
     if (json['photos'] != null) {
@@ -139,6 +142,7 @@ class Document {
   }
 
   String? _id;
+  String? _postID;
   UserId? _userID;
   String? _content;
   List<String>? _photos;
@@ -148,6 +152,7 @@ class Document {
 
   Document copyWith({
     String? id,
+    String? postID,
     UserId? userID,
     String? content,
     List<String>? photos,
@@ -157,6 +162,7 @@ class Document {
   }) =>
       Document(
         id: id ?? _id,
+        postID: postID ?? _postID,
         userID: userID ?? _userID,
         content: content ?? _content,
         photos: photos ?? _photos,
@@ -166,6 +172,8 @@ class Document {
       );
 
   String? get id => _id;
+
+  String? get postID => _postID;
 
   UserId? get userID => _userID;
 
@@ -182,6 +190,7 @@ class Document {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
+    map['_postID'] = _postID;
     if (_userID != null) {
       map['userID'] = _userID?.toJson();
     }

@@ -1,6 +1,7 @@
+import 'package:donation/domain/model/campaign.dart';
+import 'package:donation/domain/model/post_model.dart';
 import 'package:donation/presentation/_resources/strings_manager.dart';
 import 'package:donation/presentation/auth/auth_view.dart';
-import 'package:donation/presentation/auth/email_verification/view.dart';
 import 'package:donation/presentation/auth/forgotten_password/view.dart';
 import 'package:donation/presentation/auth/login/view.dart';
 import 'package:donation/presentation/auth/register/view.dart';
@@ -12,8 +13,11 @@ import 'package:donation/presentation/layout/profile/security.dart';
 import 'package:donation/presentation/on_boarding/view.dart';
 import 'package:flutter/material.dart';
 
-import '../layout/home/comment/view.dart';
+import '../layout/bookmark/view.dart';
+import '../layout/campaign/create.dart';
+import '../layout/home/comments/comment_view.dart';
 import '../layout/home/notifications/notifications.dart';
+import '../layout/profile/edit_profile.dart';
 import '../splash/choose_language.dart';
 import '../splash/view.dart';
 
@@ -28,7 +32,6 @@ class Routes {
   static const loginRoute = "/login";
   static const registerRoute = "/register";
   static const forgotPasswordRoute = "/forgotPassword";
-  static const emailVerificationRoute = "/emailVerification";
   static const successRoute = "/success";
 
   static const layoutRoute = "/layout";
@@ -40,6 +43,12 @@ class Routes {
   static const searchRoute = "/search";
   static const norifications = "/notification";
   static const comment = "/comment";
+
+  static const createCampaign = "/createCampaign";
+
+  static const editProfile = "/editProfile";
+
+  static const bookmark = "/bookmark";
 }
 
 class RouteGenerator {
@@ -68,10 +77,7 @@ class RouteGenerator {
       case Routes.forgotPasswordRoute:
         return _firstTransitionAnimation(
             settings, const ForgottenPasswordPage());
-      case Routes.emailVerificationRoute:
-        return _secondTransitionAnimation(
-            settings, const EmailVerificationPage());
-      case Routes.successRoute:
+        case Routes.successRoute:
         return _secondTransitionAnimation(settings, const SuccessPage());
 
       //layout
@@ -80,7 +86,11 @@ class RouteGenerator {
 
       //campaign detail
       case Routes.campaignDetailsRoute:
-        return FadeRoute2(const CampaignDetailsScreen());
+        return FadeRoute2(
+          CampaignDetailsScreen(
+            settings.arguments as Campaign,
+          ),
+        );
 
       //security
       case Routes.securityRoute:
@@ -94,7 +104,22 @@ class RouteGenerator {
         return FadeRoute3(const Notifications());
       //comment
       case Routes.comment:
-        return FadeRoute4(const Comment());
+        return FadeRoute4(CommentsView(settings.arguments as Document));
+
+      //campaign
+      case Routes.createCampaign:
+        return FadeRoute2(const CreateCampaignPage());
+
+      //profile
+      case Routes.editProfile:
+        return FadeRoute2(const EditProfilePage());
+
+      //bookmark
+      case Routes.bookmark:
+        return FadeRoute2(const BookMarkPage(
+          isFromNavigation: true,
+        ));
+
       //other
       default:
         return unDefinedRoute();
@@ -105,9 +130,9 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.noRoute),
+          title: const Text(AppStrings.noRoute),
         ),
-        body: Center(
+        body: const Center(
           child: Text(AppStrings.noRoute),
         ),
       ),
@@ -205,39 +230,39 @@ class FadeRoute3 extends PageRouteBuilder {
 
   FadeRoute3(this.page)
       : super(
-    pageBuilder: (context, animation, anotherAnimation) => page,
-    transitionDuration: const Duration(seconds: 2),
-    reverseTransitionDuration: const Duration(milliseconds: 200),
-    transitionsBuilder: (context, animation, anotherAnimation, child) {
-      animation = CurvedAnimation(
-          curve: Curves.fastLinearToSlowEaseIn,
-          parent: animation,
-          reverseCurve: Curves.fastOutSlowIn);
-      return FadeTransition(
-        opacity: animation,
-        child: page,
-      );
-    },
-  );
+          pageBuilder: (context, animation, anotherAnimation) => page,
+          transitionDuration: const Duration(seconds: 2),
+          reverseTransitionDuration: const Duration(milliseconds: 200),
+          transitionsBuilder: (context, animation, anotherAnimation, child) {
+            animation = CurvedAnimation(
+                curve: Curves.fastLinearToSlowEaseIn,
+                parent: animation,
+                reverseCurve: Curves.fastOutSlowIn);
+            return FadeTransition(
+              opacity: animation,
+              child: page,
+            );
+          },
+        );
 }
+
 class FadeRoute4 extends PageRouteBuilder {
   final Widget page;
 
   FadeRoute4(this.page)
       : super(
-    pageBuilder: (context, animation, anotherAnimation) => page,
-    transitionDuration: const Duration(seconds: 2),
-    reverseTransitionDuration: const Duration(milliseconds: 200),
-    transitionsBuilder: (context, animation, anotherAnimation, child) {
-      animation = CurvedAnimation(
-          curve: Curves.fastLinearToSlowEaseIn,
-          parent: animation,
-          reverseCurve: Curves.fastOutSlowIn);
-      return FadeTransition(
-        opacity: animation,
-        child: page,
-      );
-    },
-  );
+          pageBuilder: (context, animation, anotherAnimation) => page,
+          transitionDuration: const Duration(seconds: 2),
+          reverseTransitionDuration: const Duration(milliseconds: 200),
+          transitionsBuilder: (context, animation, anotherAnimation, child) {
+            animation = CurvedAnimation(
+                curve: Curves.fastLinearToSlowEaseIn,
+                parent: animation,
+                reverseCurve: Curves.fastOutSlowIn);
+            return FadeTransition(
+              opacity: animation,
+              child: page,
+            );
+          },
+        );
 }
-

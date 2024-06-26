@@ -1,13 +1,20 @@
+import 'package:donation/app/functions.dart';
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/domain/model/campaign.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
-import '../../_resources/component/button.dart';
+import '../../../domain/model/messages.dart';
+import '../../auth/auth_view_model.dart';
+import '../chats/details.dart';
 
 class CampaignDetailsScreen extends StatefulWidget {
-  const CampaignDetailsScreen({super.key});
+  const CampaignDetailsScreen(this.campaign, {super.key});
+
+  final Campaign campaign;
 
   @override
   State<CampaignDetailsScreen> createState() => _CampaignDetailsScreenState();
@@ -31,64 +38,49 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                   ),
                 ),
                 children: [
-                  const CustomCacheImage(
-                    imageUrl:
-                        'https://plus.unsplash.com/premium_photo-1682125773446-259ce64f9dd7?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGVkdWNhdGlvbnxlbnwwfHwwfHx8MA%3D%3D',
-                    radius: AppSize.s35,
-                    topRight: false,
-                    topLeft: false,
-                    width: double.infinity,
-                    height: AppHeight.h255,
-                  ),
+                  ImgCard2(widget.campaign.photosLink!),
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: AppPadding.p14),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const HeadLine(
-                          label: 'بالتعليم استطيع : ',
-                        ),
-                        const SizedBox(height: AppHeight.h8),
-                        Text(
-                          'يوجد فى العالم 222 مليون طفل لم يلتحقوا بمقاعد التعليم بسبب الفقر ',
-                          style:
-                              Theme.of(context).textTheme.labelMedium!.copyWith(
-                                    fontSize: FontSize.s16,
-                                  ),
-                        ),
-                        const SizedBox(height: AppHeight.h28),
-                        const Divider(),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Column(
-                            children: [
-                              const HeadLine(
-                                label:
-                                    'املأ حقيبة بالعلم والأمل: حملة التبرع بالعدة المدرسية',
-                              ),
-                              Container(
-                                height: AppHeight.h1_5,
-                                width: 200,
-                                color: AppColors.primary,
-                              ),
-                            ],
-                          ),
-                        ),
                         HeadLine(
-                          label: 'نبذة عن الحملة :',
-                          color: AppColors.primary,
+                          label: widget.campaign.title!,
                         ),
                         Text(
-                          'ندعوكم للمشاركة فى حملتنا الخيرية “ املا حقيبة بالعلم الامل “التى تهدف الى جمع العدة المدرسية للاطفال الذين يواجهون صعوبات فى الوصول الى المستلزمات المدرسية الاساسية لهذا العام سنقوم بتزيع حقائب مدرسية مجهزة لكل ما يحتاجة الاطفال لبداية دراسية ناجحة ',
+                          widget.campaign.titleDescription!,
                           style:
                               Theme.of(context).textTheme.labelMedium!.copyWith(
                                     fontSize: FontSize.s16,
                                   ),
                         ),
-                        const SizedBox(height: AppHeight.h35),
+                        const SizedBox(height: AppHeight.h12),
                         const Divider(),
-                        const SizedBox(height: AppHeight.h16),
+                        Row(
+                          children: [
+                            HeadLine(
+                              label: 'نبذة عن الحملة :',
+                              color: AppColors.primary,
+                            ),
+                            const Spacer(),
+                            Text(
+                              "Published At: ${daysBetween(
+                                DateTime.parse(widget.campaign.createdAt!),
+                              )}",
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          widget.campaign.aboutCampaign!,
+                          style:
+                              Theme.of(context).textTheme.labelMedium!.copyWith(
+                                    fontSize: FontSize.s16,
+                                  ),
+                        ),
+                        const SizedBox(height: AppHeight.h12),
+                        const Divider(),
                         HeadLine(
                           label: 'كيف يمكنك المساهمة: ',
                           color: AppColors.primary,
@@ -114,61 +106,33 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                           height: AppHeight.h20,
                         ),
                         const Divider(),
-                        const HeadLine(label: 'الدول المشاركة فى الحملة :'),
-                        const Align(
-                          alignment: Alignment.center,
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            alignment: WrapAlignment.spaceAround,
-                            children: [
-                              CountryItem(
-                                name: 'السعودية',
-                                flag: 'flag',
-                              ),
-                              CountryItem(
-                                name: 'السعودية',
-                                flag: 'flag',
-                              ),
-                              CountryItem(
-                                name: 'السعودية',
-                                flag: 'flag',
-                              ),
-                              CountryItem(
-                                name: 'السعودية',
-                                flag: 'flag',
-                              ),
-                              CountryItem(
-                                name: 'السعودية',
-                                flag: 'flag',
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(),
                         SizedBox(
                           height: AppHeight.h92,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ItemBanner(
-                                label: 'الايام المتبقية',
-                                subTitle: '245 يوم',
-                                icon: Feather.calendar,
-                                color: AppColors.grey,
+                                label: 'المبلغ المطلوب',
+                                subTitle:
+                                    widget.campaign.totalAmount!.toString(),
+                                icon: FontAwesome5Solid.coins,
+                                color: AppColors.primaryOpacity70,
+                              ),
+                              const VertLine(),
+                              ItemBanner(
+                                label: 'المبلغ المتبقي',
+                                subTitle:
+                                    widget.campaign.remainingAmount!.toString(),
+                                icon: FontAwesome5Solid.coins,
+                                color: AppColors.primaryOpacity70,
                               ),
                               const VertLine(),
                               ItemBanner(
                                 label: 'المستفيدن',
-                                subTitle: '100 شخص',
+                                subTitle:
+                                    widget.campaign.beneficiaries!.toString(),
                                 icon: Feather.users,
                                 color: AppColors.primary,
-                              ),
-                              const VertLine(),
-                              ItemBanner(
-                                label: 'المبلغ المطلوب',
-                                subTitle: '1,000,000 E.g',
-                                icon: FontAwesome5Solid.coins,
-                                color: AppColors.primaryOpacity70,
                               ),
                             ],
                           ),
@@ -181,14 +145,6 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                flex: 3,
-                                child: CustomButton(
-                                  label: 'منتجات الحملة',
-                                  onPressed: () {},
-                                ),
-                              ),
-                              const SizedBox(width: AppWidth.w20),
                               Expanded(
                                 flex: 4,
                                 child: ElevatedButton(
@@ -203,7 +159,16 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                                     ),
                                     backgroundColor: AppColors.white,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // Navigator.push(
+                                    //   context,
+                                    //   CupertinoPageRoute(
+                                    //     builder: (context) => PaymentScreen(
+                                    //       widget.campaign.id!,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                  },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -239,7 +204,7 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
               ),
             ),
           ),
-          const DefaultAppBar()
+          DefaultAppBar(widget.campaign.userID!)
         ],
       ),
     );
@@ -274,7 +239,9 @@ class HeadLine extends StatelessWidget {
 }
 
 class DefaultAppBar extends StatelessWidget {
-  const DefaultAppBar({super.key});
+  const DefaultAppBar(this.userId, {super.key});
+
+  final UserId userId;
 
   @override
   Widget build(BuildContext context) {
@@ -291,19 +258,40 @@ class DefaultAppBar extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        const ShareButton(),
+        ShareButton(userId),
       ],
     );
   }
 }
 
 class ShareButton extends StatelessWidget {
-  const ShareButton({super.key});
+  const ShareButton(this.userId, {super.key});
+
+  final UserId userId;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        final cubit = context.read<AuthCtrl>().userData;
+        final sender = User(
+          id: cubit!.id!,
+          name: cubit.userName!,
+          avatarUrl: cubit.photoLink,
+        );
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ChatDetailPage(
+              User(
+                id: userId.id!,
+                avatarUrl: userId.photoLink,
+                name: userId.userName!,
+              ),
+              sender: sender,
+            ),
+          ),
+        );
+      },
       borderRadius: BorderRadius.circular(AppSize.s12),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -313,14 +301,7 @@ class ShareButton extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(
-              AppAssets.share,
-            ),
-            const SizedBox(height: AppHeight.h4),
-            Text(
-              'مشاركة',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            Lottie.asset(AppAssets.chat, height: 50),
           ],
         ),
       ),
@@ -388,48 +369,54 @@ class ItemBanner extends StatelessWidget {
   }
 }
 
-class CountryItem extends StatelessWidget {
-  const CountryItem({
-    required this.name,
-    required this.flag,
-    super.key,
-  });
+class ImgCard2 extends StatefulWidget {
+  const ImgCard2(this.images, {super.key});
 
-  final String flag;
-  final String name;
+  final List<String> images;
+
+  @override
+  State<ImgCard2> createState() => _ImgCard2State();
+}
+
+class _ImgCard2State extends State<ImgCard2> {
+  int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(AppMargin.m8),
-      height: AppHeight.h40,
-      width: AppWidth.w128,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSize.s20),
-        border: Border.all(
-          color: AppColors.black,
-          width: AppWidth.w1_5,
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        CustomCacheImage(
+          imageUrl: widget.images[currentIndex],
+          radius: AppSize.s30,
+          topRight: false,
+          topLeft: false,
+          height: 250,
+          width: double.infinity,
         ),
-        color: Colors.transparent,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CircleAvatar(
-            radius: AppSize.s14,
-            child: CustomCacheImage(
-              imageUrl: flag,
-              height: AppHeight.h28,
-              width: AppWidth.w28,
-              radius: AppSize.s100,
+        CircleAvatar(
+          backgroundColor: Colors.white54,
+          child: IconButton(
+            onPressed: () {
+              setState(() {});
+              if (currentIndex == widget.images.length - 1) {
+                currentIndex = 0;
+              } else {
+                currentIndex++;
+              }
+            },
+            icon: Icon(
+              CupertinoIcons.arrow_right_circle,
+              color: AppColors.primary,
             ),
           ),
-          Text(
-            name,
-            style: Theme.of(context).textTheme.titleSmall,
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 }

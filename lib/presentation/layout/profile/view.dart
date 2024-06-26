@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:donation/app/config.dart';
+import 'package:donation/controller/notification.dart';
 import 'package:donation/controller/theme.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:donation/presentation/auth/auth_view_model.dart';
+import 'package:donation/presentation/layout/home/view_model.dart';
 import 'package:donation/presentation/layout/profile/language.dart';
 import 'package:donation/presentation/layout/profile/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -45,7 +49,7 @@ class ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(AppStrings.profile).tr(),
+        title: const Text(AppStrings.profile).tr(),
       ),
       body: SafeArea(
         child: AnimationLimiter(
@@ -67,7 +71,7 @@ class ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               children: [
-                false ? const GuestUserUI() : const UserUI(),
+                const UserUI(),
                 Text(
                   AppStrings.generalSettings.tr(),
                   style: Theme.of(context).textTheme.titleLarge,
@@ -79,7 +83,9 @@ class ProfilePageState extends State<ProfilePage> {
                   label: AppStrings.bookmarks,
                   icon: Feather.bookmark,
                   color: Colors.blueGrey,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Routes.bookmark);
+                  },
                 ),
                 const Divider(
                   height: AppHeight.h4,
@@ -104,7 +110,7 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                   trailing: Switch.adaptive(
                     activeColor: Theme.of(context).primaryColor,
-                    value: context.watch<ThemeCtrl>().state,
+                    value: context.read<ThemeCtrl>().state,
                     onChanged: (bool b) =>
                         context.read<ThemeCtrl>().changeTheme(),
                   ),
@@ -112,28 +118,35 @@ class ProfilePageState extends State<ProfilePage> {
                 const Divider(
                   height: AppHeight.h4,
                 ),
-                ListTile(
-                  title: Text(
-                    AppStrings.getNotification.tr(),
-                    style: Theme.of(context).textTheme.displayMedium,
-                  ),
-                  leading: Container(
-                    height: AppHeight.h30,
-                    width: AppWidth.w30,
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurpleAccent,
-                      borderRadius: BorderRadius.circular(AppSize.s4),
-                    ),
-                    child: Icon(
-                      LineIcons.bell,
-                      size: AppSize.s20,
-                      color: AppColors.white,
-                    ),
-                  ),
-                  trailing: Switch.adaptive(
-                      activeColor: Theme.of(context).primaryColor,
-                      value: true,
-                      onChanged: (bool newValue) {}),
+                BlocBuilder<NotificationCtrl, bool>(
+                  builder: (context, state) {
+                    return ListTile(
+                      title: Text(
+                        AppStrings.getNotification.tr(),
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      leading: Container(
+                        height: AppHeight.h30,
+                        width: AppWidth.w30,
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurpleAccent,
+                          borderRadius: BorderRadius.circular(AppSize.s4),
+                        ),
+                        child: Icon(
+                          LineIcons.bell,
+                          size: AppSize.s20,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      trailing: Switch.adaptive(
+                        activeColor: Theme.of(context).primaryColor,
+                        value: context.read<NotificationCtrl>().state,
+                        onChanged: (bool b) => context
+                            .read<NotificationCtrl>()
+                            .changeNotification(b, AuthCtrl.usrId!),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(
                   height: AppHeight.h2_5,
@@ -157,10 +170,7 @@ class ProfilePageState extends State<ProfilePage> {
                   label: AppStrings.contactUs,
                   icon: Feather.mail,
                   onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      Routes.contactUs,
-                          (route) => false,
-                    );
+                    AppService.openEmailSupport(context);
                   },
                   color: Colors.blueAccent,
                 ),
@@ -205,7 +215,7 @@ class ProfilePageState extends State<ProfilePage> {
                     AppConfigs.ourWebsiteUrl,
                   ),
                 ),
-                false ? Container() : const SecurityOption(),
+                const SecurityOption(),
               ],
             ),
           ),
@@ -246,7 +256,9 @@ class GuestUserUI extends StatelessWidget {
         Item(
           label: AppStrings.login,
           icon: Feather.user,
-          onTap: () {},
+          onTap: () {
+            context.read<AuthCtrl>().getUsrData();
+          },
           color: Colors.blueAccent,
         ),
         const SizedBox(
@@ -262,70 +274,90 @@ class UserUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimationLimiter(
-      child: Column(
-        children: AnimationConfiguration.toStaggeredList(
-          duration: const Duration(
-            milliseconds: AppConstants.durationAnimationDelay5,
-          ),
-          childAnimationBuilder: (widget) => SlideAnimation(
-            horizontalOffset: AppSize.s50,
-            child: FadeInAnimation(
-              child: widget,
-            ),
-          ),
-          children: [
-            SizedBox(
-              height: AppHeight.h200,
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: AppSize.s60,
-                    backgroundColor: Colors.grey[300],
-                    backgroundImage: const AssetImage(AppAssets.logo2),
-                  ),
-                  const SizedBox(
-                    height: AppHeight.h16,
-                  ),
-                  Text(
-                    'Mohamed Ashmawi',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  )
-                ],
+    return BlocBuilder<AuthCtrl, AuthStates>(
+      buildWhen: (_, current) => current is AuthLoginSuccessState,
+      builder: (context, state) {
+        final usr = context.read<AuthCtrl>().userData;
+        if (usr == null) {
+          return const GuestUserUI();
+        }
+        final img = usr.photoLink;
+        return AnimationLimiter(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              duration: const Duration(
+                milliseconds: AppConstants.durationAnimationDelay5,
               ),
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: AppSize.s50,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
+              children: [
+                SizedBox(
+                  height: AppHeight.h200,
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 62,
+                        child: CircleAvatar(
+                          radius: AppSize.s60,
+                          backgroundColor: Colors.grey[300],
+                          backgroundImage: CachedNetworkImageProvider(
+                            img == null || img.isEmpty
+                                ? AppConfigs.defaultImg
+                                : img,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: AppHeight.h16,
+                      ),
+                      Text(
+                        usr.userName ?? AppStrings.usrName.tr(),
+                        style: Theme.of(context).textTheme.titleLarge,
+                      )
+                    ],
+                  ),
+                ),
+                Item(
+                  label: usr.email ?? AppStrings.usrEmail.tr(),
+                  icon: Feather.mail,
+                  color: Colors.blueAccent,
+                ),
+                const Divider(
+                  height: AppHeight.h4,
+                ),
+                Item(
+                  label: AppStrings.editProfile,
+                  icon: Feather.edit_3,
+                  color: Colors.purpleAccent,
+                  onTap: () {
+                    context.read<AuthCtrl>().nameCtrl.text =
+                        usr.userName ?? "User Name";
+
+                    Navigator.pushNamed(context, Routes.editProfile);
+                  },
+                ),
+                const Divider(
+                  height: AppHeight.h4,
+                ),
+                Item(
+                  label: AppStrings.logout,
+                  icon: Feather.log_out,
+                  onTap: () {
+                    openLogoutDialog(context);
+                  },
+                ),
+                const SizedBox(
+                  height: AppHeight.h16,
+                )
+              ],
             ),
-            Item(
-              label: 'mohamedashmawy918@gmail.com',
-              icon: Feather.mail,
-              color: Colors.blueAccent,
-              onTap: () {},
-            ),
-            const Divider(
-              height: AppHeight.h4,
-            ),
-            Item(
-              label: AppStrings.editProfile,
-              icon: Feather.edit_3,
-              color: Colors.purpleAccent,
-              onTap: () {},
-            ),
-            const Divider(
-              height: AppHeight.h4,
-            ),
-            Item(
-              label: AppStrings.logout,
-              icon: Feather.log_out,
-              onTap: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    Routes.loginRoute, (route) => false);
-              },
-            ),
-            const SizedBox(
-              height: AppHeight.h16,
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -333,28 +365,46 @@ class UserUI extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final theme = Theme.of(context).textTheme;
         return AlertDialog(
-          title: Text(AppStrings.logoutTitle.tr()),
+          title: Text(
+            AppStrings.logoutTitle.tr(),
+            style: theme.labelLarge!.copyWith(
+              color: AppColors.primary,
+            ),
+          ),
           actions: [
             TextButton(
-              child: Text(AppStrings.no.tr()),
+              child: Text(
+                AppStrings.no.tr(),
+                style: theme.bodyMedium!.copyWith(
+                  color: AppColors.grey,
+                ),
+              ),
               onPressed: () => Navigator.pop(context),
             ),
-            TextButton(
-              child: Text(AppStrings.yes.tr()),
-              onPressed: () async {
-                // await context
-                //     .read<SignInBloc>()
-                //     .userSignout()
-                //     .then((value) =>
-                //         context.read<SignInBloc>().afterUserSignOut())
-                //     .then((value) {
-                //   Navigator.pop(context);
-                //   if (context.read<ThemeBloc>().darkTheme == true) {
-                //     context.read<ThemeBloc>().toggleTheme();
-                //   }
-                //   nextScreenCloseOthers(context, WelcomePage());
-                // });
+            BlocConsumer<AuthCtrl, AuthStates>(
+              listenWhen: (_, current) => current is AuthLogoutSuccessState,
+              buildWhen: (_, current) => current is AuthLogoutLoadingState,
+              listener: (context, state) {
+                if (state is AuthLogoutSuccessState) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      Routes.loginRoute, (route) => false);
+                }
+              },
+              builder: (context, state) {
+                return TextButton(
+                  child: Text(
+                    AppStrings.yes.tr(),
+                    style: theme.bodyMedium!.copyWith(
+                      color: AppColors.error,
+                    ),
+                  ),
+                  onPressed: () {
+                    context.read<HomeCtrl>().postBox.clear();
+                    context.read<AuthCtrl>().logout();
+                  },
+                );
               },
             )
           ],
@@ -400,12 +450,14 @@ class Item extends StatelessWidget {
           color: AppColors.white,
         ),
       ),
-      trailing: Icon(
-        context.locale.countryCode == "US"
-            ? Entypo.chevron_right
-            : Feather.chevron_left,
-        size: AppSize.s20,
-      ),
+      trailing: onTap == null
+          ? null
+          : Icon(
+              context.locale.countryCode == "US"
+                  ? Entypo.chevron_right
+                  : Feather.chevron_left,
+              size: AppSize.s20,
+            ),
       onTap: onTap,
     );
   }

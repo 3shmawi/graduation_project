@@ -1,4 +1,5 @@
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/domain/model/post_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchVM extends Cubit<AppCubitStates> {
@@ -40,10 +41,14 @@ class SearchVM extends Cubit<AppCubitStates> {
     emit(RemoveFromSearchListState());
   }
 
-  Future<List> getData() async {
-    List data = [];
-
-    return data;
+  Future<List> getData(List<Document> posts) async {
+    return posts
+        .where((post) =>
+            post.content!.toLowerCase().contains(_searchText.toLowerCase()) ||
+            post.userID!.userName!
+                .toLowerCase()
+                .contains(_searchText.toLowerCase()))
+        .toList();
   }
 
   setSearchText(value) {

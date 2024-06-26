@@ -1,4 +1,6 @@
 import 'package:donation/presentation/layout/home/search/view_model.dart';
+import 'package:donation/presentation/layout/home/view.dart';
+import 'package:donation/presentation/layout/home/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -107,7 +109,7 @@ class SuggestionsUI extends StatelessWidget {
     final sb = context.watch<SearchVM>();
     return Expanded(
       child: sb.recentSearchData.isEmpty
-          ? EmptyPage(
+          ? const EmptyPage(
               icon: Feather.search,
               message: AppStrings.search,
               message1: AppStrings.searchDesc,
@@ -119,13 +121,14 @@ class SuggestionsUI extends StatelessWidget {
                 height: AppHeight.h8,
               ),
               itemBuilder: (BuildContext context, int index) {
+                int reverseIndex = sb.recentSearchData.length - 1 - index;
                 return Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).canvasColor,
                   ),
                   child: ListTile(
                     title: Text(
-                      sb.recentSearchData[index],
+                      sb.recentSearchData[reverseIndex],
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     leading: Icon(
@@ -135,15 +138,14 @@ class SuggestionsUI extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () {
-                        context
-                            .read<SearchVM>()
-                            .removeFromSearchList(sb.recentSearchData[index]);
+                        context.read<SearchVM>().removeFromSearchList(
+                            sb.recentSearchData[reverseIndex]);
                       },
                     ),
                     onTap: () {
                       context
                           .read<SearchVM>()
-                          .setSearchText(sb.recentSearchData[index]);
+                          .setSearchText(sb.recentSearchData[reverseIndex]);
                     },
                   ),
                 );
@@ -158,43 +160,50 @@ class AfterSearchUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: FutureBuilder(
-        future: context.watch<SearchVM>().getData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data.length == 0) {
-              return EmptyPage(
-                icon: Feather.clipboard,
-                message: AppStrings.noResults,
-                message1: AppStrings.tryAgain,
-              );
-            } else {
+    return BlocBuilder<HomeCtrl, HomeStates>(
+      buildWhen: (_, current) => current is GetPostsLoadedState,
+      builder: (context, state) {
+        return Expanded(
+          child: FutureBuilder(
+            future: context
+                .watch<SearchVM>()
+                .getData(context.read<HomeCtrl>().posts),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data.length == 0) {
+                  return const EmptyPage(
+                    icon: Feather.clipboard,
+                    message: AppStrings.noResults,
+                    message1: AppStrings.tryAgain,
+                  );
+                } else {
+                  return ListView.separated(
+                    padding: const EdgeInsets.all(AppPadding.p12),
+                    itemCount: snapshot.data.length,
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: AppHeight.h14,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return SocialPostItem(snapshot.data[index]);
+                    },
+                  );
+                }
+              }
               return ListView.separated(
-                padding: const EdgeInsets.all(AppPadding.p12),
-                itemCount: snapshot.data.length,
-                separatorBuilder: (context, index) => const SizedBox(
+                padding: const EdgeInsets.all(15),
+                itemCount: 10,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(
                   height: AppHeight.h14,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return const SizedBox();
+                  return const LoadingCard(height: AppHeight.h110);
                 },
               );
-            }
-          }
-          return ListView.separated(
-            padding: const EdgeInsets.all(15),
-            itemCount: 10,
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(
-              height: AppHeight.h14,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return const LoadingCard(height: AppHeight.h110);
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

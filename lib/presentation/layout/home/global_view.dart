@@ -1,5 +1,6 @@
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/_resources/component/empty_page.dart';
+import 'package:donation/presentation/layout/home/comments/view_model.dart';
 import 'package:donation/presentation/layout/home/view.dart';
 import 'package:donation/presentation/layout/home/view_model.dart';
 
@@ -8,11 +9,13 @@ import '../../_resources/component/loading_card.dart';
 class GlobalView extends StatelessWidget {
   const GlobalView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () async => context.read<HomeCtrl>().getPosts(),
+      onRefresh: () async {
+        context.read<HomeCtrl>().getPosts();
+        context.read<CommentsCtrl>().getComments();
+      },
       child: BlocBuilder<HomeCtrl, HomeStates>(
         buildWhen: (_, current) =>
             current is GetPostsLoadingState ||
@@ -43,7 +46,9 @@ class GlobalView extends StatelessWidget {
                 left: AppPadding.p20,
               ),
               itemBuilder: (context, index) {
-                return SocialPostItem(state.posts[index],);
+                return SocialPostItem(
+                  state.posts[index],
+                );
               },
               itemCount: state.posts.length,
             );
@@ -52,7 +57,10 @@ class GlobalView extends StatelessWidget {
             icon: Icons.post_add_outlined,
             message: "No Posts yet",
             message1: "refresh",
-            onPressed: context.read<HomeCtrl>().getPosts,
+            onPressed: () {
+              context.read<HomeCtrl>().getPosts();
+              context.read<CommentsCtrl>().getComments();
+            },
           );
         },
       ),

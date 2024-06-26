@@ -1,11 +1,16 @@
-import 'package:donation/presentation/_resources/component/button.dart';
+import 'package:donation/app/config.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
+import 'package:donation/presentation/_resources/component/empty_page.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:donation/presentation/auth/auth_view_model.dart';
+import 'package:donation/presentation/layout/campaign/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../app/functions.dart';
 import '../../../app/global_imports.dart';
+import '../../_resources/component/loading_card.dart';
 
 class CampaignPage extends StatefulWidget {
   const CampaignPage({super.key});
@@ -15,41 +20,17 @@ class CampaignPage extends StatefulWidget {
 }
 
 class _CampaignPageState extends State<CampaignPage> {
-  final List<Test> current = [
-    Test(
-      'https://plus.unsplash.com/premium_photo-1682125773446-259ce64f9dd7?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGVkdWNhdGlvbnxlbnwwfHwwfHx8MA%3D%3D',
-      'املأ حقيبة بالعلم والأمل',
-      'حملة التبرع بالعدة المدرسية',
-    ),
-    Test(
-      'https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGhvc3BpdGFsfGVufDB8fDB8fHww',
-      'ابنى الامل',
-      'هذة الحملة تم تفعيلها لبناء الامل للمستشفيات فى جلب احدث اجهزة اشعة',
-    ),
-    Test(
-      'https://images.unsplash.com/photo-1655720359248-eeace8c709c5?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nzh8fHNvbGlkYXJpdHl8ZW58MHx8MHx8fDA%3D',
-      'لقاءات تغير حياة',
-      'حملة كفالة اليتيم',
-    ),
-  ];
+  int calculateCrossAxisCount(BuildContext context) {
+    final screenWidth = Dimensions.screenWidth(context);
 
-  List<String> categoriesLabel = [
-    AppStrings.solidarity,
-    AppStrings.health,
-    AppStrings.education,
-    AppStrings.development,
-    AppStrings.diggingWell,
-    AppStrings.algarmin,
-  ];
-  List<String> categoriesIcon = [
-    AppAssets.solidarity,
-    AppAssets.health,
-    AppAssets.education,
-    AppAssets.development,
-    AppAssets.diggingWell,
-    AppAssets.algarmin,
-  ];
-  int currentIndex = 0;
+    if (screenWidth > 1200) {
+      return 4;
+    } else if (screenWidth > 768) {
+      return 3;
+    } else {
+      return 2;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,14 +67,17 @@ class _CampaignPageState extends State<CampaignPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const SizedBox(
+                            height: AppSize.s14,
+                          ),
                           Text(
-                            AppStrings.donationMess1,
+                            AppStrings.donationMess1.tr(),
                             maxLines: 1,
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
                           const SizedBox(height: AppHeight.h4),
                           Text(
-                            AppStrings.donationMess2,
+                            AppStrings.donationMess2.tr(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headlineMedium,
@@ -101,14 +85,21 @@ class _CampaignPageState extends State<CampaignPage> {
                         ],
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.notifications,
-                        color: AppColors.white,
-                        size: AppSize.s28,
+                    if (context.read<AuthCtrl>().userData!.userType ==
+                        "organization")
+                      FloatingActionButton(
+                        elevation: 0,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            Routes.createCampaign,
+                          );
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: AppColors.white,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -149,29 +140,33 @@ class _CampaignPageState extends State<CampaignPage> {
                     padding: const EdgeInsets.only(top: AppPadding.p35),
                     scrollDirection: Axis.horizontal,
                     child: AnimationLimiter(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: AnimationConfiguration.toStaggeredList(
-                          duration: const Duration(milliseconds: 500),
-                          childAnimationBuilder: (widget) => SlideAnimation(
-                            horizontalOffset: 50.0,
-                            child: FadeInAnimation(
-                              child: widget,
+                      child: BlocBuilder<CampaignsCtrl, CampaignsStates>(
+                        builder: (context, state) {
+                          final cubit = context.read<CampaignsCtrl>();
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: AnimationConfiguration.toStaggeredList(
+                              duration: const Duration(milliseconds: 500),
+                              childAnimationBuilder: (widget) => SlideAnimation(
+                                horizontalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: widget,
+                                ),
+                              ),
+                              children: List.generate(
+                                AppConfigs.campaignCategories.length,
+                                (index) => Item(
+                                  onTap: () {
+                                    cubit.changeFilterIndex(index);
+                                  },
+                                  isSelected: index == cubit.currentFilterIndex,
+                                  icon: AppConfigs.campaignIcons[index],
+                                  label: AppConfigs.campaignCategories[index],
+                                ),
+                              ),
                             ),
-                          ),
-                          children: List.generate(
-                            categoriesIcon.length,
-                            (index) => Item(
-                              onTap: () {
-                                currentIndex = index;
-                                setState(() {});
-                              },
-                              isSelected: index == currentIndex,
-                              icon: categoriesIcon[index],
-                              label: categoriesLabel[index],
-                            ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -193,41 +188,169 @@ class _CampaignPageState extends State<CampaignPage> {
                 ),
               ),
               children: [
-                HeadTitle(title: AppStrings.currentDonation),
-                SizedBox(
-                  height: AppHeight.h235,
-                  child: ListView.builder(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => CurrentDonationItem(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(Routes.campaignDetailsRoute),
-                      img: current[index].img,
-                      title: current[index].title,
-                      subTitle: current[index].subTitle,
+                Row(
+                  children: [
+                    const HeadTitle(title: AppStrings.currentDonation),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: context.read<CampaignsCtrl>().getCampaigns,
+                      child: const Text(
+                        "REFRESH",
+                      ),
                     ),
-                    itemCount: current.length,
-                  ),
+                  ],
                 ),
-                HeadTitle(
-                  title: AppStrings.products,
-                  width: AppWidth.w40,
-                ),
-                SizedBox(
-                  height: AppHeight.h327,
-                  child: ListView.builder(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => ProductItem(
-                      title: current[index].title,
-                      subTitle: current[index].subTitle,
-                      balance: '400 جنية',
-                      img: current[index].img,
-                    ),
-                    itemCount: current.length,
-                  ),
+                BlocBuilder<CampaignsCtrl, CampaignsStates>(
+                  buildWhen: (_, current) =>
+                      current is GetCampaignsLoadingState ||
+                      current is GetCampaignsLoadedState ||
+                      current is GetCampaignsErrorState,
+                  builder: (context, state) {
+                    final cubit = context.read<CampaignsCtrl>();
+                    if (state is GetCampaignsLoadingState) {
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppPadding.p14,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: calculateCrossAxisCount(context),
+                          mainAxisSpacing:
+                              Dimensions.heightPercentage(context, 1),
+                          crossAxisSpacing:
+                              Dimensions.widthPercentage(context, 1),
+                          childAspectRatio: 0.7,
+                        ),
+                        itemBuilder: (context, index) {
+                          return const LoadingCard(height: 300);
+                        },
+                        itemCount: 4,
+                      );
+                    }
+                    if (state is GetCampaignsLoadedState) {
+                      if (state.campaigns.isNotEmpty) {
+                        return RefreshIndicator(
+                          onRefresh: () async => cubit.getCampaigns(),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppPadding.p14,
+                            ),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: calculateCrossAxisCount(context),
+                              mainAxisSpacing:
+                                  Dimensions.heightPercentage(context, 1),
+                              crossAxisSpacing:
+                                  Dimensions.widthPercentage(context, 1),
+                              childAspectRatio: 0.7,
+                            ),
+                            itemBuilder: (context, index) {
+                              return Stack(
+                                children: [
+                                  CardItem(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                        Routes.campaignDetailsRoute,
+                                        arguments: state.campaigns[index],
+                                      );
+                                    },
+                                    icon: state
+                                        .campaigns[index].photosLink!.first,
+                                    title: state.campaigns[index].title!,
+                                  ),
+                                  if (AuthCtrl.usrId ==
+                                      state.campaigns[index].userID!.id!)
+                                    CircleAvatar(
+                                      backgroundColor: Colors.red,
+                                      radius: AppSize.s20,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.close,
+                                          color: AppColors.white,
+                                        ),
+                                        onPressed: () {
+                                          //alart sure
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  "Are you sure?",
+                                                  style: TextStyle(
+                                                    color: AppColors.primary,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                content: Text(
+                                                  "You will not be able to recover this campaign!",
+                                                  style: TextStyle(
+                                                    color: AppColors.error,
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      "Cancel",
+                                                      style: TextStyle(
+                                                        color: AppColors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      cubit.deleteCampaigns(
+                                                        state.campaigns[index],
+                                                      );
+                                                    },
+                                                    child: Text(
+                                                      "Delete",
+                                                      style: TextStyle(
+                                                        color: AppColors.error,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    )
+                                ],
+                              );
+                            },
+                            itemCount: state.campaigns.length,
+                          ),
+                        );
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 100.0),
+                        child: EmptyPage(
+                          icon: Icons.campaign,
+                          message: "No campaign available",
+                          message1: "______",
+                        ),
+                      );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 100.0),
+                      child: EmptyPage(
+                        icon: Icons.campaign,
+                        message: "An error happened",
+                        message1: "REFRESH",
+                        onPressed: cubit.getCampaigns,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -268,20 +391,15 @@ class Item extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSize.s12),
         child: Column(
           children: [
-            icon.startsWith('http')
-                ? CustomCacheImage(
-                    imageUrl: icon,
-                    radius: AppSize.s8,
-                  )
-                : SvgPicture.asset(
-                    icon,
-                    colorFilter: ColorFilter.mode(
-                      isSelected ? AppColors.white : AppColors.grey,
-                      BlendMode.srcIn,
-                    ),
-                    height: AppHeight.h40,
-                    width: AppWidth.w40,
-                  ),
+            SvgPicture.asset(
+              icon,
+              colorFilter: ColorFilter.mode(
+                isSelected ? AppColors.white : AppColors.grey,
+                BlendMode.srcIn,
+              ),
+              height: AppHeight.h40,
+              width: AppWidth.w40,
+            ),
             const Divider(color: Colors.deepPurple),
             const Spacer(),
             Text(
@@ -321,7 +439,7 @@ class HeadTitle extends StatelessWidget {
             Text(
               title,
               style: Theme.of(context).textTheme.titleLarge,
-            ),
+            ).tr(),
             const SizedBox(height: AppHeight.h4),
             Container(
               height: 2,
@@ -335,142 +453,111 @@ class HeadTitle extends StatelessWidget {
   }
 }
 
-class CurrentDonationItem extends StatelessWidget {
-  const CurrentDonationItem({
-    required this.img,
+class CardItem extends StatefulWidget {
+  const CardItem({
+    required this.icon,
     required this.title,
-    required this.subTitle,
     this.onTap,
     super.key,
   });
 
-  final String img;
-  final String title;
-  final String subTitle;
   final GestureTapCallback? onTap;
+  final String icon;
+  final String title;
+
+  @override
+  State<CardItem> createState() => _CardItemState();
+}
+
+class _CardItemState extends State<CardItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  late Animation<double> _animation2;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    _animation = Tween<double>(begin: 0, end: 1)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut))
+      ..addListener(() {
+        setState(() {});
+      });
+
+    _animation2 = Tween<double>(begin: -30, end: 0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppSize.s12),
-      splashColor: AppColors.white,
-      child: Container(
-        padding: const EdgeInsets.all(AppPadding.p12),
-        width: AppWidth.w200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomCacheImage(
-              imageUrl: img,
-              height: AppHeight.h128,
-              radius: AppSize.s12,
-            ),
-            const SizedBox(height: AppHeight.h12),
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: AppHeight.h8),
-            Expanded(
-              child: Text(
-                subTitle,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.labelSmall,
+    final double w = MediaQuery.sizeOf(context).width;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppPadding.p12),
+      child: Opacity(
+        opacity: _animation.value,
+        child: Transform.translate(
+          offset: Offset(0, _animation2.value),
+          child: InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: widget.onTap,
+            child: SizedBox(
+              height: w / 1.5,
+              child: Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    CustomCacheImage(
+                      imageUrl: widget.icon,
+                      height: w / 1.1,
+                      width: double.infinity,
+                      radius: 25,
+                    ),
+                    Container(
+                      height: AppHeight.h35,
+                      decoration: const BoxDecoration(
+                        color: Colors.black38,
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(25),
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.title,
+                          maxLines: 1,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
-
-class ProductItem extends StatelessWidget {
-  const ProductItem({
-    required this.title,
-    required this.subTitle,
-    required this.balance,
-    required this.img,
-    super.key,
-  });
-
-  final String title;
-  final String subTitle;
-  final String balance;
-  final String img;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppPadding.p12),
-      width: AppWidth.w200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomCacheImage(
-            imageUrl: img,
-            radius: AppSize.s12,
-            height: AppHeight.h100,
-          ),
-          const SizedBox(height: AppHeight.h12),
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: AppHeight.h8),
-          Expanded(
-            child: Text(
-              subTitle,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppPadding.p12,
-              vertical: AppPadding.p20,
-            ),
-            child: Row(
-              children: [
-                SvgPicture.asset(AppAssets.ticket),
-                const Spacer(),
-                Text(
-                  balance,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        fontSize: FontSize.s20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ],
-            ),
-          ),
-          CustomButton(
-            label: AppStrings.donate,
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Test {
-  String title;
-  String subTitle;
-  String img;
-
-  Test(this.img, this.title, this.subTitle);
 }

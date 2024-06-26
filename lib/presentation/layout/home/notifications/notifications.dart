@@ -1,108 +1,207 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:donation/app/api.dart';
 import 'package:donation/app/global_imports.dart';
-import 'package:donation/presentation/_resources/routes_manager.dart';
+import 'package:donation/domain/model/notification.dart';
+import 'package:donation/domain/model/post_model.dart';
+import 'package:donation/presentation/layout/home/notifications/view_model.dart';
+import 'package:donation/presentation/layout/home/view.dart';
+import 'package:donation/services/dio_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import '../../../_resources/values_manager.dart';
-class Notifications extends StatefulWidget {
+import '../../../../app/functions.dart';
+import '../../../_resources/component/empty_page.dart';
+import '../../../_resources/component/loading_card.dart';
+import '../../chats/details.dart';
+import '../../chats/view.dart';
+
+class Notifications extends StatelessWidget {
   const Notifications({super.key});
 
   @override
-  State<Notifications> createState() => _NotificationsState();
-}
-
-class _NotificationsState extends State<Notifications> {
-  late List<Notification> notifications;
-  @override
   Widget build(BuildContext context) {
-    const itemName = '3bdo 7abib';
-    const imageUrl =
-        'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8'; // Replace with your image URL
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(AppStrings.notification).tr(),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(Routes.searchRoute);
-            },
-            icon: Icon(Icons.search),
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: ListView.builder(
-          itemCount: 10,
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
-          itemBuilder: (context, index) {
-            return Item(
-              onTap: () {},
-              img: imageUrl,
-              name: itemName,
-              notificationItem: ' there is new notifications !there is new notifications !there is new notifications !there is new notifications !',
-
-            );
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
           },
+          icon: const Icon(Icons.arrow_back_ios_new),
         ),
+        title: const Text(AppStrings.notification).tr(),
+      ),
+      body: StreamBuilder<List<NotificationModel>>(
+        stream: HandleNotification().getNotifications(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            final data = snapshot.data;
+            if (data != null) {
+              if (data.isNotEmpty) {
+                return AnimationLimiter(
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+                    itemBuilder: (context, index) {
+                      const imageUrl =
+                          'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8';
+
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: Item(
+                              isOpened: data[index].isRead,
+                              onTap: () {
+                                FirebaseFirestore.instance
+                                    .collection("users")
+                                    .doc(data[index].to!.id)
+                                    .collection("notifications")
+                                    .doc(data[index].id)
+                                    .update({"isRead": true});
+                                if (data[index].type == "message") {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChatDetailPage(data[index].from!),
+                                    ),
+                                  );
+                                } else if (data[index].type == "like") {
+                                  _showBottomSheet(context, data[index].postId,
+                                      data[index].commentId);
+                                } else {
+                                  _showBottomSheet(context, data[index].postId,
+                                      data[index].commentId);
+                                }
+                              },
+                              isStartWithArabic:
+                                  isStartWithArabic(data[index].from!.name),
+                              img: data[index].from!.avatarUrl!.isEmpty
+                                  ? imageUrl
+                                  : data[index].from!.avatarUrl!,
+                              name: data[index].from!.name,
+                              lastMessage: data[index].title,
+                              date: data[index].createdAt,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+              return const EmptyPage(
+                icon: Entypo.notification,
+                message: "No Notification found",
+                message1: "......",
+              );
+            }
+            return const EmptyPage(
+              icon: Entypo.notification,
+              message: "An error happened",
+              message1: "_____",
+            );
+          }
+          return AnimationLimiter(
+            child: ListView.separated(
+              itemCount: 10,
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 15);
+              },
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+              itemBuilder: (context, index) {
+                return const LoadingCard(height: 100);
+              },
+            ),
+          );
+        },
       ),
     );
   }
-}
 
-class Item extends StatelessWidget {
-  const Item({
-    required this.img,
-    required this.name,
-    required this.notificationItem,
-    this.onTap,
-    super.key,
-  });
-
-  final String name;
-  final String notificationItem;
-  final String img;
-  final GestureTapCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      horizontalTitleGap: 0,
-      contentPadding: const EdgeInsets.symmetric(vertical: AppPadding.p8),
-      titleAlignment: ListTileTitleAlignment.center,
-      subtitle: Row(
-        children: [
-          Expanded(
-            child: Text(
-              notificationItem,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(fontSize: FontSize.s14),
+  void _showBottomSheet(
+      BuildContext context, String? postId, String? commentId) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          height: MediaQuery.sizeOf(context).height * 0.5,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
             ),
           ),
-          Text(
-            "01:00",
-            style: Theme.of(context).textTheme.labelSmall,
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Spacer(),
+                  const Spacer(),
+                  const Spacer(),
+                  Text(
+                    'Notification Detail',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+              Divider(
+                color: AppColors.primary,
+                height: 5,
+              ),
+              const SizedBox(height: AppSize.s25),
+              FutureBuilder<Document>(
+                  future: _getCommentOrPost(postId, commentId),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return SocialPostItem(
+                          snapshot.data,
+                          isPost: postId != null,
+                        );
+                      } else {
+                        return const EmptyPage(
+                          icon: Icons.error_outline,
+                          message: "An Error happened",
+                          message1: "try again later",
+                        );
+                      }
+                    }
+                    return const LoadingCard(height: 200);
+                  }),
+            ],
           ),
-        ],
-      ),
-      title: Text(name,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .copyWith(fontSize: FontSize.s20)),
-      leading: CircleAvatar(
-        radius: AppSize.s40,
-        backgroundColor: AppColors.grey,
-        backgroundImage: CachedNetworkImageProvider(img),
-      ),
-      onTap: onTap,
+        );
+      },
     );
+  }
+
+  Future<Document> _getCommentOrPost(String? postId, String? commentId) async {
+    final _http = HttpUtil();
+    if (postId != null) {
+      final response = await _http.get(ApiUrl.getPosts + postId);
+      return Document.fromJson(response["data"]["document"]);
+    } else {
+      final response = await _http.get(ApiUrl.getComments + commentId!);
+      return Document.fromJson(response["data"]["document"]);
+    }
   }
 }

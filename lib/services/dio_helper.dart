@@ -26,6 +26,7 @@ class HttpUtil {
       },
     );
     _dio = Dio(options);
+
     _dio.interceptors
         .add(PrettyDioLogger(requestHeader: true, requestBody: true));
     _dio.interceptors.add(
@@ -62,9 +63,11 @@ class HttpUtil {
       throw "something went wrong";
     } catch (e) {
       if (e is DioException) {
-        ErrorEntity eInfo = createErrorEntity(e);
+        // ErrorEntity eInfo = createErrorEntity(e);
+        //
+        // onError(eInfo);
 
-        onError(eInfo);
+        ShowToast.error(e.response!.data["message"]!);
       }
       rethrow;
     }
@@ -96,9 +99,11 @@ class HttpUtil {
       throw "something went wrong";
     } catch (e) {
       if (e is DioException) {
-        ErrorEntity eInfo = createErrorEntity(e);
+        // ErrorEntity eInfo = createErrorEntity(e);
+        //
+        // onError(eInfo);
 
-        onError(eInfo);
+        ShowToast.error(e.response!.data["message"]!);
       }
       rethrow;
     }
@@ -122,9 +127,10 @@ class HttpUtil {
       throw "something went wrong";
     } catch (e) {
       if (e is DioException) {
-        ErrorEntity eInfo = createErrorEntity(e);
-
-        onError(eInfo);
+        // ErrorEntity eInfo = createErrorEntity(e);
+        //
+        // onError(eInfo);
+        ShowToast.error(e.response!.data["message"]!);
       }
       rethrow;
     }
@@ -156,9 +162,10 @@ class HttpUtil {
       throw "something went wrong";
     } catch (e) {
       if (e is DioException) {
-        ErrorEntity eInfo = createErrorEntity(e);
-
-        onError(eInfo);
+        // ErrorEntity eInfo = createErrorEntity(e);
+        //
+        // onError(eInfo);
+        ShowToast.error(e.response!.data["message"]!);
       }
       rethrow;
     }
@@ -186,9 +193,9 @@ class HttpUtil {
       throw "something went wrong";
     } catch (e) {
       if (e is DioException) {
-        ErrorEntity eInfo = createErrorEntity(e);
-
-        onError(eInfo);
+        // ErrorEntity eInfo = createErrorEntity(e);
+        // onError(eInfo);
+        ShowToast.error(e.response!.data["message"]!);
       }
       rethrow;
     }
@@ -226,7 +233,8 @@ ErrorEntity createErrorEntity(DioException error) {
     case DioExceptionType.badResponse:
       switch (error.response!.statusCode) {
         case 400:
-          return ErrorEntity(code: 400, message: "Bad request");
+          return ErrorEntity(
+              code: 400, message: error.response!.statusMessage!);
         case 401:
           return ErrorEntity(code: 401, message: "Permission denied");
         case 500:
