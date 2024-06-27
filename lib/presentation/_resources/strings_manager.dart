@@ -30,6 +30,7 @@ class AppStrings {
   static const usrName = 'usr_name';
   static const usrEmail = 'usr_email';
   static const usrPass = 'usr_pass';
+  static const usrLocation = 'usr_location';
   static const confirmPass = 'confirm_usr_pass';
   static const rememberAuth = 'auth_remember';
 

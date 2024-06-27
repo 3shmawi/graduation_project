@@ -77,7 +77,7 @@ class RouteGenerator {
       case Routes.forgotPasswordRoute:
         return _firstTransitionAnimation(
             settings, const ForgottenPasswordPage());
-        case Routes.successRoute:
+      case Routes.successRoute:
         return _secondTransitionAnimation(settings, const SuccessPage());
 
       //layout
@@ -98,7 +98,9 @@ class RouteGenerator {
 
       //search
       case Routes.searchRoute:
-        return FadeRoute1(const SearchPage());
+        return FadeRoute1(SearchPage(
+          myId: settings.arguments as String?,
+        ));
       //notifications
       case Routes.norifications:
         return FadeRoute3(const Notifications());

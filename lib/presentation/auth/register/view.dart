@@ -114,7 +114,8 @@ class RegisterPageState extends State<RegisterPage>
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: AppPadding.p20),
+                          vertical: AppPadding.p20,
+                        ),
                         child: AuthFormField(
                           controller: cubit.emailCtrl,
                           hintTxt: AppStrings.usrEmail,
@@ -122,11 +123,19 @@ class RegisterPageState extends State<RegisterPage>
                         ),
                       ),
                       AuthFormField(
+                        controller: cubit.locationCtrl,
+                        hintTxt: AppStrings.usrLocation,
+                        prefixIcon: Icons.location_history,
+                      ),
+                      const SizedBox(height: AppHeight.h20),
+
+                      AuthFormField(
                         controller: cubit.passwordCtrl,
                         hintTxt: AppStrings.usrPass,
                         prefixIcon: Icons.lock,
                         isPassword: true,
                       ),
+
                       const SizedBox(height: AppHeight.h20),
                       AuthFormField(
                         controller: cubit.confirmPasswordCtrl,

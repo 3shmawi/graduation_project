@@ -1,3 +1,4 @@
+import 'package:donation/presentation/_resources/component/toast.dart';
 import 'package:donation/presentation/layout/home/search/view_model.dart';
 import 'package:donation/presentation/layout/home/view.dart';
 import 'package:donation/presentation/layout/home/view_model.dart';
@@ -10,7 +11,9 @@ import '../../../_resources/component/empty_page.dart';
 import '../../../_resources/component/loading_card.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({this.myId, super.key});
+
+  final String? myId;
 
   @override
   SearchPageState createState() => SearchPageState();
@@ -19,8 +22,11 @@ class SearchPage extends StatefulWidget {
 class SearchPageState extends State<SearchPage> {
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 0))
-        .then((value) => context.read<SearchVM>().searchInitialize());
+    Future.delayed(const Duration(milliseconds: 0)).then((value) {
+      context.read<SearchVM>().searchInitialize();
+      context.read<SearchVM>().setSearchText("Your Posts");
+      context.read<SearchVM>().addToSearchList("Your Posts");
+    });
     super.initState();
   }
 
@@ -46,14 +52,18 @@ class SearchPageState extends State<SearchPage> {
               child: Text(
                 context.watch<SearchVM>().searchStarted == false
                     ? AppStrings.recentSearch
-                    : AppStrings.weHaveFound,
+                    : widget.myId == null
+                        ? AppStrings.weHaveFound
+                        : "Your Posts",
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.labelMedium,
               ).tr(),
             ),
             context.watch<SearchVM>().searchStarted == false
                 ? const SuggestionsUI()
-                : const AfterSearchUI()
+                : AfterSearchUI(
+                    myId: widget.myId,
+                  )
           ],
         ),
       ),
@@ -90,6 +100,7 @@ class SearchPageState extends State<SearchPage> {
         textInputAction: TextInputAction.search,
         onFieldSubmitted: (value) {
           if (value == '') {
+            ShowToast.info("Type something");
             // openSnacbar(context, 'Type something!');
           } else {
             context.read<SearchVM>().setSearchText(value);
@@ -156,7 +167,9 @@ class SuggestionsUI extends StatelessWidget {
 }
 
 class AfterSearchUI extends StatelessWidget {
-  const AfterSearchUI({super.key});
+  const AfterSearchUI({this.myId, super.key});
+
+  final String? myId;
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +178,13 @@ class AfterSearchUI extends StatelessWidget {
       builder: (context, state) {
         return Expanded(
           child: FutureBuilder(
-            future: context
-                .watch<SearchVM>()
-                .getData(context.read<HomeCtrl>().posts),
+            future: myId == null
+                ? context
+                    .watch<SearchVM>()
+                    .getData(context.read<HomeCtrl>().posts)
+                : context
+                    .watch<SearchVM>()
+                    .getMyData(context.read<HomeCtrl>().posts, myId!),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data.length == 0) {

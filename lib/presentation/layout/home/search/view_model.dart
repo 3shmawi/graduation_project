@@ -51,6 +51,18 @@ class SearchVM extends Cubit<AppCubitStates> {
         .toList();
   }
 
+  Future<List> getMyData(List<Document> posts, String id) async {
+    if (searchText != "Your Posts" && searchText.isNotEmpty) {
+      return posts
+          .where((post) =>
+              post.userID!.id! == id &&
+              post.content!.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+    } else {
+      return posts.where((post) => post.userID!.id! == id).toList();
+    }
+  }
+
   setSearchText(value) {
     _textFieldCtrl.text = value;
     _searchText = value;

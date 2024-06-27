@@ -330,6 +330,18 @@ class UserUI extends StatelessWidget {
                   height: AppHeight.h4,
                 ),
                 Item(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.searchRoute,
+                        arguments: usr.id);
+                  },
+                  label: "بوستاتك",
+                  icon: AntDesign.paperclip,
+                  color: Colors.deepOrange,
+                ),
+                const Divider(
+                  height: AppHeight.h4,
+                ),
+                Item(
                   label: AppStrings.editProfile,
                   icon: Feather.edit_3,
                   color: Colors.purpleAccent,
@@ -372,6 +384,15 @@ class UserUI extends StatelessWidget {
             style: theme.labelLarge!.copyWith(
               color: AppColors.primary,
             ),
+          ),
+          content: BlocBuilder<AuthCtrl, AuthStates>(
+            buildWhen: (_, current) => current is LogoutLoadingState,
+            builder: (context, state) {
+              if (state is LogoutLoadingState) {
+                return const LinearProgressIndicator();
+              }
+              return const SizedBox();
+            },
           ),
           actions: [
             TextButton(

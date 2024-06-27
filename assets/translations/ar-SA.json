@@ -28,6 +28,7 @@
   "usr_name":"اسم المستخدم",
   "usr_email":"البريد الإلكتروني",
   "usr_pass":"كلمة السر",
+  "usr_location":"محافظتك",
   "confirm_usr_pass":"تأكيد كلمة السر",
   "auth_remember":"حفظ عملية التسجيل!",
 

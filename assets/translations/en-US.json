@@ -30,6 +30,7 @@
   "usr_name": "User name",
   "usr_email": "Email Address",
   "usr_pass": "Password",
+  "usr_location": "Your Government",
   "confirm_usr_pass": "Confirm Password",
   "auth_remember": "Remember me!",
 

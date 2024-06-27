@@ -24,6 +24,7 @@ class AuthCtrl extends Cubit<AuthStates> {
   final nameCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
   final passwordCtrl = TextEditingController();
+  final locationCtrl = TextEditingController();
   final confirmPasswordCtrl = TextEditingController();
 
   Model? _model;
@@ -96,7 +97,7 @@ class AuthCtrl extends Cubit<AuthStates> {
           'userName': nameCtrl.text,
           'email': emailCtrl.text.trim(),
           'userType': isUser ? "user" : "organization",
-          'city': "Cairo",
+          'city': locationCtrl.text,
           'password': passwordCtrl.text,
           'passwordConfirm': confirmPasswordCtrl.text,
         },
@@ -129,6 +130,7 @@ class AuthCtrl extends Cubit<AuthStates> {
   }
 
   void logout() {
+    emit(LogoutLoadingState());
     _http.get(ApiUrl.signOut).then((response) {
       if (response['status'] == "success") {
         ShowToast.success(response['status']);
@@ -142,6 +144,9 @@ class AuthCtrl extends Cubit<AuthStates> {
         ShowToast.error(response['message']);
         emit(AuthLogoutErrorState());
       }
+    }).catchError((e) {
+      ShowToast.error("An error occurred ${e.toString()}");
+      emit(AuthLogoutErrorState());
     });
   }
 
@@ -278,3 +283,5 @@ class SelectImageState extends AuthStates {}
 class DeleteProfileLoading extends AuthStates {}
 
 class DeleteProfileSuccess extends AuthStates {}
+
+class LogoutLoadingState extends AuthStates {}
