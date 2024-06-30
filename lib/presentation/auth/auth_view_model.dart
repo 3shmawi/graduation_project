@@ -236,6 +236,35 @@ class AuthCtrl extends Cubit<AuthStates> {
       }
     });
   }
+
+  //reset password
+  void requestPasswordReset() {
+    emit(ForgotPasswordLoading());
+    if (_isFieldEmpty()) {
+      ShowToast.error("Please fill all fields");
+      emit(ForgotPasswordFailure());
+    } else {
+      _http.post(
+        ApiUrl.forgotPassword,
+        data: {
+          'email': emailCtrl.text.trim(),
+        },
+      ).then((response) {
+        if (response['status'] == "success") {
+          ShowToast.success(response['status']);
+          emit(ForgotPasswordSuccess());
+        } else {
+          ShowToast.error(response['message']);
+          emit(ForgotPasswordFailure());
+        }
+      }).catchError((error) {
+        ShowToast.error("An error occurred ${error.toString()}");
+        emit(ForgotPasswordFailure());
+      });
+    }
+  }
+
+  bool _isFieldEmpty() => emailCtrl.text.isEmpty;
 }
 
 abstract class AuthStates {}
@@ -254,6 +283,7 @@ class AuthRegisterLoadingState extends AuthStates {}
 
 class AuthRegisterSuccessState extends AuthStates {
   final bool isUser;
+
   AuthRegisterSuccessState({required this.isUser});
 }
 
@@ -285,3 +315,11 @@ class DeleteProfileLoading extends AuthStates {}
 class DeleteProfileSuccess extends AuthStates {}
 
 class LogoutLoadingState extends AuthStates {}
+
+//forgot password
+
+class ForgotPasswordLoading extends AuthStates {}
+
+class ForgotPasswordSuccess extends AuthStates {}
+
+class ForgotPasswordFailure extends AuthStates {}

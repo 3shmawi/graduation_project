@@ -27,7 +27,7 @@ class _CommentsViewState extends State<CommentsView> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero).then(
-      (_) => context.read<CommentsCtrl>().getPostComments(widget.post.id),
+      (_) => context.read<CommentsCtrl>().getComments(widget.post.id),
     );
   }
 
@@ -39,11 +39,11 @@ class _CommentsViewState extends State<CommentsView> {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Comments'),
+        title: const Text(AppStrings.comment),
       ),
       body: RefreshIndicator(
         onRefresh: () async =>
-            context.read<CommentsCtrl>().getPostComments(widget.post.id),
+            context.read<CommentsCtrl>().getComments(widget.post.id),
         child: Column(
           children: [
             Expanded(
@@ -73,8 +73,8 @@ class _CommentsViewState extends State<CommentsView> {
                     if (state.comments.isEmpty) {
                       return const EmptyPage(
                         icon: FontAwesome.comments,
-                        message: "No Comments yet",
-                        message1: "Add one",
+                        message: AppStrings.noCommentsFound,
+                        message1: AppStrings.addOne,
                       );
                     }
                     return ListView.builder(
@@ -94,13 +94,10 @@ class _CommentsViewState extends State<CommentsView> {
                   }
                   return EmptyPage(
                     icon: EvilIcons.comment,
-                    message: "No Error happened",
-                    message1: "REFRESH",
+                    message: AppStrings.noResults,
+                    message1: AppStrings.refresh,
                     onPressed: () async {
-                      context.read<CommentsCtrl>().getComments();
-                      context
-                          .read<CommentsCtrl>()
-                          .getPostComments(widget.post.id);
+                      context.read<CommentsCtrl>().getComments(widget.post.id);
                     },
                   );
                 },
@@ -159,7 +156,7 @@ class _CommentsViewState extends State<CommentsView> {
                                   .contentCtrl
                                   .text
                                   .isEmpty) {
-                                ShowToast.error("write a comment");
+                                ShowToast.error(AppStrings.writeSomething);
                               } else {
                                 final sender =
                                     context.read<AuthCtrl>().userData!;

@@ -20,7 +20,7 @@ class CommentsCtrl extends Cubit<CommentsStates> {
   PostModel? _model;
   final List<Document> comments = [];
 
-  void getComments() {
+  void getComments([String? postId]) {
     comments.clear();
     emit(GetCommentsLoadingState());
     _http.get(ApiUrl.getComments).then((response) {
@@ -32,20 +32,20 @@ class CommentsCtrl extends Cubit<CommentsStates> {
       }
       ShowToast.success(response['status']);
       comments.addAll(_model!.data!.document!);
-      emit(GetCommentsLoadedState(comments));
+      if (postId != null) {
+        emit(
+          GetCommentsLoadedState(
+            comments.where((comments) => comments.postID == postId).toList(),
+          ),
+        );
+      } else {
+        emit(GetCommentsLoadedState(comments));
+      }
     }).catchError((error) {
       ShowToast.error(error.toString());
 
       emit(GetCommentsErrorState());
     });
-  }
-
-  void getPostComments(String? postId) {
-    emit(
-      GetCommentsLoadedState(
-        comments.where((comments) => comments.postID == postId).toList(),
-      ),
-    );
   }
 
   final contentCtrl = TextEditingController();
@@ -181,30 +181,24 @@ class CommentsCtrl extends Cubit<CommentsStates> {
     emit(GetCommentsLoadingState());
     _http.delete(ApiUrl.deleteComment + comment.id!).then((response) {
       ShowToast.success(response['status']);
-      comments.remove(comment);
-      emit(GetCommentsLoadedState(comments));
+      getComments(comment.postID);
     }).catchError((error) {
       ShowToast.error(error.toString());
       emit(GetCommentsErrorState());
     });
   }
 
-  void updateComments(Document comment) {
-    int index = comments.indexOf(comment);
-    emit(GetCommentsLoadingState());
-    _http.delete(ApiUrl.updateComment + comment.id!).then((response) {
-      ShowToast.success(response['status']);
-      // commentss.remove(comments);
-      comments[index].copyWith(
-        content: contentCtrl.text,
-      );
-
-      emit(GetCommentsLoadedState(comments));
-    }).catchError((error) {
-      ShowToast.error(error.toString());
-      emit(GetCommentsErrorState());
-    });
-  }
+// void updateComments(Document comment,String) {
+//   emit(GetCommentsLoadingState());
+//   _http.patch(ApiUrl.updateComment + comment.id!).then((response) {
+//     ShowToast.success(response['status']);
+//    getComments();
+//    getPostComments();
+//   }).catchError((error) {
+//     ShowToast.error(error.toString());
+//     emit(GetCommentsErrorState());
+//   });
+// }
 }
 
 abstract class CommentsStates {}

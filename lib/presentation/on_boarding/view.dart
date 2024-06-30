@@ -130,29 +130,31 @@ class OnBoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            _sliderObject.image,
-            height: AppHeight.h400,
-            width: AppWidth.w420,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(AppPadding.p8),
-            child: Text(
-              _sliderObject.title.tr(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                    height: 2,
-                  ),
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              _sliderObject.image,
+              height: AppHeight.h400,
+              width: AppWidth.w420,
             ),
-          ),
-          const SizedBox(
-            height: AppHeight.h60,
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(AppPadding.p8),
+              child: Text(
+                _sliderObject.title.tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      height: 2,
+                    ),
+              ),
+            ),
+            const SizedBox(
+              height: AppHeight.h60,
+            ),
+          ],
+        ),
       ),
     );
   }

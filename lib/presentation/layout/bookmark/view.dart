@@ -92,8 +92,8 @@ class BookMarkPageState extends State<BookMarkPage> {
           }
           return const EmptyPage(
             icon: CupertinoIcons.bookmark,
-            message: "No Book mark yet!",
-            message1: "add a bookmark",
+            message: AppStrings.noBookmarksFound,
+            message1: AppStrings.addOne,
           );
         },
       ),
@@ -156,8 +156,8 @@ class BookMarkPageState extends State<BookMarkPage> {
                       } else {
                         return const EmptyPage(
                           icon: Icons.error_outline,
-                          message: "An Error happened",
-                          message1: "try again later",
+                          message: AppStrings.noResults,
+                          message1: AppStrings.tryAgainLater,
                         );
                       }
                     }
@@ -171,8 +171,8 @@ class BookMarkPageState extends State<BookMarkPage> {
   }
 
   Future<Document> _getCommentOrPost(String postId) async {
-    final _http = HttpUtil();
-    final response = await _http.get(ApiUrl.getPosts + postId);
+    final http = HttpUtil();
+    final response = await http.get(ApiUrl.getPosts + postId);
     return Document.fromJson(response["data"]["document"]);
   }
 }

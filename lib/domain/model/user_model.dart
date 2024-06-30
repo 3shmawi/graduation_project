@@ -97,6 +97,7 @@ class Model {
     Location? location,
     String? id,
     String? userName,
+    String? city,
     String? email,
     String? role,
     String? userType,
@@ -111,6 +112,7 @@ class Model {
     _location = location;
     _id = id;
     _userName = userName;
+    _city = city;
     _email = email;
     _role = role;
     _userType = userType;
@@ -128,6 +130,7 @@ class Model {
         json['location'] != null ? Location.fromJson(json['location']) : null;
     _id = json['_id'];
     _userName = json['userName'];
+    _city = json['city'];
     _email = json['email'];
     _role = json['role'];
     _userType = json['userType'];
@@ -143,6 +146,7 @@ class Model {
   Location? _location;
   String? _id;
   String? _userName;
+  String? _city;
   String? _email;
   String? _role;
   String? _userType;
@@ -158,6 +162,7 @@ class Model {
     Location? location,
     String? id,
     String? userName,
+    String? city,
     String? email,
     String? role,
     String? userType,
@@ -173,6 +178,7 @@ class Model {
         location: location ?? _location,
         id: id ?? _id,
         userName: userName ?? _userName,
+        city: city ?? _city,
         email: email ?? _email,
         role: role ?? _role,
         userType: userType ?? _userType,
@@ -190,6 +196,7 @@ class Model {
   String? get id => _id;
 
   String? get userName => _userName;
+  String? get city => _city;
 
   String? get email => _email;
 
@@ -218,6 +225,7 @@ class Model {
     }
     map['_id'] = _id;
     map['userName'] = _userName;
+    map['city'] = _city;
     map['email'] = _email;
     map['role'] = _role;
     map['userType'] = _userType;

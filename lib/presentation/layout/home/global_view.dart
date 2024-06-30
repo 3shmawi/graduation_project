@@ -1,6 +1,5 @@
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/_resources/component/empty_page.dart';
-import 'package:donation/presentation/layout/home/comments/view_model.dart';
 import 'package:donation/presentation/layout/home/view.dart';
 import 'package:donation/presentation/layout/home/view_model.dart';
 
@@ -14,7 +13,6 @@ class GlobalView extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async {
         context.read<HomeCtrl>().getPosts();
-        context.read<CommentsCtrl>().getComments();
       },
       child: BlocBuilder<HomeCtrl, HomeStates>(
         buildWhen: (_, current) =>
@@ -59,7 +57,6 @@ class GlobalView extends StatelessWidget {
             message1: "refresh",
             onPressed: () {
               context.read<HomeCtrl>().getPosts();
-              context.read<CommentsCtrl>().getComments();
             },
           );
         },

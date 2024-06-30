@@ -203,18 +203,18 @@ class ProfilePageState extends State<ProfilePage> {
                     AppConfigs.privacyPolicyUrl,
                   ),
                 ),
-                const Divider(
-                  height: AppHeight.h4,
-                ),
-                Item(
-                  label: AppStrings.aboutUs,
-                  icon: Feather.info,
-                  color: Colors.green,
-                  onTap: () async => AppService.openLink(
-                    context,
-                    AppConfigs.ourWebsiteUrl,
-                  ),
-                ),
+                // const Divider(
+                //   height: AppHeight.h4,
+                // ),
+                // Item(
+                //   label: AppStrings.aboutUs,
+                //   icon: Feather.info,
+                //   color: Colors.green,
+                //   onTap: () async => AppService.openLink(
+                //     context,
+                //     AppConfigs.ourWebsiteUrl,
+                //   ),
+                // ),
                 const SecurityOption(),
               ],
             ),
@@ -246,8 +246,15 @@ class SecurityOption extends StatelessWidget {
   }
 }
 
-class GuestUserUI extends StatelessWidget {
+class GuestUserUI extends StatefulWidget {
   const GuestUserUI({super.key});
+
+  @override
+  State<GuestUserUI> createState() => _GuestUserUIState();
+}
+
+class _GuestUserUIState extends State<GuestUserUI> {
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +264,14 @@ class GuestUserUI extends StatelessWidget {
           label: AppStrings.login,
           icon: Feather.user,
           onTap: () {
+            setState(() {
+              count++;
+            });
             context.read<AuthCtrl>().getUsrData();
+            if (count == 3) {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(Routes.loginRoute, (route) => false);
+            }
           },
           color: Colors.blueAccent,
         ),
@@ -322,7 +336,7 @@ class UserUI extends StatelessWidget {
                   ),
                 ),
                 Item(
-                  label: usr.email ?? AppStrings.usrEmail.tr(),
+                  label: usr.email ?? AppStrings.usrEmail,
                   icon: Feather.mail,
                   color: Colors.blueAccent,
                 ),
@@ -334,7 +348,7 @@ class UserUI extends StatelessWidget {
                     Navigator.pushNamed(context, Routes.searchRoute,
                         arguments: usr.id);
                   },
-                  label: "بوستاتك",
+                  label: AppStrings.myPosts,
                   icon: AntDesign.paperclip,
                   color: Colors.deepOrange,
                 ),

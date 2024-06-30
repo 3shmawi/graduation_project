@@ -21,7 +21,9 @@
   "sign_in": "تسجيل الدخول",
   "sign_out": "تسجيل الخروج",
   "sign_up": "إنشاء حساب",
-  "forgot_pass": "نسيت كلمة السر",
+  "forgot_pass": "نسيت كلمة السر؟",
+  "reset_pass": "إعادة كلمة السر",
+  "reset": "إعادة",
   "have_account": "لديك حساب؟  ",
   "don_have_account": "ليس لديك حساب؟  ",
 
@@ -105,6 +107,55 @@
   "no_results": "لم نستطع العثور على ما تريد",
   "search_desc": "اكتب فقط ودع الباقي علينا",
 
-  "write_something": "اكتب رسالتك"
+  "write_something": "اكتب رسالتك",
 
+  "no_campaigns_found": "لا توجد معلومات عن الحملات",
+  "no_posts_found": "لم يتم العثور على مشاركات",
+  "no_comments_found": "لا توجد تعليقات",
+  "no_chats_found": "لا توجد محادثات",
+  "no_bookmarks_found": "لا توجد إشارات مرجعية",
+  "no_data_found": "لا توجد معلومات",
+
+  "add_one": "قم بإضافة البعض",
+  "try_again_later": "حاول مرة أخرى في وقت لاحق",
+
+  "more": "المزيد",
+  "edit": "تعديل",
+  "delete": "حذف",
+  "save": "حفظ",
+  "refresh": "تحديث",
+
+  "my_posts": "منشوراتي",
+
+  "are_you_sure": "هل أنت متأكد؟",
+  "unable_to_recover_campaign": "لن تتمكن من استعادة هذه الحملة!",
+  "published_at": "تاريخ النشر",
+  "about_campaign": "حول الحملة",
+  "how_to_contribute": "كيف يمكنك المساهمة",
+  "financial_donation": "1. التبرع المالي: يمكنك المساهمة بأي مبلغ تشاء، حيث سيتم استخدام تبرعك لشراء الجهاز وتطويره.",
+  "campaign_promotion": "2. نشر الحملة: ساعدنا في نشر هذه الحملة بين أصدقائك وعائلتك وشبكتك الاجتماعية. شاركها على وسائل التواصل وساهم في بناء جسر من الأمل.",
+  "required_amount": "المبلغ المطلوب",
+  "remaining_amount": "المبلغ المتبقي",
+  "beneficiaries": "المستفيدين",
+  "quick_donate": "التبرع السريع",
+
+  "create_campaign": "إنشاء حملة",
+  "title": "العنوان",
+  "please_enter_title": "يرجى إدخال العنوان",
+  "title_description": "وصف العنوان",
+  "please_enter_title_description": "يرجى إدخال وصف العنوان",
+  "please_enter_about_campaign": "يرجى إدخال معلومات عن الحملة",
+  "please_enter_beneficiaries": "يرجى إدخال عدد المستفيدين",
+  "please_enter_valid_number": "يرجى إدخال رقم صالح",
+  "category": "الفئة",
+  "please_select_category": "يرجى اختيار فئة",
+  "total_amount": "المبلغ الإجمالي",
+  "please_enter_total_amount": "يرجى إدخال المبلغ الإجمالي",
+  "please_enter_valid_amount": "يرجى إدخال مبلغ صالح",
+  "select_images": "اختر الصور",
+  "submit": "إرسال",
+
+  "go_to_home_page": "الذهاب إلى الصفحة الرئيسية",
+
+  "content": "محتوى المنشور والذي يجب ألا يقل عن خمسة عشر حرفاً"
 }

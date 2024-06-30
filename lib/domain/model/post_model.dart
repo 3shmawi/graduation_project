@@ -216,31 +216,37 @@ class UserId {
     String? id,
     String? userName,
     String? photoLink,
+    String? city,
   }) {
     _id = id;
     _userName = userName;
     _photoLink = photoLink;
+    _city = city;
   }
 
   UserId.fromJson(dynamic json) {
     _id = json['_id'];
     _userName = json['userName'];
     _photoLink = json['photoLink'];
+    _city = json['city'];
   }
 
   String? _id;
   String? _userName;
   String? _photoLink;
+  String? _city;
 
   UserId copyWith({
     String? id,
     String? userName,
     String? photoLink,
+    String? city,
   }) =>
       UserId(
         id: id ?? _id,
         userName: userName ?? _userName,
         photoLink: photoLink ?? _photoLink,
+        city: city ?? _city,
       );
 
   String? get id => _id;
@@ -249,11 +255,14 @@ class UserId {
 
   String? get photoLink => _photoLink;
 
+  String? get city => _city;
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = _id;
     map['userName'] = _userName;
     map['photoLink'] = _photoLink;
+    map['city'] = _city;
     return map;
   }
 }

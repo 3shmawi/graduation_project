@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/auth/auth_view_model.dart';
-import 'package:donation/services/dio_helper.dart';
 
 import '../../../domain/model/chat.dart';
 import '../../../domain/model/messages.dart';
@@ -10,60 +9,7 @@ import '../../../domain/model/messages.dart';
 class ChatCtrl extends Cubit<ChatStates> {
   ChatCtrl() : super(InitialChatState());
 
-  final _http = HttpUtil();
   final txtCtrl = TextEditingController();
-
-  // List<Message> allChats = [];
-  // List<Messages> usrMessages = [];
-  //
-  // bool isNewMessage = true;
-  //
-  // void getChats() {
-  //   emit(ChatLoadingState());
-  //   allChats = [];
-  //   _http.get(ApiUrl.getChats).then((value) {
-  //     final data = value as List;
-  //     allChats = data.map((json) => Message.fromJson(json)).toList();
-  //     isNewMessage = false;
-  //     emit(ChatLoadedState());
-  //   }).catchError((error) {
-  //     print(error);
-  //     emit(ChatErrorState());
-  //   });
-  // }
-  //
-  // void getMessages(String receiverId) {
-  //   usrMessages.clear();
-  //   emit(UserChatLoadingState());
-  //
-  //   for (var v in allChats) {
-  //     if (v.participants!.first == receiverId) {
-  //       usrMessages = v.messages!;
-  //       emit(UserChatLoadedState(usrMessages));
-  //       return;
-  //     }
-  //   }
-  //   emit(UserChatLoadedState(usrMessages));
-  // }
-  //
-  // void addMessage(Map<String, dynamic> response) {
-  //   final message = Messages.fromJson(response);
-  //   usrMessages.insert(0, message);
-  //   emit(UserChatLoadedState(usrMessages));
-  // }
-  //
-  // void sendMessage(String receiverId) {
-  //   _http.post(
-  //     ApiUrl.sendChat + receiverId,
-  //     data: {
-  //       "message": txtCtrl.text,
-  //     },
-  //   ).then((response) {
-  //     isNewMessage = true;
-  //     txtCtrl.clear();
-  //     emit(SendMessage());
-  //   });
-  // }
 
   final _fireStore = FirebaseFirestore.instance;
 

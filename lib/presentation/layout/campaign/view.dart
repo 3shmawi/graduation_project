@@ -195,8 +195,8 @@ class _CampaignPageState extends State<CampaignPage> {
                     TextButton(
                       onPressed: context.read<CampaignsCtrl>().getCampaigns,
                       child: const Text(
-                        "REFRESH",
-                      ),
+                        AppStrings.refresh,
+                      ).tr(),
                     ),
                   ],
                 ),
@@ -277,19 +277,25 @@ class _CampaignPageState extends State<CampaignPage> {
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
-                                                title: Text(
-                                                  "Are you sure?",
-                                                  style: TextStyle(
-                                                    color: AppColors.primary,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                title: Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    AppStrings.areYouSure,
+                                                    style: TextStyle(
+                                                      color: AppColors.primary,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ).tr(),
                                                 ),
                                                 content: Text(
-                                                  "You will not be able to recover this campaign!",
+                                                  AppStrings
+                                                      .unableToRecoverCampaign,
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     color: AppColors.error,
                                                   ),
-                                                ),
+                                                ).tr(),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
@@ -297,11 +303,15 @@ class _CampaignPageState extends State<CampaignPage> {
                                                           .pop();
                                                     },
                                                     child: Text(
-                                                      "Cancel",
-                                                      style: TextStyle(
-                                                        color: AppColors.grey,
-                                                      ),
-                                                    ),
+                                                      AppStrings.cancel,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .labelMedium!
+                                                          .copyWith(
+                                                            color: AppColors
+                                                                .primary,
+                                                          ),
+                                                    ).tr(),
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
@@ -312,11 +322,15 @@ class _CampaignPageState extends State<CampaignPage> {
                                                       );
                                                     },
                                                     child: Text(
-                                                      "Delete",
-                                                      style: TextStyle(
-                                                        color: AppColors.error,
-                                                      ),
-                                                    ),
+                                                      AppStrings.delete,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .labelMedium!
+                                                          .copyWith(
+                                                            color:
+                                                                AppColors.error,
+                                                          ),
+                                                    ).tr(),
                                                   ),
                                                 ],
                                               );
@@ -336,7 +350,7 @@ class _CampaignPageState extends State<CampaignPage> {
                         padding: EdgeInsets.only(top: 100.0),
                         child: EmptyPage(
                           icon: Icons.campaign,
-                          message: "No campaign available",
+                          message: AppStrings.noCampaignsFound,
                           message1: "______",
                         ),
                       );
@@ -345,8 +359,8 @@ class _CampaignPageState extends State<CampaignPage> {
                       padding: const EdgeInsets.only(top: 100.0),
                       child: EmptyPage(
                         icon: Icons.campaign,
-                        message: "An error happened",
-                        message1: "REFRESH",
+                        message: AppStrings.noResults,
+                        message1: AppStrings.refresh,
                         onPressed: cubit.getCampaigns,
                       ),
                     );

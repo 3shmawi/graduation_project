@@ -6,6 +6,7 @@ import 'package:donation/domain/model/messages.dart';
 import 'package:donation/presentation/_resources/routes_manager.dart';
 import 'package:donation/presentation/auth/auth_view_model.dart';
 import 'package:donation/presentation/layout/bookmark/model/post.dart';
+import 'package:donation/presentation/layout/home/comments/view_model.dart';
 import 'package:donation/presentation/layout/home/global_view.dart';
 import 'package:donation/presentation/layout/home/notifications/view_model.dart';
 import 'package:donation/presentation/layout/home/upload_post_view.dart';
@@ -146,7 +147,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       snap: false,
                       bottom: TabBar(
                         onTap: (v) {
-                          context.read<HomeCtrl>().getPosts3();
+                          if (v == 1) {
+                            final city = context.read<AuthCtrl>().userData;
+                            if (city != null) {
+                              context.read<HomeCtrl>().getPosts3(city.city);
+                            } else {
+                              context.read<HomeCtrl>().getPosts3();
+                            }
+                          } else {
+                            context.read<HomeCtrl>().getPosts3();
+                          }
                           context.read<HomeCtrl>().animateTo(v);
                         },
                         controller: context.read<HomeCtrl>().tabCtrl,
@@ -165,23 +175,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           Tab(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const Icon(AntDesign.home),
+                                const Icon(Icons.public_outlined),
                                 const SizedBox(width: AppWidth.w8),
-                                Text(AppStrings.forU),
+                                Text(AppStrings.world),
                               ],
                             ),
                           ),
                           Tab(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
                               children: [
-                                const Icon(Icons.public_outlined),
+                                const Icon(AntDesign.home),
                                 const SizedBox(width: AppWidth.w8),
-                                Text(AppStrings.world),
+                                Text(AppStrings.forU),
                               ],
                             ),
                           ),
@@ -427,7 +437,7 @@ class SocialPostItemState extends State<SocialPostItem>
                       ),
                       Button(
                         onPressed: () {},
-                        number: "Category",
+                        number: widget.post.userID!.city!,
                         color: AppColors.primary,
                       ),
                     ],
@@ -553,33 +563,59 @@ class SocialPostItemState extends State<SocialPostItem>
                   ),
                   onSelected: (value) {
                     final cubit = context.read<HomeCtrl>();
+                    final cubit2 = context.read<CommentsCtrl>();
                     switch (value) {
                       case 1:
-                        cubit.edit(post: widget.post);
+                        if (widget.isPost) {
+                          cubit.edit(post: widget.post);
+                        } else {
+                          //todo edit comment
+                        }
                       case 2:
-                        cubit.deletePost(widget.post);
+                        if (widget.isPost) {
+                          cubit.deletePost(widget.post);
+                        } else {
+                          cubit2.deleteComments(widget.post);
+                        }
                     }
                   },
                   itemBuilder: (context) {
                     return [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Text(
-                          "EDIT",
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                      if (widget.isPost)
+                        PopupMenuItem(
+                          value: 1,
+                          child: ListTile(
+                            leading: Icon(
+                              Feather.edit_2,
+                              color: AppColors.primary,
+                            ),
+                            title: Text(
+                              AppStrings.edit,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
                                     color: AppColors.primary,
                                   ),
+                            ),
+                          ),
                         ),
-                      ),
                       PopupMenuItem(
                         value: 2,
-                        child: Text(
-                          "DELETE",
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: Colors.red,
-                                  ),
+                        child: ListTile(
+                          leading: Icon(
+                            Feather.trash_2,
+                            color: AppColors.error,
+                          ),
+                          title: Text(
+                            AppStrings.delete,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  color: AppColors.error,
+                                ),
+                          ),
                         ),
                       ),
                     ];
@@ -685,10 +721,29 @@ class Button extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (number.isNotEmpty)
-                Text(
-                  number,
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
+                icon != null
+                    ? Text(
+                        number,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      )
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            number,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(color: color),
+                          ),
+                        ),
+                      ),
               if (number.isNotEmpty && icon != null)
                 const SizedBox(width: AppWidth.w8),
               if (icon != null)

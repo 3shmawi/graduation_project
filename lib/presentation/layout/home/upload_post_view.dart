@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:donation/presentation/layout/home/comments/view_model.dart';
 import 'package:donation/presentation/layout/home/view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../../app/global_imports.dart';
 
@@ -16,15 +16,7 @@ class UploadPostPageState extends State<UploadPostPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCtrl, HomeStates>(
-      listener: (context, state) {
-        if (state is CreatePostLoadedState) {
-          final cubit = BlocProvider.of<CommentsCtrl>(context, listen: false);
-          // cubit.contentCtrl.clear();
-          // cubit.changePostContainPhotos(false);
-          // cubit.images.clear();
-          cubit.getComments();
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         final cubit = context.read<HomeCtrl>();
         return Padding(
@@ -34,10 +26,10 @@ class UploadPostPageState extends State<UploadPostPage> {
               TextField(
                 controller: cubit.contentCtrl,
                 style: Theme.of(context).textTheme.labelMedium,
-                decoration: const InputDecoration(
-                  hintText: 'Content',
-                  contentPadding: EdgeInsets.all(10),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: AppStrings.content.tr(),
+                  contentPadding: const EdgeInsets.all(10),
+                  border: const OutlineInputBorder(),
                 ),
                 maxLines: 5,
               ),
@@ -49,7 +41,7 @@ class UploadPostPageState extends State<UploadPostPage> {
                     onPressed:
                         cubit.isPostContainPhotos ? cubit.pickImages : null,
                     child: Text(
-                      'Select Images',
+                      AppStrings.selectImages.tr(),
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
                             color: AppColors.white,
                           ),
@@ -141,11 +133,11 @@ class UploadPostPageState extends State<UploadPostPage> {
               ElevatedButton(
                 onPressed: cubit.isEdit ? cubit.updatePost : cubit.createPost,
                 child: Text(
-                  cubit.isEdit ? "Edit Post" : 'Upload Post',
+                  cubit.isEdit ? AppStrings.edit : AppStrings.submit,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: AppColors.white,
                       ),
-                ),
+                ).tr(),
               ),
               if (state is CreatePostLoadingState)
                 const Padding(

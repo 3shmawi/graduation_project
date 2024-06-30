@@ -1,3 +1,5 @@
+import 'package:donation/presentation/auth/auth_view_model.dart';
+
 class ApiUrl {
   static const baseUrl = "https://social-api-trlr.onrender.com";
 
@@ -23,7 +25,7 @@ class ApiUrl {
   //comments
   static const getComments = "/api/comments/";
   static const createComment = "/api/comments/";
-  static const deleteComment = "/api/comments/deleteMyComment/";
+  static const deleteComment = "/api/comments/";
   static const updateComment = "/api/comments/";
   static const updateCommentPhoto = "/api/comments/uploadCommentPhoto/";
 
@@ -45,5 +47,8 @@ class ApiUrl {
   static const getProfile = "/api/users/getMe";
   static const updateProfile = "/api/users/updateMe";
   static const deleteProfile = "/api/users/deleteMe";
+
+  //payment
+  static paymentUrlPage(String campaignId) =>
+      "$baseUrl/donation-form?token=${AuthCtrl.usrToken}&campaignId=$campaignId";
 }
-//seyexey683@morxin.com

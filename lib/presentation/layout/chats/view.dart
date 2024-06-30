@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:donation/app/config.dart';
 import 'package:donation/app/functions.dart';
 import 'package:donation/domain/model/messages.dart';
 import 'package:donation/presentation/_resources/component/empty_page.dart';
@@ -66,9 +67,6 @@ class _ChatsPageState extends State<ChatsPage> {
                       padding:
                           const EdgeInsets.symmetric(horizontal: AppPadding.p8),
                       itemBuilder: (context, index) {
-                        const imageUrl =
-                            'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8';
-
                         return AnimationConfiguration.staggeredList(
                           position: index,
                           duration: const Duration(milliseconds: 500),
@@ -87,7 +85,7 @@ class _ChatsPageState extends State<ChatsPage> {
                                 isStartWithArabic: isStartWithArabic(
                                     data[index].receiver.name),
                                 img: data[index].receiver.avatarUrl!.isEmpty
-                                    ? imageUrl
+                                    ? AppConfigs.defaultImg
                                     : data[index].receiver.avatarUrl!,
                                 name: data[index].receiver.name,
                                 lastMessage: data[index].lastMessage,
@@ -102,8 +100,8 @@ class _ChatsPageState extends State<ChatsPage> {
                 }
                 return EmptyPage(
                   icon: Entypo.chat,
-                  message: "No chats found",
-                  message1: "please contact with someone from posts",
+                  message: AppStrings.noChatsFound,
+                  message1: AppStrings.goToHomePage,
                   onPressed: () {
                     context
                         .read<LayoutVM>()
@@ -125,8 +123,8 @@ class _ChatsPageState extends State<ChatsPage> {
               }
               return EmptyPage(
                 icon: Entypo.chat,
-                message: "An error happened",
-                message1: "REFRESH",
+                message: AppStrings.noResults,
+                message1: "_____",
                 onPressed: () {},
               );
             }

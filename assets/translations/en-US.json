@@ -22,7 +22,9 @@
   "sign_in": "SIGN_IN",
   "sign_out": "SIGN_OUT",
   "sign_up": "SIGN_UP",
-  "forgot_pass": "Forgotten pass",
+  "forgot_pass": "Forgotten password?",
+  "reset_pass": "Reset password",
+  "reset": "Reset",
   "have_account": "Have an account?  ",
   "don_have_account": "Don’t have an account?  ",
 
@@ -109,8 +111,57 @@
   "no_results": "We can't find wt u need",
   "search_desc": "Just write and leave the rest to us",
 
-  "write_something": "Write your message"
+  "write_something": "Write your message",
 
+  "no_campaigns_found": "No campaign information available",
+  "no_posts_found": "No posts found",
+  "no_comments_found": "No comments information available",
+  "no_chats_found": "No chats information available",
+  "no_bookmarks_found": "No bookmarks information available",
+  "no_data_found": "No data information available",
+
+  "add_one": "Add one",
+  "try_again_later": "Try again later",
+
+  "more": "More",
+  "edit": "Edit",
+  "delete": "Delete",
+  "save": "Save",
+  "refresh": "Refresh",
+
+  "my_posts": "My shared posts",
+
+  "are_you_sure": "Are you sure?",
+  "unable_to_recover_campaign": "You will not be able to recover this campaign!",
+  "published_at": "Published At",
+  "about_campaign": "About Campaign",
+  "how_to_contribute": "How to Contribute",
+  "financial_donation": "1. Financial Donation: You can contribute any amount you want, as your donation will be used to buy and develop the device.",
+  "campaign_promotion": "2. Campaign Promotion: Help us spread this campaign among your friends, family, and social network. Share it on social media and help build a bridge of hope.",
+  "required_amount": "Required Amount",
+  "remaining_amount": "Remaining Amount",
+  "beneficiaries": "Beneficiaries",
+  "quick_donate": "Quick Donate",
+
+  "create_campaign": "Create Campaign",
+  "title": "Title",
+  "please_enter_title": "Please enter title",
+  "title_description": "Title Description",
+  "please_enter_title_description": "Please enter title description",
+  "please_enter_about_campaign": "Please enter about campaign",
+  "please_enter_beneficiaries": "Please enter number of beneficiaries",
+  "please_enter_valid_number": "Please enter a valid number",
+  "category": "Category",
+  "please_select_category": "Please select a category",
+  "total_amount": "Total Amount",
+  "please_enter_total_amount": "Please enter total amount",
+  "please_enter_valid_amount": "Please enter a valid amount",
+  "select_images": "Select Images",
+  "submit": "Submit",
+
+  "go_to_home_page": "Go to home page",
+
+  "content": "Content post which must be at least 15 characters long"
 
 
 

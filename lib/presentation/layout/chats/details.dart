@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:donation/app/config.dart';
 import 'package:donation/app/functions.dart';
 import 'package:donation/domain/model/messages.dart';
 import 'package:donation/domain/model/notification.dart';
@@ -12,7 +13,6 @@ import 'package:donation/presentation/layout/chats/view_model.dart';
 import 'package:donation/presentation/layout/home/notifications/view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../../../app/global_imports.dart';
 
@@ -30,16 +30,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   bool isKeyboardActive = false;
-  late IO.Socket socket;
-  final imageUrl =
-      'https://images.unsplash.com/photo-1701906268416-b461ec4caa34?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D'; // Replace with your image URL
 
   @override
   void initState() {
-    print('1;1;;1;1;1;1');
     super.initState();
-    _initializeSocket();
-    _fetchMessages();
     _refresh();
   }
 
@@ -47,27 +41,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 
   _refresh() {
     _timer = Timer.periodic(const Duration(minutes: 1), (t) => setState(() {}));
-  }
-
-  void _initializeSocket() {
-    // socket = IO.io('https://social-api-trlr.onrender.com', <String, dynamic>{
-    //   'transports': ['websocket'],
-    //   'autoConnect': false,
-    //   'query': {'userId': AuthCtrl.usrId}, // Replace with the actual user ID
-    // });
-    //
-    // socket.connect();
-    // socket.on('connection', (_) => print('Connected'));
-    // socket.on('disconnect', (_) => print('Disconnected'));
-    // socket.on(
-    //     'newMessage', (data) => context.read<ChatCtrl>().addMessage(data));
-    // socket.on('getOnlineUsers', (data) => print('Online Users: $data'));
-  }
-
-  void _fetchMessages() {
-    Future.delayed(Duration.zero).then((_) {
-      // context.read<ChatCtrl>().getMessages(widget.receiverId);
-    });
   }
 
   @override
@@ -127,7 +100,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   const SizedBox(width: AppWidth.w8),
                   CircleAvatar(
                     radius: AppSize.s20,
-                    backgroundImage: NetworkImage(imageUrl),
+                    backgroundImage: NetworkImage(
+                        widget.receiver.avatarUrl!.isEmpty
+                            ? AppConfigs.defaultImg
+                            : widget.receiver.avatarUrl!),
                   ),
                 ],
               ),
@@ -171,8 +147,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                                 child: const Center(
                                   child: EmptyPage(
                                     icon: Entypo.chat,
-                                    message: "No messages yet!",
-                                    message1: "Start on",
+                                    message: AppStrings.noChatsFound,
+                                    message1: AppStrings.addOne,
                                   ),
                                 ),
                               ),
@@ -185,8 +161,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                               child: const Center(
                                 child: EmptyPage(
                                   icon: Entypo.chat,
-                                  message: "An Error happened",
-                                  message1: "try again later!",
+                                  message: AppStrings.noResults,
+                                  message1: AppStrings.tryAgainLater,
                                 ),
                               ),
                             ),
@@ -248,7 +224,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           IconButton(
             onPressed: () async {
               if (cubit.txtCtrl.text.isEmpty) {
-                ShowToast.error("write a message");
+                ShowToast.error(AppStrings.writeSomething);
               } else {
                 // socket.emit("newMessage", cubit.txtCtrl.text);
                 await cubit.sendMessage(
@@ -263,7 +239,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   NotificationModel(
                     id: createdAt,
                     type: "message",
-                    title: "${sender.userName} Has sent a new message",
+                    title: "${sender.userName} ${"ارسل إليك رسالة"}",
                     createdAt: createdAt,
                     from: User(
                         id: sender.id!,

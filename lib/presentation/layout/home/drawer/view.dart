@@ -13,7 +13,6 @@ class DrawerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appVersion = context.read<SettingVM>().appVersion;
     final List titles = [
       AppStrings.bookmarks,
       AppStrings.language,
@@ -52,9 +51,13 @@ class DrawerMenu extends StatelessWidget {
                       AppAssets.logo2,
                       height: AppHeight.h100,
                     ),
-                    Text(
-                      'Version: $appVersion',
-                      style: Theme.of(context).textTheme.labelLarge,
+                    BlocBuilder<SettingVM, AppCubitStates>(
+                      builder: (context, state) {
+                        return Text(
+                          'Version: ${context.read<SettingVM>().appVersion}',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        );
+                      },
                     )
                   ],
                 ),

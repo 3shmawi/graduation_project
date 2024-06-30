@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:donation/app/api.dart';
+import 'package:donation/app/config.dart';
 import 'package:donation/app/global_imports.dart';
 import 'package:donation/domain/model/notification.dart';
 import 'package:donation/domain/model/post_model.dart';
@@ -44,9 +45,6 @@ class Notifications extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: AppPadding.p8),
                     itemBuilder: (context, index) {
-                      const imageUrl =
-                          'https://plus.unsplash.com/premium_photo-1701713781709-966e8f4c5920?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8';
-
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         duration: const Duration(milliseconds: 500),
@@ -80,7 +78,7 @@ class Notifications extends StatelessWidget {
                               isStartWithArabic:
                                   isStartWithArabic(data[index].from!.name),
                               img: data[index].from!.avatarUrl!.isEmpty
-                                  ? imageUrl
+                                  ? AppConfigs.defaultImg
                                   : data[index].from!.avatarUrl!,
                               name: data[index].from!.name,
                               lastMessage: data[index].title,
@@ -95,14 +93,14 @@ class Notifications extends StatelessWidget {
               }
               return const EmptyPage(
                 icon: Entypo.notification,
-                message: "No Notification found",
+                message: AppStrings.noNotificationDesc,
                 message1: "......",
               );
             }
             return const EmptyPage(
               icon: Entypo.notification,
-              message: "An error happened",
-              message1: "_____",
+              message: AppStrings.noResults,
+              message1: AppStrings.tryAgainLater,
             );
           }
           return AnimationLimiter(
@@ -180,8 +178,8 @@ class Notifications extends StatelessWidget {
                       } else {
                         return const EmptyPage(
                           icon: Icons.error_outline,
-                          message: "An Error happened",
-                          message1: "try again later",
+                          message: AppStrings.noResults,
+                          message1: AppStrings.tryAgainLater,
                         );
                       }
                     }
@@ -195,12 +193,12 @@ class Notifications extends StatelessWidget {
   }
 
   Future<Document> _getCommentOrPost(String? postId, String? commentId) async {
-    final _http = HttpUtil();
+    final http = HttpUtil();
     if (postId != null) {
-      final response = await _http.get(ApiUrl.getPosts + postId);
+      final response = await http.get(ApiUrl.getPosts + postId);
       return Document.fromJson(response["data"]["document"]);
     } else {
-      final response = await _http.get(ApiUrl.getComments + commentId!);
+      final response = await http.get(ApiUrl.getComments + commentId!);
       return Document.fromJson(response["data"]["document"]);
     }
   }

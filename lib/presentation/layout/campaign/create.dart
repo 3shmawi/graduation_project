@@ -1,12 +1,9 @@
 import 'dart:io';
 
 import 'package:donation/app/config.dart';
+import 'package:donation/app/global_imports.dart';
 import 'package:donation/presentation/layout/campaign/view_model.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../_resources/color_manager.dart';
 
 class CreateCampaignPage extends StatefulWidget {
   const CreateCampaignPage({super.key});
@@ -26,7 +23,7 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Create Campaign'),
+        title: const Text(AppStrings.createCampaign).tr(),
       ),
       body: BlocConsumer<CampaignsCtrl, CampaignsStates>(
         listener: (context, state) {
@@ -46,14 +43,17 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                   TextFormField(
                     style: Theme.of(context).textTheme.labelMedium,
                     controller: cubit.titleController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Title',
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      labelText: AppStrings.title.tr(),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 10),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter title';
+                        return AppStrings.pleaseEnterTitle.tr();
                       }
                       return null;
                     },
@@ -65,13 +65,15 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                     minLines: 5,
                     maxLines: 5,
                     maxLength: 80,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.all(10),
-                        hintText: 'Title Description'),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding: const EdgeInsets.all(10),
+                        hintText: AppStrings.titleDescription.tr()),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter title description';
+                        return AppStrings.pleaseEnterTitleDescription.tr();
                       }
                       return null;
                     },
@@ -80,13 +82,16 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                   TextFormField(
                     style: Theme.of(context).textTheme.labelMedium,
                     controller: cubit.aboutCampaignController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        labelText: 'About Campaign'),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                        labelText: AppStrings.aboutCampaign.tr()),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter about campaign';
+                        return AppStrings.pleaseEnterAboutCampaign.tr();
                       }
                       return null;
                     },
@@ -95,17 +100,20 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                   TextFormField(
                     style: Theme.of(context).textTheme.labelMedium,
                     controller: cubit.beneficiariesController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        labelText: 'Beneficiaries'),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                        labelText: AppStrings.beneficiaries.tr()),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter number of beneficiaries';
+                        return AppStrings.pleaseEnterBeneficiaries.tr();
                       }
                       if (int.tryParse(value) == null) {
-                        return 'Please enter a valid number';
+                        return AppStrings.pleaseEnterValidNumber.tr();
                       }
                       return null;
                     },
@@ -113,10 +121,13 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                   const SizedBox(height: 20),
                   DropdownButtonFormField<String>(
                     value: cubit.selectedCategory,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        labelText: 'Category'),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                        labelText: AppStrings.category.tr()),
                     items: AppConfigs.campaignCategories.map((String category) {
                       return DropdownMenuItem<String>(
                         value: category,
@@ -128,7 +139,7 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please select a category';
+                        return AppStrings.pleaseSelectCategory.tr();
                       }
                       return null;
                     },
@@ -137,17 +148,20 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                   TextFormField(
                     style: Theme.of(context).textTheme.labelMedium,
                     controller: cubit.totalAmountController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        labelText: 'Total Amount'),
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 10),
+                        labelText: AppStrings.totalAmount.tr()),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter total amount';
+                        return AppStrings.pleaseEnterTotalAmount.tr();
                       }
                       if (double.tryParse(value) == null) {
-                        return 'Please enter a valid amount';
+                        return AppStrings.pleaseEnterValidNumber.tr();
                       }
                       return null;
                     },
@@ -160,7 +174,7 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                         onPressed:
                             cubit.isPostContainPhotos ? cubit.pickImages : null,
                         child: Text(
-                          'Select Images',
+                          AppStrings.selectImages.tr(),
                           style:
                               Theme.of(context).textTheme.labelMedium!.copyWith(
                                     color: AppColors.white,
@@ -222,7 +236,7 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                       }
                     },
                     child: Text(
-                      'Submit',
+                      AppStrings.submit.tr(),
                       style: Theme.of(context)
                           .textTheme
                           .labelLarge!

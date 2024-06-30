@@ -24,6 +24,8 @@ class AppStrings {
   static const signOut = 'sign_out';
   static const signUp = 'sign_up';
   static const forgotPass = 'forgot_pass';
+  static const resetPass = 'reset_pass';
+  static const reset = 'reset';
   static const donHaveAcc = 'don_have_account';
   static const haveAcc = 'have_account';
 
@@ -111,4 +113,54 @@ class AppStrings {
   static const searchDesc = "search_desc";
 
   static const writeSomething = "write_something";
+
+  static const noCampaignsFound = "no_campaigns_found";
+  static const noPostsFound = "no_posts_found";
+  static const noCommentsFound = "no_comments_found";
+  static const noChatsFound = "no_chats_found";
+  static const noBookmarksFound = "no_bookmarks_found";
+  static const noDataFound = "no_data_found";
+
+  static const addOne = "add_one";
+  static const tryAgainLater = "try_again_later";
+
+  static const more = "more";
+  static get edit => "edit".tr();
+  static get delete => "delete".tr();
+  static const save = "save";
+  static const refresh = "refresh";
+
+  static const myPosts = "my_posts";
+
+  static const areYouSure = "are_you_sure";
+  static const unableToRecoverCampaign = "unable_to_recover_campaign";
+  static const publishedAt = "published_at";
+  static const aboutCampaign = "about_campaign";
+  static const howToContribute = "how_to_contribute";
+  static const financialDonation = "financial_donation";
+  static const campaignPromotion = "campaign_promotion";
+  static const requiredAmount = "required_amount";
+  static const remainingAmount = "remaining_amount";
+  static const beneficiaries = "beneficiaries";
+  static const quickDonate = "quick_donate";
+
+  static const createCampaign = "create_campaign";
+  static const title = "title";
+  static const pleaseEnterTitle = "please_enter_title";
+  static const titleDescription = "title_description";
+  static const pleaseEnterTitleDescription = "please_enter_title_description";
+  static const pleaseEnterAboutCampaign = "please_enter_about_campaign";
+  static const pleaseEnterBeneficiaries = "please_enter_beneficiaries";
+  static const pleaseEnterValidNumber = "please_enter_valid_number";
+  static const category = "category";
+  static const pleaseSelectCategory = "please_select_category";
+  static const totalAmount = "total_amount";
+  static const pleaseEnterTotalAmount = "please_enter_total_amount";
+  static const pleaseEnterValidAmount = "please_enter_valid_amount";
+  static const selectImages = "select_images";
+  static const submit = "submit";
+
+  static const goToHomePage = "go_to_home_page";
+
+  static const content = "content";
 }

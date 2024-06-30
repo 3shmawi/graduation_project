@@ -1,7 +1,10 @@
+import 'package:donation/app/api.dart';
 import 'package:donation/app/functions.dart';
 import 'package:donation/app/global_imports.dart';
+import 'package:donation/app/services.dart';
 import 'package:donation/domain/model/campaign.dart';
 import 'package:donation/presentation/_resources/component/cache_img.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -60,12 +63,12 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                         Row(
                           children: [
                             HeadLine(
-                              label: 'نبذة عن الحملة :',
+                              label: AppStrings.aboutCampaign,
                               color: AppColors.primary,
                             ),
                             const Spacer(),
                             Text(
-                              "Published At: ${daysBetween(
+                              "${AppStrings.publishedAt.tr()} ${daysBetween(
                                 DateTime.parse(widget.campaign.createdAt!),
                               )}",
                               style: Theme.of(context).textTheme.labelSmall,
@@ -82,26 +85,26 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                         const SizedBox(height: AppHeight.h12),
                         const Divider(),
                         HeadLine(
-                          label: 'كيف يمكنك المساهمة: ',
+                          label: AppStrings.howToContribute,
                           color: AppColors.primary,
                         ),
                         Text(
-                          '1. التبرع المالي: يمكنك المساهمة بأي مبلغ تشاء، حيث سيتم استخدام تبرعك لشراء الجهاز وتطويره.',
+                          AppStrings.financialDonation,
                           style:
                               Theme.of(context).textTheme.labelMedium!.copyWith(
                                     fontSize: FontSize.s16,
                                   ),
-                        ),
+                        ).tr(),
                         const SizedBox(
                           height: AppHeight.h16,
                         ),
                         Text(
-                          '2. نشر الحملة: ساعدنا في نشر هذه الحملة بين أصدقائك وعائلتك وشبكتك الاجتماعية. شاركها على وسائل التواصل وساهم في بناء جسر من الأمل.',
+                          AppStrings.campaignPromotion,
                           style:
                               Theme.of(context).textTheme.labelMedium!.copyWith(
                                     fontSize: FontSize.s16,
                                   ),
-                        ),
+                        ).tr(),
                         const SizedBox(
                           height: AppHeight.h20,
                         ),
@@ -112,7 +115,7 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               ItemBanner(
-                                label: 'المبلغ المطلوب',
+                                label: AppStrings.requiredAmount,
                                 subTitle:
                                     widget.campaign.totalAmount!.toString(),
                                 icon: FontAwesome5Solid.coins,
@@ -120,7 +123,7 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                               ),
                               const VertLine(),
                               ItemBanner(
-                                label: 'المبلغ المتبقي',
+                                label: AppStrings.remainingAmount,
                                 subTitle:
                                     widget.campaign.remainingAmount!.toString(),
                                 icon: FontAwesome5Solid.coins,
@@ -128,7 +131,7 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                               ),
                               const VertLine(),
                               ItemBanner(
-                                label: 'المستفيدن',
+                                label: AppStrings.beneficiaries,
                                 subTitle:
                                     widget.campaign.beneficiaries!.toString(),
                                 icon: Feather.users,
@@ -160,14 +163,11 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                                     backgroundColor: AppColors.white,
                                   ),
                                   onPressed: () {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   CupertinoPageRoute(
-                                    //     builder: (context) => PaymentScreen(
-                                    //       widget.campaign.id!,
-                                    //     ),
-                                    //   ),
-                                    // );
+                                    AppService.openLink(
+                                      context,
+                                      ApiUrl.paymentUrlPage(
+                                          widget.campaign.id!),
+                                    );
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -185,11 +185,12 @@ class _CampaignDetailsScreenState extends State<CampaignDetailsScreen> {
                                         ),
                                       ),
                                       Text(
-                                        'التبرع السريع',
+                                        AppStrings.quickDonate,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .displayMedium,
-                                      ),
+                                            .displayMedium!
+                                            .copyWith(color: AppColors.primary),
+                                      ).tr(),
                                     ],
                                   ),
                                 ),
@@ -228,7 +229,7 @@ class HeadLine extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppPadding.p20),
       child: Text(
-        label,
+        label.tr(),
         style: Theme.of(context).textTheme.displayLarge!.copyWith(
               fontSize: size ?? FontSize.s18,
               color: color,

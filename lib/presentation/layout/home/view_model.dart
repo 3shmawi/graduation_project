@@ -24,9 +24,22 @@ class HomeCtrl extends Cubit<HomeStates> {
     emit(HomeInitialTabState());
   }
 
-  void animateTo(int index) {
+  void animateTo(int index, [String? city]) {
     tabCtrl!.animateTo(index);
-    emit(GetPostsLoadedState(posts));
+
+    if (city != null) {
+      emit(GetPostsLoadedState(
+        posts
+            .where(
+              (post) => post.userID!.city!.toLowerCase().contains(
+                    city.toLowerCase(),
+                  ),
+            )
+            .toList(),
+      ));
+    } else {
+      emit(GetPostsLoadedState(posts));
+    }
   }
 
   PostModel? _model;
@@ -57,8 +70,22 @@ class HomeCtrl extends Cubit<HomeStates> {
     });
   }
 
-  void getPosts3() {
-    emit(GetPostsLoadedState(posts));
+  void getPosts3([String? city]) {
+    if (city != null) {
+      emit(
+        GetPostsLoadedState(
+          posts
+              .where(
+                (post) => post.userID!.city!.toLowerCase().contains(
+                      city.toLowerCase(),
+                    ),
+              )
+              .toList(),
+        ),
+      );
+    } else {
+      emit(GetPostsLoadedState(posts));
+    }
   }
 
   final contentCtrl = TextEditingController();

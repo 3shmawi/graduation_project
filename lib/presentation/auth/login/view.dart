@@ -87,7 +87,7 @@ class LoginPage extends StatelessWidget {
                                     context, Routes.forgotPasswordRoute);
                               },
                               child: Text(
-                                'forget password !',
+                                AppStrings.forgotPass.tr(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .labelSmall!
