@@ -7,8 +7,6 @@ import 'app/app.dart';
 import 'app/di.dart';
 import 'firebase_options.dart';
 
-//firypowe@teleg.eu
-//abdosheredam90@gmail.com
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

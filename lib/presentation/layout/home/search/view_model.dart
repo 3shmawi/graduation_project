@@ -45,6 +45,9 @@ class SearchVM extends Cubit<AppCubitStates> {
     return posts
         .where((post) =>
             post.content!.toLowerCase().contains(_searchText.toLowerCase()) ||
+            post.userID!.city!
+                .toLowerCase()
+                .contains(_searchText.toLowerCase()) ||
             post.userID!.userName!
                 .toLowerCase()
                 .contains(_searchText.toLowerCase()))

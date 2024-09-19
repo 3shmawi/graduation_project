@@ -131,7 +131,11 @@ class UploadPostPageState extends State<UploadPostPage> {
                     ),
               if (!cubit.isPostContainPhotos) const Spacer(),
               ElevatedButton(
-                onPressed: cubit.isEdit ? cubit.updatePost : cubit.createPost,
+                onPressed: state is CreatePostLoadingState
+                    ? null
+                    : cubit.isEdit
+                        ? cubit.updatePost
+                        : cubit.createPost,
                 child: Text(
                   cubit.isEdit ? AppStrings.edit : AppStrings.submit,
                   style: Theme.of(context).textTheme.labelMedium!.copyWith(

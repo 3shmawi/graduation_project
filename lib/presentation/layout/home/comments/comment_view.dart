@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:donation/domain/model/post_model.dart';
 import 'package:donation/presentation/layout/home/comments/view_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
@@ -39,7 +40,7 @@ class _CommentsViewState extends State<CommentsView> {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(AppStrings.comment),
+        title: const Text(AppStrings.comment).tr(),
       ),
       body: RefreshIndicator(
         onRefresh: () async =>

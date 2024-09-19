@@ -18,10 +18,9 @@ class CommentsCtrl extends Cubit<CommentsStates> {
   final _http = HttpUtil();
 
   PostModel? _model;
-  final List<Document> comments = [];
+  List<Document> comments = [];
 
   void getComments([String? postId]) {
-    comments.clear();
     emit(GetCommentsLoadingState());
     _http.get(ApiUrl.getComments).then((response) {
       _model = PostModel.fromJson(response);
@@ -31,7 +30,7 @@ class CommentsCtrl extends Cubit<CommentsStates> {
         return;
       }
       ShowToast.success(response['status']);
-      comments.addAll(_model!.data!.document!);
+      comments = _model!.data!.document!;
       if (postId != null) {
         emit(
           GetCommentsLoadedState(

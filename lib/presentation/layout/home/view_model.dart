@@ -76,9 +76,8 @@ class HomeCtrl extends Cubit<HomeStates> {
         GetPostsLoadedState(
           posts
               .where(
-                (post) => post.userID!.city!.toLowerCase().contains(
-                      city.toLowerCase(),
-                    ),
+                (post) =>
+                    post.userID!.city!.toLowerCase() == city.toLowerCase(),
               )
               .toList(),
         ),

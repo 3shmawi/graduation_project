@@ -230,11 +230,13 @@ class CreateCampaignPageState extends State<CreateCampaignPage> {
                         ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        cubit.createCampaign();
-                      }
-                    },
+                    onPressed: state is CreateCampaignsLoadingState
+                        ? null
+                        : () {
+                            if (_formKey.currentState!.validate()) {
+                              cubit.createCampaign();
+                            }
+                          },
                     child: Text(
                       AppStrings.submit.tr(),
                       style: Theme.of(context)

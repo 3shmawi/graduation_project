@@ -147,17 +147,20 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       snap: false,
                       bottom: TabBar(
                         onTap: (v) {
+                          final city = context.read<AuthCtrl>().userData;
+
                           if (v == 1) {
-                            final city = context.read<AuthCtrl>().userData;
                             if (city != null) {
                               context.read<HomeCtrl>().getPosts3(city.city);
+                              context.read<HomeCtrl>().animateTo(v, city.city);
                             } else {
                               context.read<HomeCtrl>().getPosts3();
+                              context.read<HomeCtrl>().animateTo(v);
                             }
                           } else {
                             context.read<HomeCtrl>().getPosts3();
+                            context.read<HomeCtrl>().animateTo(v);
                           }
-                          context.read<HomeCtrl>().animateTo(v);
                         },
                         controller: context.read<HomeCtrl>().tabCtrl,
                         labelStyle:

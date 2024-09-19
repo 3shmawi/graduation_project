@@ -84,7 +84,7 @@ class AppStrings {
   static const yes = "yes";
   static const no = "no";
   static const notification = "Notifications";
-  static const comment = "Comments";
+  static const comment = "comments";
   static const newComment = "New Comments";
 
   static const clearAll = "clear_all";

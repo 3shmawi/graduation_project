@@ -37,6 +37,13 @@ class GlobalView extends StatelessWidget {
             );
           }
           if (state is GetPostsLoadedState) {
+            if (state.posts.isEmpty) {
+              return const EmptyPage(
+                icon: Icons.post_add_outlined,
+                message: AppStrings.noPostsFound,
+                message1: "_____",
+              );
+            }
             return ListView.builder(
               padding: const EdgeInsets.only(
                 top: AppPadding.p20,
@@ -51,13 +58,10 @@ class GlobalView extends StatelessWidget {
               itemCount: state.posts.length,
             );
           }
-          return EmptyPage(
+          return const EmptyPage(
             icon: Icons.post_add_outlined,
-            message: "No Posts yet",
-            message1: "refresh",
-            onPressed: () {
-              context.read<HomeCtrl>().getPosts();
-            },
+            message: AppStrings.noPostsFound,
+            message1: AppStrings.tryAgainLater,
           );
         },
       ),
