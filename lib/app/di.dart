@@ -20,7 +20,7 @@ Future<void> initAppModule() async {
 
   CacheHelper.init();
   // Stripe.publishableKey =
-  //     'pk_test_51PV4TxCsRNq51OBYsPPUj8NdhOA5Lzh8dUSq5v1HgGroIK5z2e4YqJFmSzjUgnwztBcYooQHeBLW5bxtXG1taU3500EtibMkom';
+  //     'ENV.stripeTestKey';
 
   // final sharedPrefs = await SharedPreferences.getInstance();
   //
